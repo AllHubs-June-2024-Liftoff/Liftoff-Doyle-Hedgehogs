@@ -1,0 +1,19 @@
+body {
+    background-color: lightblue;
+}
+
+div {
+    margin: auto;
+    width: 50%;
+    padding: 20px;
+    text-align: center;
+    background-color: white;
+}
+
+h1 {
+    margin: auto;
+        width: 50%;
+        padding: 10px;
+        text-align: center;
+        background-color: white;
+}
