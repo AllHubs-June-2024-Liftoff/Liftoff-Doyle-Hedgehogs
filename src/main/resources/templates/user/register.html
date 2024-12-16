@@ -3,7 +3,7 @@
 <head th:replace="fragments :: head"></head>
 <body class="container">
 
-<header th:replace="fragments :: header"></header>
+<header></header>
 
 <form method="post">
     <div class="form-group">
@@ -11,6 +11,11 @@
             <input class="form-control" th:field="${registerFormDTO.username}" />
         </label>
         <p class="error" th:errors="${registerFormDTO.username}"></p>
+    </div>
+    <div class="form-group">
+        <label>Email
+            <input class="form-control" th:field="${registerFormDTO.email" type="email" />
+        </label>
     </div>
     <div class="form-group">
         <label>Password
