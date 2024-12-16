@@ -1,10 +1,12 @@
-package org.example.models;
+package org.launchcode.demo.models;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class User {
 
@@ -19,24 +21,18 @@ public class User {
     @Email
     private String email;
 
-    @NotBlank
-    @Size(min = 6)
-    private String password;
+    @NotNull
+    private String pwHash;
 
-    @NotBlank
-    @Size(min = 6)
-    private String verify;
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public User() {
+    public User() {}
 
-    }
-
-    public User(String username, String email, String password, String verify) {
+    public User(String username, String email, String password) {
         this();
         this.username = username;
         this.email = email;
-        this.password = password;
-        this.verify = verify;
+        this.pwHash = encoder.encode(password);
     }
 
     public int getId() {
@@ -59,17 +55,11 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+
+    public boolean isMatchingPassword(String password) {
+        return encoder.matches(password, pwHash);
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getVerify() { return verify; }
-
-    public void setVerify(String verify) { this.verify = verify; }
 }
 
 
