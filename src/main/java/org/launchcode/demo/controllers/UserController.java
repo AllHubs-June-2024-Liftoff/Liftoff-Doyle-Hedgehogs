@@ -7,6 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+
+//Not sure if this is needed with authentication controller handling this now?????
+
+
 @Controller
 @RequestMapping("user")
 public class UserController {
