@@ -20,7 +20,7 @@ CREATE TABLE Volumes (
                          thumbnail TEXT -- normal res book photo thumbnail
 );
 
-CREATE TABLE Bookshelves (  -- Each bookshelf is associated with a specific user, can have more than one bookshelf
+CREATE TABLE Bookshelves (  -- Each bookshelf is associated with a specific user, each user can have more than one bookshelf
                              id INT AUTO_INCREMENT PRIMARY KEY,
                              name VARCHAR(255) NOT NULL, -- what they name their specific bookshelf, "i.e. AJ's bookshelf favorites"
                              user_id INT,
