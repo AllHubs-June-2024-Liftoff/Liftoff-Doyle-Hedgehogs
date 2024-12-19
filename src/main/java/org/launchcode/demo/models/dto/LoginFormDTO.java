@@ -22,6 +22,9 @@ public class LoginFormDTO {
     @Email
     private String email;
 
+    @NotBlank
+    private Integer location;
+
     public String getUsername() {
         return username;
     }
@@ -39,11 +42,19 @@ public class LoginFormDTO {
     }
 
     public String getEmail() {
-        return username;
+        return email;
     }
 
     public void setEmail(String username) {
-        this.username = username;
+        this.email = email;
+    }
+
+    public Integer getLocation() {
+        return location;
+    }
+
+    public void setLocation(String username) {
+        this.location = location;
     }
 
 }
