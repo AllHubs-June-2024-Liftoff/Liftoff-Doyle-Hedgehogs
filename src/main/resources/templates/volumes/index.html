@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<table class="table table-striped">
+    <tr>
+        <th>All Books</th>
+    </tr>
+    <tr th:each="volume: ${volumes}">
+        <td><a th:text="${volume.title}"></a></td>
+    </tr>
+
+</table>
+
+</body>
+</html>
