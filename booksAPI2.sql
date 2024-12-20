@@ -33,6 +33,9 @@ CREATE TABLE BookshelfVolumes (
                                   has_book BOOLEAN, -- TRUE means that person has the book currently, FALSE means person does not have the book on their current bookshelf.
                                   PRIMARY KEY (bookshelf_id, volume_id),
                                   FOREIGN KEY (bookshelf_id) REFERENCES Bookshelves(id),
-                                  FOREIGN KEY (volume_id) REFERENCES Volumes(id)
+                                  FOREIGN KEY (volume_id) REFERENCES Volumes(id),
+                                  FOREIGN KEY (volume_author) REFERENCES Volumes(author),
+                                  FOREIGN KEY (volume_title) REFERENCES Volumes(title),
+                                  FOREIGN KEY (book_location) REFERENCES UserAccounts(location)
 );
 -- Let me know what everyone thinks of this, commits to come
