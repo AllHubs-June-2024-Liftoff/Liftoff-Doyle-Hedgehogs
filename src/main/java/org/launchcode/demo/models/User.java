@@ -24,7 +24,7 @@ public class User {
     private String email;
 
     @NotBlank
-    private Integer location;
+    private String location;
 
     @NotNull
     private String pwHash;
@@ -33,7 +33,7 @@ public class User {
 
     public User() {}
 
-    public User(String username, String email, Integer location, String password) {
+    public User(String username, String email, String location, String password) {
         this();
         this.username = username;
         this.email = email;
@@ -59,9 +59,9 @@ public class User {
 
     public void setEmail(String email) {this.email = email;}
 
-    public Integer getLocation() {return location;}
+    public String getLocation() {return location;}
 
-    public void setLocation(Integer location) {this.location = location;}
+    public void setLocation(String location) {this.location = location;}
 
 
     public boolean isMatchingPassword(String password) {

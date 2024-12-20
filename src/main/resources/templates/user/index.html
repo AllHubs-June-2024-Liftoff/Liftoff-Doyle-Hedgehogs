@@ -3,21 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
-    <title>User Profile</title>
+    <title>Welcome Page</title>
 </head>
+
 <body>
 <p th:text = "${user.username}"></p>
-    <p> Book Library :
-    </p>
-    <tr>
-        <td>Title</td>
-        <td>Author</td>
-        <td>Rating</td>
-    </tr>
-</p>
-</td>
-</tr>
+<p><a href="/user/profile">View Profile</a></p>
 
+<p> Search for a Book </p>
 
 </body>
 </html>

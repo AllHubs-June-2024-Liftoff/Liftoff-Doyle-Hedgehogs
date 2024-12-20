@@ -17,6 +17,16 @@
             <input class="form-control" th:field="${registerFormDTO.email}" type="email" />
         </label>
     </div>
+    <div class="form-group">Location
+        <div>
+            <input type="radio" id="kansascity" value="0">
+            <label for="kansascity">Kansas City</label><br>
+            <input type="radio" id="philadelphia" value="1">
+            <label for="philadelphia">Philadelphia</label><br>
+            <input type="radio" id="saintlouis" value="2">
+            <label for="saintlouis">Saint Louis</label>
+        </div>
+    </div>
     <div class="form-group">
         <label>Password
             <input class="form-control" th:field="${registerFormDTO.password}" type="password" />

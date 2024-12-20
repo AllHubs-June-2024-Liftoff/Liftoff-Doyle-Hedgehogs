@@ -23,7 +23,7 @@ public class LoginFormDTO {
     private String email;
 
     @NotBlank
-    private Integer location;
+    private String location;
 
     public String getUsername() {
         return username;
@@ -49,11 +49,11 @@ public class LoginFormDTO {
         this.email = email;
     }
 
-    public Integer getLocation() {
+    public String getLocation() {
         return location;
     }
 
-    public void setLocation(Integer location) {
+    public void setLocation(String location) {
         this.location = location;
     }
 
