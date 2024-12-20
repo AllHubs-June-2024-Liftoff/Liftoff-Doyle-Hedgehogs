@@ -45,7 +45,7 @@ public class LoginFormDTO {
         return email;
     }
 
-    public void setEmail(String username) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -53,7 +53,7 @@ public class LoginFormDTO {
         return location;
     }
 
-    public void setLocation(String username) {
+    public void setLocation(Integer location) {
         this.location = location;
     }
 
