@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS BooksAPI;
+-- DROP DATABASE IF EXISTS BooksAPI;
 
 CREATE DATABASE BooksAPI;
 
@@ -7,7 +7,7 @@ USE BooksAPI;
 CREATE TABLE UserAccounts (
                               id INT AUTO_INCREMENT PRIMARY KEY,
                               username VARCHAR(100) UNIQUE NOT NULL,
-                              location INT,
+                              location VARCHAR(2), -- 0: Kansas City 1: Philadelphia 2: St. Louis
                               email VARCHAR(100) UNIQUE NOT NULL,
                               password_hash VARCHAR(255) NOT NULL
 );
@@ -31,11 +31,16 @@ CREATE TABLE BookshelfVolumes (
                                   bookshelf_id INT, -- the bookshelf ID that belongs to a specific user. This way each user could have more than one bookshelf/
                                   volume_id VARCHAR(50), -- this will be the unique exact book.
                                   has_book BOOLEAN, -- TRUE means that person has the book currently, FALSE means person does not have the book on their current bookshelf.
+                                  book_location VARCHAR(2),
                                   PRIMARY KEY (bookshelf_id, volume_id),
                                   FOREIGN KEY (bookshelf_id) REFERENCES Bookshelves(id),
                                   FOREIGN KEY (volume_id) REFERENCES Volumes(id),
+                                  -- for the sake of clarity I left the bottom three FOREIGN KEY references in (we only need volume_id to reference table).
+                                  -- Technically the below volume_author, volume_title, and book_location are superfluous, we can just pull the data directly with a SQL statement since we have volume_id to run a sql query.
+                                  -- Our table will be unnecessarily large and duplicated data in both tables if we do this.
+                                  -- Later on we can just to a series of JOINs to get the table we want without duplicating data
                                   FOREIGN KEY (volume_author) REFERENCES Volumes(author),
                                   FOREIGN KEY (volume_title) REFERENCES Volumes(title),
                                   FOREIGN KEY (book_location) REFERENCES UserAccounts(location)
 );
--- Let me know what everyone thinks of this, commits to come
+-- 12/19/2024 Let me know what everyone thinks of this, commits to change
