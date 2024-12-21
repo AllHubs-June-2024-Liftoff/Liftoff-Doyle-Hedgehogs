@@ -16,8 +16,8 @@ CREATE TABLE Volumes (
                          id VARCHAR(50) PRIMARY KEY, -- Google booksAPI's unique string
                          author VARCHAR(50), -- Author associated with unique book
                          title VARCHAR(255) NOT NULL, -- title associated with unique book
-                         description TEXT, -- description from google unique string description
-                         thumbnail TEXT -- normal res book photo thumbnail
+                         description TEXT, -- description from google unique string description of book
+                         thumbnail TEXT -- link to normal res book photo thumbnail
 );
 
 CREATE TABLE Bookshelves (  -- Each bookshelf is associated with a specific user, can have more than one bookshelf
@@ -32,6 +32,8 @@ CREATE TABLE BookshelfVolumes (
                                   volume_id VARCHAR(50), -- this will be the unique exact book.
                                   has_book BOOLEAN, -- TRUE means that person has the book currently, FALSE means person does not have the book on their current bookshelf.
                                   book_location VARCHAR(2),
+                                  author VARCHAR(50),
+                                  title VARCHAR(255) NOT NULL,
                                   PRIMARY KEY (bookshelf_id, volume_id),
                                   FOREIGN KEY (bookshelf_id) REFERENCES Bookshelves(id),
                                   FOREIGN KEY (volume_id) REFERENCES Volumes(id),
@@ -43,4 +45,4 @@ CREATE TABLE BookshelfVolumes (
                                   FOREIGN KEY (volume_title) REFERENCES Volumes(title),
                                   FOREIGN KEY (book_location) REFERENCES UserAccounts(location)
 );
--- 12/19/2024 Let me know what everyone thinks of this, commits to come
+-- 12/19/2024 Let me know what everyone thinks of this, commits to change
