@@ -42,8 +42,10 @@ CREATE TABLE BookshelfVolumes (
                                   -- for the sake of clarity I left the bottom three FOREIGN KEY references in (we only need volume_id to reference table).
                                   -- Technically the below volume_author, volume_title, and book_location are superfluous, we can just pull the data directly with a SQL statement since we have volume_id to run a sql query.
                                   -- Our table will be unnecessarily large and duplicated data in both tables if we do this.
-                                  -- Later on we can just to a series of JOINs to get the table we want without duplicating data
-                                  -- FOREIGN KEY (volume_author) REFERENCES Volumes(author),
+                                                                                                                -- Later on we can just to a series of JOINs to get the table we want without duplicating data
+                                                                                                                -- FOREIGN KEY (volume_author) REFERENCES Volumes(author),
                                   -- FOREIGN KEY (volume_title) REFERENCES Volumes(title),
 );
 -- 12/20/2024 Let me know what everyone thinks of this, this is able to work in mysql workbench
+
+--
