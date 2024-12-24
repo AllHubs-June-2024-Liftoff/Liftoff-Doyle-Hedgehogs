@@ -66,7 +66,7 @@ INSERT INTO Volumes (id, author, title, description, thumbnail) VALUES
 'http://books.google.com/books/content?id=KUMIEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api');
 
 /* Adding userdata for myself and a made-up password hash
-location is kansas_city 01
+location is kansas_city 00
 */
 INSERT INTO UserAccounts (username, location, email, password_hash) VALUES 
 ('mattet', '00', 'mattetracy@outlook.com', '$2a$10$7nT.LzAErkRf8nQuvDLP5OGW/R2fRS03zB6F8kMG/lCVdXsJ5lK.S'); -- I don't need to put the ID since it is autoincremented
