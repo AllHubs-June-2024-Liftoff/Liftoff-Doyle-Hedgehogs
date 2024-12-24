@@ -76,11 +76,32 @@ INSERT INTO Bookshelves (bookshelf_name, user_id) VALUES
 ("Matt's Good Reads", 1); -- I don't need to put the ID since it is autoincremented
 
 INSERT INTO BookshelfVolumes (bookshelf_id, volume_id, has_book) VALUES
-(1, 'KUMIEAAAQBAJ', TRUE); -- I don't need to put the ID since it is autoincremented
+(1, 'KUMIEAAAQBAJ', TRUE);
 
 
 
 
-
-SELECT * FROM Bookshelves;
-SELECT * FROM BookshelfVolumes
+-- this query will give us the information for all user_id, and all the book data we need across all of every users bookshelves (all their bookshelfs)
+SELECT 
+    UserAccounts.id AS user_id,
+    UserAccounts.username AS username,
+    UserAccounts.email AS email,
+    UserAccounts.location AS location,
+    Bookshelves.id AS bookshelf_id,
+    Bookshelves.bookshelf_name AS bookshelf_name,
+    BookshelfVolumes.volume_id AS volume_id,
+    BookshelfVolumes.has_book AS has_book,
+    Volumes.author AS author,
+    Volumes.title AS title,
+    Volumes.description AS description,
+    Volumes.thumbnail AS thumbnail
+FROM 
+    UserAccounts
+JOIN 
+    Bookshelves ON user_id = Bookshelves.user_id
+JOIN 
+    BookshelfVolumes ON bookshelf_id = BookshelfVolumes.bookshelf_id
+JOIN 
+    Volumes ON volume_id = Volumes.id
+ORDER BY 
+    location, username, title;
