@@ -93,7 +93,7 @@ location is St. Louis 02
 INSERT INTO UserAccounts (username, location, email, password_hash) VALUES
 ('bob2342', '02', 'bob2342@gmail.com', '$2a$10$7nT.LzAErkRf8nQuvDLP5OGW/R2fRS03zB6F8kMG/lCVdXsJ5lK.S'); -- I don't need to put the ID since it is autoincremented
 INSERT INTO Bookshelves (bookshelf_name, bookshelves_user_id) VALUES
-("Bob's Good Reads", 1); -- I don't need to put the ID since it is autoincremented
+("Bob's Good Reads", 2); -- I don't need to put the ID since it is autoincremented
 INSERT INTO BookshelfVolumes (bookshelf_id, volume_id, has_book) VALUES
 (2, 'g6C6P6NJQ1MC', TRUE);
 
