@@ -1,23 +1,37 @@
 package org.launchcode.demo.models;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Id;
 
 @Entity
-public class Volume extends AbstractEntity{
+public class Volume{
+
+    @Id
+    private String id;
 
     private String author;
     private String title;
     private String description;
+    private String thumbnail;
 
+    public Volume(String id, String author, String title, String description, String thumbnail) {
 
-    public Volume(String author, String title, String description) {
-        this.title = title;
+        this.id = id;
         this.author = author;
+        this.title = title;
         this.description = description;
+        this.thumbnail = thumbnail;
     }
 
     public Volume(){}
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getAuthor() {
         return author;
@@ -43,5 +57,12 @@ public class Volume extends AbstractEntity{
         this.description = description;
     }
 
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
 
 }
