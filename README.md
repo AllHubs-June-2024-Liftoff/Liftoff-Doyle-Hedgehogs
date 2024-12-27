@@ -76,4 +76,4 @@ The primary key of the `bookshelf_volume` table is a composite key consisting of
 ---
 #### TLDR
 This DOC provides the structural relationships within te SQL database schema.
-Please refer back to these docs as we implament new features in our Little Online Library using Spring and Thyme and Hopefully when we eventually figure out Spring Security.
+Please refer back to these docs as we implement new features in our Little Online Library using Spring and Thyme and Hopefully when we eventually figure out Spring Security.
