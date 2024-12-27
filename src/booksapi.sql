@@ -8,7 +8,7 @@ USE booksapi;
 CREATE TABLE user_account (
                               id INT AUTO_INCREMENT PRIMARY KEY,
                               username VARCHAR(255) UNIQUE NOT NULL,
-                              location VARCHAR(255), -- 00: Kansas City 01: Philadelphia 02: St. Louis
+                              location VARCHAR(255), -- '0': Kansas City '1': Philadelphia '2': St. Louis
                               email VARCHAR(255) UNIQUE NOT NULL,
                               password_hash VARCHAR(255) NOT NULL
 );
@@ -29,24 +29,13 @@ CREATE TABLE bookshelf (  -- Each bookshelf is associated with a specific user, 
 );
 
 CREATE TABLE bookshelf_volume (
+                                  id INT AUTO_INCREMENT PRIMARY KEY,
                                   bookshelf_id INT, -- the bookshelf ID that belongs to a specific user. This way each user could have more than one bookshelf/
                                   volume_id VARCHAR(255), -- this will be the abstracted book.
                                   has_book BOOLEAN, -- TRUE means that person has the book currently, FALSE means person does not have the book on their current bookshelf.
                                   unique_book VARCHAR(255) AS (CONCAT(bookshelf_id, '_', volume_id)),
-                                  -- book_location VARCHAR(2),
-                                  -- volume_author VARCHAR(50),
-                                  -- volume_title VARCHAR(255) NOT NULL,
-                                  PRIMARY KEY (bookshelf_id, volume_id),
                                   FOREIGN KEY (bookshelf_id) REFERENCES bookshelf(id), -- referencing has to be the primary key
                                   FOREIGN KEY (volume_id) REFERENCES volume(id) -- referencing has to be the primary key
-                                  -- scratch my thinking below.  I am still trying to understand how referencing is working in relation to our tables.
-                                  -- we will I think have to.
-                                  -- for the sake of clarity I left the bottom three FOREIGN KEY references in (we only need volume_id to reference table).
-                                  -- Technically the below volume_author, volume_title, and book_location are superfluous, we can just pull the data directly with a SQL statement since we have volume_id to run a sql query.
-                                  -- Our table will be unnecessarily large and duplicated data in both tables if we do this.
-                                                                                                                -- Later on we can just to a series of JOINs to get the table we want without duplicating data
-                                                                                                                -- FOREIGN KEY (volume_author) REFERENCES Volumes(author),
-                                  -- FOREIGN KEY (volume_title) REFERENCES Volumes(title),
 );
 -- 12/20/2024 Let me know what everyone thinks of this, this is able to work in mysql workbench
 
@@ -84,7 +73,7 @@ location is kansas_city 00
 INSERT INTO user_account (username, location, email, password_hash) VALUES
 ('mattet', '00', 'mattetracy@outlook.com', '$2a$10$7nT.LzAErkRf8nQuvDLP5OGW/R2fRS03zB6F8kMG/lCVdXsJ5lK.S'); -- I don't need to put the ID since it is autoincremented
 INSERT INTO bookshelf (bookshelf_name, bookshelf_user_id) VALUES
-("Matt's Good Reads", 1); -- I don't need to put the ID since it is autoincremented
+("Matt's Good Reads", 1); -- I don't need to put the ID since it is auto incremented
 INSERT INTO bookshelf_volume (bookshelf_id, volume_id, has_book) VALUES
 (1, 'KUMIEAAAQBAJ', TRUE);
 
