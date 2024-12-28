@@ -2,6 +2,10 @@ package org.launchcode.demo.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Volume{
@@ -9,10 +13,14 @@ public class Volume{
     @Id
     private String id;
 
-    private String author;
-    private String title;
+    public String author;
+    public String title;
     private String description;
     private String thumbnail;
+
+    //TODO: code Tag class, many to many with volumes (or should it be bookshelf volumes?)
+//    @ManyToMany
+//    private final List<Tag> tags = new ArrayList<>();
 
     public Volume(String id, String author, String title, String description, String thumbnail) {
 

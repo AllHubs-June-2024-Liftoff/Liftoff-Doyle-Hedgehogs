@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Little Online Library</title>
+</head>
+<body>
+<h1>Search the Library</h1>
+
+<form th:action="@{/search/results}" method="post">
+   <h2 th:text="${title}"></h2>
+   <p>
+      <span th:each="column : ${columns}">
+                <input
+                        type="radio"
+                        name="searchType"
+                        th:id="${column.key}"
+                        th:value="${column.key}"
+                        th:checked="${column.key == 'all'}"/>
+                <label th:for="${column.key}" th:text="${column.value}"></label>
+      </span>
+   </p>
+
+   <p>
+      <label for="searchTerm">Search Term:</label>
+      <input type="text" name="searchTerm" id="searchTerm" placeholder="Search">
+   </p>
+
+   <div class="form-group">
+      <input type="submit" value="Search" class="btn btn-success">
+   </div>
+
+</form>
+
+<hr>
+
+<div>
+<table class="table table-striped">
+   <thead>
+      <tr>
+         <th>Title</th>
+         <th>Author</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr th:each="bookshelfVolume : ${bookshelfVolumes}">
+
+         <td th:text="${bookshelfVolume.volume.title}"></td>
+         <td th:text="${bookshelfVolume.volume.author}"></td>
+      </tr>
+   </tbody>
+</table>
+</div>
+
+</body>
+</html>

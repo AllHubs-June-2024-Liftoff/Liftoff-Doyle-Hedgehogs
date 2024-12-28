@@ -1,10 +1,9 @@
 package org.launchcode.demo.data;
 
-
-import org.launchcode.demo.models.Volume;
+import org.launchcode.demo.models.BookshelfVolume;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface VolumeRepository extends CrudRepository<Volume, String> {
+public interface BookshelfVolumeRepository extends CrudRepository<BookshelfVolume, Integer> {
 }

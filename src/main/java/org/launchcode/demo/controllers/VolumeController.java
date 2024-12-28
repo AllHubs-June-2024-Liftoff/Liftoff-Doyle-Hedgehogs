@@ -25,10 +25,4 @@ public class VolumeController{
         return "volumes/index";
     }
 
-    @GetMapping("search")
-    public String displaySearchForm(Model model){
-        model.addAttribute("title", "Search the Library");
-        return "volumes/search";
-    }
-
 }
