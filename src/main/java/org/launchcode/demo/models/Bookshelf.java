@@ -2,6 +2,7 @@ package org.launchcode.demo.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Bookshelf extends AbstractEntity{

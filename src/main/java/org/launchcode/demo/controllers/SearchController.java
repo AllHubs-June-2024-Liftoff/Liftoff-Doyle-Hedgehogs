@@ -38,13 +38,14 @@ public class SearchController {
 
         bookshelfVolumes = LibraryData.findByColumnAndValue(searchType, searchTerm, bookshelfVolumeRepository.findAll());
         model.addAttribute("columns", columnOptions);
-        model.addAttribute("title", "Books with " + columnOptions.get(searchType) + "containing: " + searchTerm);
+        model.addAttribute("title", "Books with " +
+                columnOptions.get(searchType) + " containing: " + searchTerm);
         model.addAttribute("bookshelfVolumes", bookshelfVolumes);
-
 
         return "search";
     }
 
-    //TODO send search results to separate page with a "Back to Search" link
     //TODO link to search by tags after Tag class/controller/repository created
+
+    //TODO update search to limit to one location
 }

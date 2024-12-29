@@ -1,9 +1,11 @@
 package org.launchcode.demo.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class BookshelfVolume extends AbstractEntity{
@@ -15,11 +17,17 @@ public class BookshelfVolume extends AbstractEntity{
     public Volume volume;
     private Boolean has_book = true;
 
+    @ManyToMany
+    public List<Tag> tags = new ArrayList<>();
+
     public BookshelfVolume(Bookshelf bookshelf, Volume volume, Boolean has_book) {
         this.bookshelf = bookshelf;
         this.volume = volume;
         this.has_book = has_book;
+
     }
+
+    //TODO add swapHistory as ArrayList? User can optionally append their username when accepting a book (popup dialog box)
 
     public BookshelfVolume(){}
 
@@ -45,5 +53,13 @@ public class BookshelfVolume extends AbstractEntity{
 
     public void setHas_book(Boolean has_book) {
         this.has_book = has_book;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 }

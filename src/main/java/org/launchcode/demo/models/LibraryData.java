@@ -26,6 +26,7 @@ public class LibraryData {
         else if (column.equals("author")){
             theValue = bookshelfVolume.volume.getAuthor();
         }
+
         return theValue;
 
     }
