@@ -16,11 +16,19 @@
    <tr>
       <th>Title</th>
       <th>Author</th>
+      <th>Tags</th>
    </tr>
 
    <tr th:each="bookshelf_volume : ${bookshelf_volumes}">
       <td th:text="${bookshelf_volume.volume.title}"></td>
       <td th:text="${bookshelf_volume.volume.author}"></td>
+      <td th:each="tag : ${bookshelf_volume.tags}">
+         <ul>
+            <li>
+               <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.name}"></a>
+            </li>
+         </ul>
+      </td>
    </tr>
 
 </table>

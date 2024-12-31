@@ -1,15 +1,15 @@
 package org.launchcode.demo.controllers;
 
+import jakarta.validation.Valid;
 import org.launchcode.demo.data.TagRepository;
 import org.launchcode.demo.models.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("tags")
@@ -32,8 +32,37 @@ public class TagController {
         return "tags/create";
     }
 
-    //TODO complete create tag form view and processing method
-//    public String processCreateTagForm(Model model){
-//
-//    }
+    @PostMapping("create")
+    public String processCreateTagForm(@ModelAttribute @Valid Tag tag, Errors errors, Model model){
+
+        formatTagName(tag);
+
+        if (errors.hasErrors()) {
+            model.addAttribute("title", "Create Tag");
+            model.addAttribute(tag);
+            return "tags/create";
+        }
+
+        tagRepository.save(tag);
+        return "redirect:/tags";
+    }
+
+    @GetMapping("/{tagId}")
+    public String displayByTag(Model model, @PathVariable int tagId){
+        Optional<Tag> optionalTag = tagRepository.findById(tagId);
+        if (optionalTag.isPresent()){
+            Tag tag = (Tag) optionalTag.get();
+            model.addAttribute("tag", tag);
+            return "tags/view";
+        } else {
+            return "redirect:../";
+        }
+    }
+
+    // Formats tag name to all lowercase and removes non-alphanumeric characters
+    public String formatTagName(Tag tag){
+        String name = tag.getName().toLowerCase().replaceAll("[^a-zA-Z0-9]", "");
+        tag.setName(name);
+        return name;
+    }
 }

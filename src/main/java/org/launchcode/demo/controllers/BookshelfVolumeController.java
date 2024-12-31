@@ -21,5 +21,5 @@ public class BookshelfVolumeController {
         return "library/index";
     }
 
-    //TODO add BookVolumeControllerDTO and add handler here
+    //TODO add BookshelfVolumeTagDTO and add handler here
 }

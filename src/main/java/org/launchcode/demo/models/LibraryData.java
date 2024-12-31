@@ -8,6 +8,7 @@ public class LibraryData {
         ArrayList<BookshelfVolume> results = new ArrayList<>();
 
         for (BookshelfVolume bookshelfVolume : allBookshelfVolumes) {
+
             String aValue = getFieldValue(bookshelfVolume, column);
 
             if (aValue != null && aValue.toLowerCase().contains(value.toLowerCase())) {
@@ -28,7 +29,6 @@ public class LibraryData {
         }
 
         return theValue;
-
     }
 
 }

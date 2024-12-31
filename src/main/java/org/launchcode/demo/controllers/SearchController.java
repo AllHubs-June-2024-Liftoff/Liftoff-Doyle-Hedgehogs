@@ -19,6 +19,10 @@ public class SearchController {
     @Autowired
     private BookshelfVolumeRepository bookshelfVolumeRepository;
 
+    //TODO: uncomment when merged to include User class
+//    @Autowired
+//    private UserRepository userRepository;
+
     static HashMap<String, String> columnOptions = new HashMap<>();
 
     public SearchController(){
@@ -45,7 +49,10 @@ public class SearchController {
         return "search";
     }
 
+
+
     //TODO link to search by tags after Tag class/controller/repository created
 
     //TODO update search to limit to one location
+
 }
