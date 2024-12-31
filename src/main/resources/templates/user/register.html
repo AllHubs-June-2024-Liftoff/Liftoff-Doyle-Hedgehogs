@@ -17,13 +17,13 @@
             <input class="form-control" th:field="${registerFormDTO.email}" type="email" />
         </label>
     </div>
-    <div class="form-group">Location
+    <div class="form-group" >Location
         <div>
-            <input type="radio" id="kansascity" value="0">
+            <input type="radio" id="kansascity" value="0" th:field="${registerFormDTO.location}">
             <label for="kansascity">Kansas City</label><br>
-            <input type="radio" id="philadelphia" value="1">
+            <input type="radio" id="philadelphia" value="1" th:field="${registerFormDTO.location}">
             <label for="philadelphia">Philadelphia</label><br>
-            <input type="radio" id="saintlouis" value="2">
+            <input type="radio" id="saintlouis" value="2" th:field="${registerFormDTO.location}">
             <label for="saintlouis">Saint Louis</label>
         </div>
     </div>

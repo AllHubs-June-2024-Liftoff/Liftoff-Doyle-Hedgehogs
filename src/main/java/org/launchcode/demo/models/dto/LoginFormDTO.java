@@ -22,7 +22,6 @@ public class LoginFormDTO {
     @Email
     private String email;
 
-    @NotBlank
     private String location;
 
     public String getUsername() {
