@@ -24,7 +24,7 @@
         <td>
             <div th:each="tag : ${bookshelfVolume.tags}">
                 <span>
-                    <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.name}"></a>
+                    <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.displayName}"></a>
                 </span>
             </div>
         </td>
