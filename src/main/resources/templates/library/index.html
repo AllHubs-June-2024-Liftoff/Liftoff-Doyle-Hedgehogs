@@ -19,10 +19,10 @@
       <th>Tags</th>
    </tr>
 
-   <tr th:each="bookshelf_volume : ${bookshelf_volumes}">
-      <td th:text="${bookshelf_volume.volume.title}"></td>
-      <td th:text="${bookshelf_volume.volume.author}"></td>
-      <td th:each="tag : ${bookshelf_volume.tags}">
+   <tr th:each="bookshelfVolume : ${bookshelfVolumes}">
+      <td th:text="${bookshelfVolume.volume.title}"></td>
+      <td th:text="${bookshelfVolume.volume.author}"></td>
+      <td th:each="tag : ${bookshelfVolume.tags}">
          <ul>
             <li>
                <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.name}"></a>

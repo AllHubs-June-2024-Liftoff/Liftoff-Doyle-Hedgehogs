@@ -4,11 +4,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Bookshelf extends AbstractEntity{
 
     private String bookshelf_name;
     private int bookshelf_user_id;
+
+    @OneToMany(mappedBy = "bookshelf")
+    private final List<BookshelfVolume> bookshelfVolumes = new ArrayList<>();
 
     public Bookshelf(String bookshelf_name, int bookshelf_user_id) {
         this.bookshelf_name = bookshelf_name;
@@ -31,6 +37,10 @@ public class Bookshelf extends AbstractEntity{
 
     public void setBookshelf_user_id(int bookshelf_user_id) {
         this.bookshelf_user_id = bookshelf_user_id;
+    }
+
+    public List<BookshelfVolume> getBookshelfVolumes() {
+        return bookshelfVolumes;
     }
 
     @Override

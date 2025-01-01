@@ -1,12 +1,15 @@
 package org.launchcode.demo.models.dto;
 
+import jakarta.validation.constraints.NotNull;
 import org.launchcode.demo.models.BookshelfVolume;
 import org.launchcode.demo.models.Tag;
 
 public class BookshelfVolumeTagDTO {
 
+    @NotNull
     public BookshelfVolume bookshelfVolume;
 
+    @NotNull
     public Tag tag;
 
     public BookshelfVolumeTagDTO(){}

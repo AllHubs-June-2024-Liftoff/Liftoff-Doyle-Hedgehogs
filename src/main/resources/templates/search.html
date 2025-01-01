@@ -51,10 +51,13 @@
 
          <td th:text="${bookshelfVolume.volume.title}"></td>
          <td th:text="${bookshelfVolume.volume.author}"></td>
-          <td th:each="tag : ${bookshelfVolume.tags}">
-              <a th:href="@{'/tags/${tag}'}" th:text="${tag.displayName}"></a>
-          </td>
-<!--          TODO add hyperlink to each tag to list books with that tag-->
+         <td>
+              <div th:each="tag : ${bookshelfVolume.tags}">
+                <span>
+                    <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.name}"></a>
+                </span>
+              </div>
+         </td>
       </tr>
 
 </table>

@@ -11,12 +11,13 @@
 
 <h1>Create a Tag</h1>
 <p>
-   Note: Tags may include lowercase letters and numbers. Other characters will be automatically removed when the tag is submitted.
+   Note: Tags may include lowercase letters and numbers. Other characters will be automatically changed to lowercase or removed when the tag is submitted.
 </p>
 <form method="post">
    <div class="block">
-      <label>New Tag</label>
-      <input th:field="${tag.name}" class="form-control" placeholder="#">
+      <label>New Tag
+         <input th:field="${tag.name}" class="form-control" placeholder="#newtag">
+      </label>
    </div>
    <input type="submit" value="Submit" class="btn btn-success">
 </form>

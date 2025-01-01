@@ -50,9 +50,6 @@ public class SearchController {
     }
 
 
-
-    //TODO link to search by tags after Tag class/controller/repository created
-
     //TODO update search to limit to one location
 
 }
