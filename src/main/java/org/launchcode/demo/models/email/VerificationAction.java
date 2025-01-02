@@ -1,4 +1,4 @@
-package org.launchcode.demo.models;
+package org.launchcode.demo.models.email;
 import org.launchcode.demo.data.VerificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

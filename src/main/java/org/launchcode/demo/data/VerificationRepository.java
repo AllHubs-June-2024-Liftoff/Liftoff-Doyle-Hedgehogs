@@ -1,5 +1,5 @@
 package org.launchcode.demo.data;
-import org.launchcode.demo.models.VerifyUser;
+import org.launchcode.demo.models.email.VerifyUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface VerificationRepository extends JpaRepository<VerifyUser, Long> {

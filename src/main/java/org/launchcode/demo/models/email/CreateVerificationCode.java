@@ -1,4 +1,4 @@
-package org.launchcode.demo.models;
+package org.launchcode.demo.models.email;
 import java.security.SecureRandom;
 
 public class CreateVerificationCode {
