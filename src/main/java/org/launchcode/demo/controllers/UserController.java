@@ -11,9 +11,15 @@ import org.springframework.web.bind.annotation.*;
 //Not sure if this is needed with authentication controller handling this now?????
 
 
-@Controller
+@RestController
 @RequestMapping("user")
+@CrossOrigin("*")
 public class UserController {
+
+    @GetMapping("/")
+    public String helloUserController(){
+        return "User access level";
+    }
 
     @GetMapping("/add")
     public String displayAddUserForm(Model model) {
