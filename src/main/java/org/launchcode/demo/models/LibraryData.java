@@ -31,4 +31,18 @@ public class LibraryData {
         return theValue;
     }
 
+    public static ArrayList<BookshelfVolume> filterByLocation(String location, Iterable<BookshelfVolume> bookshelfVolumes){
+        ArrayList<BookshelfVolume> resultsByLocation = new ArrayList<>();
+        for (BookshelfVolume bookshelfVolume : bookshelfVolumes){
+            Bookshelf theBookshelf = bookshelfVolume.getBookshelf();
+            User theUser = theBookshelf.getUser();
+            Location theLocation = theUser.getLocation();
+            String theLocationName = theLocation.getName();
+            if (theLocationName.equals(location)){
+                resultsByLocation.add(bookshelfVolume);
+            }
+        }
+        return resultsByLocation;
+    }
+
 }

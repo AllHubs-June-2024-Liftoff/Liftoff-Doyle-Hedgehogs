@@ -2,6 +2,7 @@ package org.launchcode.demo.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
@@ -11,14 +12,16 @@ import java.util.List;
 public class Bookshelf extends AbstractEntity{
 
     private String bookshelf_name;
-    private int bookshelf_user_id;
+
+    @ManyToOne
+    private User user;
 
     @OneToMany(mappedBy = "bookshelf")
     private final List<BookshelfVolume> bookshelfVolumes = new ArrayList<>();
 
-    public Bookshelf(String bookshelf_name, int bookshelf_user_id) {
+    public Bookshelf(String bookshelf_name, User user) {
         this.bookshelf_name = bookshelf_name;
-        this.bookshelf_user_id = bookshelf_user_id;
+        this.user = user;
     }
 
     public Bookshelf(){}
@@ -31,12 +34,12 @@ public class Bookshelf extends AbstractEntity{
         this.bookshelf_name = bookshelf_name;
     }
 
-    public int getBookshelf_user_id() {
-        return bookshelf_user_id;
+    public User getUser() {
+        return user;
     }
 
-    public void setBookshelf_user_id(int bookshelf_user_id) {
-        this.bookshelf_user_id = bookshelf_user_id;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<BookshelfVolume> getBookshelfVolumes() {

@@ -12,6 +12,19 @@
 
 <form th:action="@{/search/results}" method="post">
    <h2 th:text="${title}"></h2>
+    <p>
+        <span th:if="${errorMessage}" th:text="${errorMessage}" th:style="'color: red'">Error</span>
+    </p>
+    <p>
+        <span th:each="location : ${locations}">
+            <input
+                type="radio"
+                name="location"
+                th:id="${location.key}"
+                th:value="${location.value}">
+                <label th:for="${location.key}" th:text="${location.value}"></label>
+        </span>
+    </p>
    <p>
       <span th:each="column : ${columns}">
                 <input
@@ -44,7 +57,7 @@
       <tr>
          <th>Title</th>
          <th>Author</th>
-          <th>Tags</th>
+         <th>Tags</th>
       </tr>
 
       <tr th:each="bookshelfVolume : ${bookshelfVolumes}">
