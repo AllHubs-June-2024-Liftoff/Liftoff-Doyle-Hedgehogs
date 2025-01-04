@@ -15,6 +15,8 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.launchcode.demo.models.email.EmailService;
+import org.launchcode.demo.models.email.EmailDetails;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +26,7 @@ public class AuthenticationController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired private EmailService emailService;
 
     private static final String userSessionKey = "user";
 
@@ -44,6 +47,15 @@ public class AuthenticationController {
 
     private static void setUserInSession(HttpSession session, User user) {
         session.setAttribute(userSessionKey, user.getId());
+    }
+
+    public String
+    sendUserMail(EmailDetails details)
+    {
+        String status
+                = emailService.sendMail(details);
+
+        return status;
     }
 
     @GetMapping("/user/register")
@@ -87,8 +99,13 @@ public class AuthenticationController {
         userRepository.save(newUser);
         setUserInSession(request.getSession(), newUser);
         model.addAttribute("user", newUser.getUsername());
+        EmailDetails theseDetails = new EmailDetails(registerFormDTO.getEmail(), "Welcome to Little Online Library", "New User");
+        sendUserMail(theseDetails);
         return "user/index";
+
     }
+
+
 
     @GetMapping("/user/login")
     public String displayLoginForm(Model model) {

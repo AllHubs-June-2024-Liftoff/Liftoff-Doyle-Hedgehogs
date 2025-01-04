@@ -1,13 +1,8 @@
 package org.launchcode.demo.models.email;
 
-// Java Program to Illustrate Creation Of
-// Service implementation class
-
-package com.SpringBootEmail.service;
 
 
-import org.launchcode.demo.models.email.EmailService;
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
