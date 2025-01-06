@@ -1,16 +1,16 @@
 package org.launchcode.demo.models.email;
-import org.launchcode.demo.data.VerificationRepository;
+import org.launchcode.demo.data.UserVerificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class VerificationAction {
+public class VerificationService {
 
     @Autowired
-    private VerificationRepository verificationRepository;
+    private UserVerificationRepository verificationRepository;
 
     public boolean verifyCode(String email, String code) {
-        VerifyUser verifyUser = verificationRepository.findByEmail(email);
+        UserVerification verifyUser = verificationRepository.findByEmail(email);
         if (verifyUser != null && verifyUser.getCode().equals(code)) {
             return true;
         }

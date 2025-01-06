@@ -2,7 +2,7 @@ package org.launchcode.demo.models.email;
 import jakarta.persistence.*;
 
 @Entity
-public class VerifyUser {
+public class UserVerification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
