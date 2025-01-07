@@ -7,6 +7,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 public class ApiActions {
 
@@ -43,10 +47,10 @@ public class ApiActions {
         return content.toString();
     }
 
-    public static ArrayList<Book> ParseResults(String searchResult){
+    public static ArrayList<Book> ParseResults(String searchResult) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(searchResult);
-        ArrayList<Book> bookInfo = new ArrayList();
+        ArrayList<Book> bookInfo = new ArrayList<>();
         JsonNode itemsNode = root.get("items");
         for (JsonNode itemNode : itemsNode) {
             JsonNode volumeInfoNode = root.get("volumeInfo");
