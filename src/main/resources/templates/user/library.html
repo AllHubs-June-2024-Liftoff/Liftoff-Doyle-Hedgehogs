@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<h1 th:text="${tag.displayName}">Default Heading</h1>
+<h1 th:text="${title}"></h1>
 
 <table class="table table-striped">
 
@@ -19,8 +19,7 @@
         <th>Tags</th>
     </tr>
 
-    <tr th:each="bookshelfVolume : ${tag.bookshelfVolumes}">
-
+    <tr th:each="bookshelfVolume : ${bookshelfVolumes}">
         <td th:text="${bookshelfVolume.volume.title}"></td>
         <td th:text="${bookshelfVolume.volume.author}"></td>
         <td>
@@ -29,6 +28,9 @@
                     <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.displayName}"></a>
                 </span>
             </div>
+        </td>
+        <td>
+            <a th:href="'/user/bookdetails/' + ${bookshelfVolume.id}">Edit Tags</a>
         </td>
     </tr>
 

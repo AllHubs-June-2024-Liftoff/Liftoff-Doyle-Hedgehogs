@@ -17,6 +17,7 @@
       <th>Title</th>
       <th>Author</th>
       <th>Tags</th>
+      <th>Bookshelf</th>
    </tr>
 
    <tr th:each="bookshelfVolume : ${bookshelfVolumes}">
@@ -28,6 +29,9 @@
                     <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.displayName}"></a>
                 </span>
          </div>
+      </td>
+      <td>
+         <a th:href="@{'/bookshelf/' + ${bookshelfVolume.bookshelf.id}}" th:text="${bookshelfVolume.bookshelf.bookshelf_name}"></a>
       </td>
    </tr>
 

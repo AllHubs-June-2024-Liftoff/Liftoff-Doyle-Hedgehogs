@@ -9,6 +9,7 @@ import org.launchcode.demo.models.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,7 +36,6 @@ public class SearchController {
     public SearchController(){
         columnOptions.put("title", "Title");
         columnOptions.put("author", "Author");
-
     }
 
 
@@ -80,11 +80,16 @@ public class SearchController {
 
             model.addAttribute("locations", getAllLocations());
             model.addAttribute("columns", columnOptions);
-            model.addAttribute("title", "Books in " + location + "area with " +
+            model.addAttribute("title", "Books in the " + location + " area with " +
                     columnOptions.get(searchType) + " containing: " + searchTerm);
             model.addAttribute("bookshelfVolumes", bookshelfVolumes);
         }
         return "search";
+    }
+
+    @GetMapping("/bookshelf/{id}")
+    public String bookshelf(String id){
+        return "redirect:";
     }
 
 }

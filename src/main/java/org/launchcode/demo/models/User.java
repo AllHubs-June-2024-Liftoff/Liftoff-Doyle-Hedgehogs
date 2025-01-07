@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Size;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
-public class User extends AbstractEntity{
+public class User extends AbstractEntity {
 
     @NotBlank
     @Size(min = 3, max = 10)
@@ -39,10 +39,6 @@ public class User extends AbstractEntity{
         this.pwHash = encoder.encode(password);
     }
 
-//    public int getId() {
-//        return id;
-//    }
-
     public String getUsername() {
         return username;
     }
@@ -60,7 +56,6 @@ public class User extends AbstractEntity{
     public Location getLocation() {return location;}
 
     public void setLocation(Location location) {this.location = location;}
-
 
     public boolean isMatchingPassword(String password) {
         return encoder.matches(password, pwHash);

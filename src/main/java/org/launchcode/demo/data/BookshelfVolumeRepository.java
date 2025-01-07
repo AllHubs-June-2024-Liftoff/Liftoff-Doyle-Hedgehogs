@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookshelfVolumeRepository extends CrudRepository<BookshelfVolume, Integer> {
+    BookshelfVolume findByBookshelfId (Integer id);
 }

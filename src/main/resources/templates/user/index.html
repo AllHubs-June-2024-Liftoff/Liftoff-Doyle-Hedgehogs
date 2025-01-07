@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
+    <title>Welcome!</title>
+</head>
+
+<header>Welcome!</header>
+<body>
+<p th:text="${user}"></p>
+<p><a href="/user/profile">My Profile</a></p>
+<p><a th:href="@{'/user/library/'">View My Library</a></p>
+<p><a href="/user/search">Search for Books</a></p>
+
+</body>
+</html>

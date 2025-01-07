@@ -15,8 +15,11 @@
 </a>
 <table class="table table-striped">
    <tr th:each = "tag : ${tags}">
-      <td th:text="${tag.displayName}"></td>
+      <td>
+         <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.displayName}"></a>
+      </td>
    </tr>
+
 </table>
 </body>
 </html>
