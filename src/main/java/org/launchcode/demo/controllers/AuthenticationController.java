@@ -105,7 +105,7 @@ public class AuthenticationController {
         model.addAttribute("user", newUser.getUsername());
         EmailDetails theseDetails = new EmailDetails(registerFormDTO.getEmail(), "Your verification code is: " + code, "Email Verification Code");
         sendUserMail(theseDetails);
-        return "user/index";
+        return "user/validate";
 
     }
 

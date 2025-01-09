@@ -6,18 +6,18 @@
 <header>Register</header>
 
 <form method="post">
-    <div class="form-group">
+    <div>
         <label>Username
-            <input class="form-control" th:field="${registerFormDTO.username}" />
+            <input th:field="${registerFormDTO.username}" />
         </label>
-        <p class="error" th:errors="${registerFormDTO.username}"></p>
+        <p th:errors="${registerFormDTO.username}"></p>
     </div>
-    <div class="form-group">
+    <div>
         <label>Email
-            <input class="form-control" th:field="${registerFormDTO.email}" type="email" />
+            <input th:field="${registerFormDTO.email}" type="email" />
         </label>
     </div>
-    <div class="form-group" >Location
+    <div>Location
         <div>
             <input type="radio" id="kansascity" value="0" th:field="${registerFormDTO.location}">
             <label for="kansascity">Kansas City</label><br>
@@ -27,15 +27,15 @@
             <label for="saintlouis">Saint Louis</label>
         </div>
     </div>
-    <div class="form-group">
+    <div>
         <label>Password
-            <input class="form-control" th:field="${registerFormDTO.password}" type="password" />
+            <input th:field="${registerFormDTO.password}" type="password" />
         </label>
-        <p class="error" th:errors="${registerFormDTO.password}"></p>
+        <p th:errors="${registerFormDTO.password}"></p>
     </div>
-    <div class="form-group">
+    <div>
         <label>Verify Password
-            <input class="form-control" th:field="${registerFormDTO.verifyPassword}" type="password" />
+            <input th:field="${registerFormDTO.verifyPassword}" type="password" />
         </label>
     </div>
 

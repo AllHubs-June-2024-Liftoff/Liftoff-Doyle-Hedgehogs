@@ -1,5 +1,6 @@
 package org.launchcode.demo.models.email;
-import org.launchcode.demo.data.UserVerificationRepository;
+import org.launchcode.demo.data.UserRepository;
+import org.launchcode.demo.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,11 +8,11 @@ import org.springframework.stereotype.Service;
 public class VerificationService {
 
     @Autowired
-    private UserVerificationRepository verificationRepository;
+    private UserRepository userRepository;
 
-    public boolean verifyCode(String email, String code) {
-        UserVerification verifyUser = verificationRepository.findByEmail(email);
-        if (verifyUser != null && verifyUser.getCode().equals(code)) {
+    public boolean verifyCode(String username, String code) {
+        User verifyUser = userRepository.findByUsername(username);
+        if (verifyUser != null && verifyUser.getVerificationCode().equals(code)) {
             return true;
         }
         return false;
