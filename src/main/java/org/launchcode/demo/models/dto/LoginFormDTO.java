@@ -17,12 +17,6 @@ public class LoginFormDTO {
     @Size(min = 5, max = 10, message = "Password must be between 5-10 characters")
     private String password;
 
-    @NotNull
-    @NotBlank
-    @Email
-    private String email;
-
-    private String location;
 
     public String getUsername() {
         return username;
@@ -40,20 +34,5 @@ public class LoginFormDTO {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
 
 }
