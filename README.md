@@ -66,7 +66,7 @@ This table is created on the springboot side and stored in the database. Note ta
 
 | **Column Name**  | **Description**                                          |
 |-------------------|--------------------------------------------------------|
-| `id`             | Unique book identifier.          |
+| `id`             | ID for tag          |
 | `name`      | Hashtag of book
 
 ## **`location` Table**
@@ -74,7 +74,7 @@ This table is created on the springboot side and stored in the database. Note ta
 
 | **Column Name**  | **Description**                                          |
 |-------------------|--------------------------------------------------------|
-| `id`             | Unique book identifier.          |
+| `id`             | ID for location.          |
 | `name`      | City name       |
 
 
