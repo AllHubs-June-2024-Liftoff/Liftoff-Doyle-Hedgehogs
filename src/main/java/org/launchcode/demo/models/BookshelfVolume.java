@@ -17,6 +17,8 @@ public class BookshelfVolume extends AbstractEntity{
     public Volume volume;
     private Boolean has_book = true;
 
+    private Float rating;
+
     @ManyToMany
     public List<Tag> tags = new ArrayList<>();
 
@@ -55,12 +57,22 @@ public class BookshelfVolume extends AbstractEntity{
         this.has_book = has_book;
     }
 
+    public Float getRating() {return rating;}
+
+    public void setRating(Float rating) {
+        this.rating = rating;
+    }
+
     public List<Tag> getTags() {
         return tags;
     }
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public void addTag(Tag tag){
+        this.tags.add(tag);
     }
 
 }

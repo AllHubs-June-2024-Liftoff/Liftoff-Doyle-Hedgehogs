@@ -9,12 +9,14 @@ import org.launchcode.demo.models.Bookshelf;
 import org.launchcode.demo.models.BookshelfVolume;
 import org.launchcode.demo.models.Tag;
 import org.launchcode.demo.models.User;
+import org.launchcode.demo.models.dto.BookshelfVolumeTagDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,18 +81,38 @@ public class UserController {
         return "user/library";
     }
 
-    @GetMapping("/bookdetails/{id}")
-    public String displayBookshelfVolumeDetails(@PathVariable Integer id, Model model){
+    @GetMapping("/booktags/{id}")
+    public String displayBookTagDetailForm(@PathVariable Integer id, Model model){
         Optional<BookshelfVolume> bookshelfVolume = bookshelfVolumeRepository.findById(id);
         BookshelfVolume theBook = bookshelfVolume.get();
-        Iterable<Tag> currentTags = theBook.getTags();
-        List<Tag> allTags = tagRepository.findAllByOrderByNameAsc();
-
+        List<Tag> currentTags = theBook.getTags();
+        Iterable<Tag> allTags = tagRepository.findAllByOrderByNameAsc();
+        List<Tag> notCurrentTags = new ArrayList<>();
+        for (Tag tag : allTags){
+            if (!currentTags.contains(tag)){
+                notCurrentTags.add(tag);
+            }
+        }
         model.addAttribute("title", "Tags for " + theBook.volume.title + " by " + theBook.volume.author);
         model.addAttribute("bookshelfVolume", theBook);
         model.addAttribute("currentTags", theBook.getTags());
-        model.addAttribute("allTags", tagRepository.findAllByOrderByNameAsc());
+        model.addAttribute("notCurrentTags", notCurrentTags);
 
-        return "user/bookdetails";
+        return "user/booktags";
     }
+
+    //todo: make this method work:
+
+    @PostMapping("/booktags/{id}")
+    public String processBookTagDetailForm(@PathVariable Integer id, @ModelAttribute @Valid BookshelfVolumeTagDTO bookshelfVolumeTag, Model model){
+        Tag tag = bookshelfVolumeTag.getTag();
+        BookshelfVolume bookshelfVolume = bookshelfVolumeTag.getBookshelfVolume();
+        model.addAttribute("bookshelfVolumeId", id);
+        if (!bookshelfVolume.getTags().contains(tag)) {
+            bookshelfVolume.addTag(tag);
+            bookshelfVolumeRepository.save(bookshelfVolume);
+        }
+        return "redirect:user/library";
+    }
+
 }

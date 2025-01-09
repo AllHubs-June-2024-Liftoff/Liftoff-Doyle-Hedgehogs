@@ -18,6 +18,8 @@ public class BookshelfVolumeTagDTO {
         return bookshelfVolume;
     }
 
+    public BookshelfVolume getBookshelfVolumeById(Integer id){ return bookshelfVolume;}
+
     public void setBookshelfVolume(BookshelfVolume bookshelfVolume) {
         this.bookshelfVolume = bookshelfVolume;
     }

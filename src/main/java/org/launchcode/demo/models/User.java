@@ -27,6 +27,8 @@ public class User extends AbstractEntity {
     @NotNull
     private String pwHash;
 
+    private String verificationCode;
+
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public User() {}
@@ -56,6 +58,14 @@ public class User extends AbstractEntity {
     public Location getLocation() {return location;}
 
     public void setLocation(Location location) {this.location = location;}
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
 
     public boolean isMatchingPassword(String password) {
         return encoder.matches(password, pwHash);
