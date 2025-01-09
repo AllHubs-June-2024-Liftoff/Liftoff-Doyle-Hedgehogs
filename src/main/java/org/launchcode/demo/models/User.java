@@ -29,6 +29,8 @@ public class User {
     @NotNull
     private String pwHash;
 
+    private String verificationCode;
+
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public User() {}
@@ -63,6 +65,13 @@ public class User {
 
     public void setLocation(String location) {this.location = location;}
 
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
 
     public boolean isMatchingPassword(String password) {
         return encoder.matches(password, pwHash);

@@ -21,6 +21,8 @@ import org.launchcode.demo.models.email.EmailDetails;
 import java.util.List;
 import java.util.Optional;
 
+import org.launchcode.demo.models.email.VerificationCodeGenerator;
+
 @Controller
 public class AuthenticationController {
 
@@ -96,10 +98,12 @@ public class AuthenticationController {
         }
 
         User newUser = new User(registerFormDTO.getUsername(), registerFormDTO.getEmail(), registerFormDTO.getLocation(), registerFormDTO.getPassword());
+        String code = VerificationCodeGenerator.createVerificationCode();
+        newUser.setVerificationCode(code);
         userRepository.save(newUser);
         setUserInSession(request.getSession(), newUser);
         model.addAttribute("user", newUser.getUsername());
-        EmailDetails theseDetails = new EmailDetails(registerFormDTO.getEmail(), "Welcome to Little Online Library", "New User");
+        EmailDetails theseDetails = new EmailDetails(registerFormDTO.getEmail(), "Your verification code is: " + code, "Email Verification Code");
         sendUserMail(theseDetails);
         return "user/index";
 
