@@ -7,6 +7,7 @@ import org.launchcode.demo.data.UserRepository;
 import org.launchcode.demo.models.User;
 import org.launchcode.demo.models.dto.LoginFormDTO;
 import org.launchcode.demo.models.dto.RegisterFormDTO;
+import org.launchcode.demo.models.dto.VerificationFormDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,10 +52,10 @@ public class AuthenticationController {
         session.setAttribute(userSessionKey, user.getId());
     }
 
-    public String
+    public boolean
     sendUserMail(EmailDetails details)
     {
-        String status
+        boolean status
                 = emailService.sendMail(details);
 
         return status;
@@ -105,7 +106,35 @@ public class AuthenticationController {
         model.addAttribute("user", newUser.getUsername());
         EmailDetails theseDetails = new EmailDetails(registerFormDTO.getEmail(), "Your verification code is: " + code, "Email Verification Code");
         sendUserMail(theseDetails);
-        return "user/validate";
+        return "redirect:/user/verification";
+
+    }
+
+    @GetMapping("user/verification")
+    public String displayVerificationForm(Model model) {
+        model.addAttribute(new VerificationFormDTO());
+        return "user/verification";
+    }
+
+    @PostMapping("user/verification")
+    public String processVerificationForm(@ModelAttribute @Valid VerificationFormDTO verificationFormDTO,
+                                          Errors errors, HttpServletRequest request,
+                                          Model model) {
+
+        String username = verificationFormDTO.getUsername();
+        User user = userRepository.findByUsername(username);
+
+        String submittedCode = verificationFormDTO.getVerifyCode();
+        String sentCode = user.getVerificationCode();
+
+
+        if (!submittedCode.equals(sentCode)) {
+            errors.rejectValue("verification code", "incorrect code", "Codes do not match");
+            model.addAttribute("title", "Register");
+            return "user/register";
+        }
+
+        return "user/index";
 
     }
 

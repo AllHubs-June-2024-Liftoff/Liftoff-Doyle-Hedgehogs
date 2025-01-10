@@ -7,12 +7,22 @@
 <body>
 
 <form method="post">
-<div>
-    <label>
-        <input th:field="${VerificationFormDTO.verifyCode}" />
-    </label>
-</div>
-    <input type="submit" class="btn btn-primary" value="Verify" />
+    <div> Check Email for Verification Code </div>
+    <div> Username
+        <div>
+            <label>
+                <input th:field="${verificationFormDTO.username}" />
+            </label>
+        </div>
+    </div>
+    <div> Code
+        <div>
+            <label>
+                <input th:field="${verificationFormDTO.verifyCode}" />
+            </label>
+        </div>
+    </div>
+        <input type="submit" class="btn btn-primary" value="Verify" />
 </form>
 
 </body>
