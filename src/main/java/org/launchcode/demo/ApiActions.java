@@ -14,13 +14,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
 public class ApiActions {
 
     // Initialize fields
     private static final String APPLICATION_NAME = "LittleOnlineLibrary/0.5";
 
-    private static String apiKey = "AIzaSyC2jQ3l0bzLQnq5Ow4mHerwHXTpNULIumc";
+    private static String apiKey = ApiPlaceholder;
     private static final String apiUrl = "https://www.googleapis.com/books/v1/volumes?q=";
 
     // Constructor
@@ -83,7 +82,9 @@ public class ApiActions {
             String currentTitle =  String.valueOf(volumeInfoNode.get("title"));
             String currentAuthors = String.valueOf(volumeInfoNode.get("authors"));
             String currentDescription = String.valueOf(volumeInfoNode.get("subtitle"));
-            Volume currentVolume = new Volume(currentId, currentTitle, currentAuthors, currentDescription);
+            JsonNode volumeImageNode = volumeInfoNode.get("imageLinks");
+            String currentThumbnail = String.valueOf(volumeImageNode.get("thumbnail"));
+            Volume currentVolume = new Volume(currentId, currentTitle, currentAuthors, currentDescription, currentThumbnail);
             volumeInfo.add(currentVolume);
         }
         return volumeInfo;
@@ -95,7 +96,4 @@ public class ApiActions {
 
 
 
-//Thumbnail code
-//JsonNode thumbnailsInfoNode = volumeInfoNode.get("imageLinks");
-//            String currentThumbnail = String.valueOf(thumbnailsInfoNode.get("thumbnail"));
-//            URL currentThumbnailUrl = new URL(currentThumbnail);
+

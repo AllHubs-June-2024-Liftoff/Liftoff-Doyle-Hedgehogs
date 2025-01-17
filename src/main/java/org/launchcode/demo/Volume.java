@@ -1,7 +1,7 @@
 package org.launchcode.demo;
 
 
-import java.net.URL;
+
 
 public class Volume {
     // initialize fields
@@ -9,10 +9,11 @@ public class Volume {
     private String authors;
     private String title;
     private String description;
-    private URL thumbnail;
+    private String thumbnail;
 
     //constructor
-    public Volume(String id, String authors,String title, String description) {
+
+    public Volume(String id, String authors,String title, String description, String thumbnail) {
         this.id = id;
         this.authors = authors;
         this.title = title;
@@ -21,13 +22,13 @@ public class Volume {
     }
     //default constructor
     public Volume(){
-        this("No ID", "Author Unknown", "Title", "No Description Given");
+        this("No ID", "Author Unknown", "Title", "No Description Given", "No Thumbnail Available.");
     }
 
     //Method overrides
     @Override
     public String toString() {
-        return "Book{" +
+        return "Volume{" +
                 "Google ID='" + id + '\'' +
                 ", Title='" + authors + '\'' +
                 ", Author(s)='" + title + '\'' +
@@ -69,11 +70,11 @@ public class Volume {
         this.description = description;
     }
 
-    public URL getThumbnail() {
+    public String getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumbnail(URL thumbnail) {
+    public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
 }
