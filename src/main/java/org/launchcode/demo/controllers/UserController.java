@@ -69,50 +69,51 @@ public class UserController {
 //        return "login";
 //    }
 
-    @GetMapping("/library/{username}")
-    public String displayUserLibrary(@PathVariable String username, Model model){
-        Optional<User> optionalUser = Optional.ofNullable(userRepository.findByUsername(username));
-        User theUser = optionalUser.get();
-        Bookshelf theBookshelf = bookshelfRepository.findByUser(theUser);
+    //successfully moved to Bookshelf controller //
+//    @GetMapping("/library/{username}")
+//    public String displayUserLibrary(@PathVariable String username, Model model){
+//        Optional<User> optionalUser = Optional.ofNullable(userRepository.findByUsername(username));
+//        User theUser = optionalUser.get();
+//        Bookshelf theBookshelf = bookshelfRepository.findByUser(theUser);
+//
+//        model.addAttribute("title", theUser.getUsername() + "'s Library");
+//        model.addAttribute("bookshelfVolumes", bookshelfVolumeRepository.findAllByBookshelfId(theBookshelf.getId()));
+//
+//        return "user/library";
+//    }
 
-        model.addAttribute("title", theUser.getUsername() + "'s Library");
-        model.addAttribute("bookshelfVolumes", bookshelfVolumeRepository.findByBookshelfId(theBookshelf.id));
-
-        return "user/library";
-    }
-
-    @GetMapping("/booktags/{id}")
-    public String displayBookTagDetailForm(@PathVariable Integer id, Model model){
-        Optional<BookshelfVolume> bookshelfVolume = bookshelfVolumeRepository.findById(id);
-        BookshelfVolume theBook = bookshelfVolume.get();
-        List<Tag> currentTags = theBook.getTags();
-        Iterable<Tag> allTags = tagRepository.findAllByOrderByNameAsc();
-        List<Tag> notCurrentTags = new ArrayList<>();
-        for (Tag tag : allTags){
-            if (!currentTags.contains(tag)){
-                notCurrentTags.add(tag);
-            }
-        }
-        model.addAttribute("title", "Tags for " + theBook.volume.title + " by " + theBook.volume.author);
-        model.addAttribute("bookshelfVolume", theBook);
-        model.addAttribute("currentTags", theBook.getTags());
-        model.addAttribute("notCurrentTags", notCurrentTags);
-
-        return "user/booktags";
-    }
-
-    //todo: make this method work:
-
-    @PostMapping("/booktags/{id}")
-    public String processBookTagDetailForm(@PathVariable Integer id, @ModelAttribute @Valid BookshelfVolumeTagDTO bookshelfVolumeTag, Model model){
-        Tag tag = bookshelfVolumeTag.getTag();
-        BookshelfVolume bookshelfVolume = bookshelfVolumeTag.getBookshelfVolume();
-        model.addAttribute("bookshelfVolumeId", id);
-        if (!bookshelfVolume.getTags().contains(tag)) {
-            bookshelfVolume.addTag(tag);
-            bookshelfVolumeRepository.save(bookshelfVolume);
-        }
-        return "redirect:user/library";
-    }
+//    @GetMapping("/booktags/{id}")
+//    public String displayBookTagDetailForm(@PathVariable Integer id, Model model){
+//        Optional<BookshelfVolume> bookshelfVolume = bookshelfVolumeRepository.findById(id);
+//        BookshelfVolume theBook = bookshelfVolume.get();
+//        List<Tag> currentTags = theBook.getTags();
+//        Iterable<Tag> allTags = tagRepository.findAllByOrderByNameAsc();
+//        List<Tag> notCurrentTags = new ArrayList<>();
+//        for (Tag tag : allTags){
+//            if (!currentTags.contains(tag)){
+//                notCurrentTags.add(tag);
+//            }
+//        }
+//        model.addAttribute("title", "Tags for " + theBook.getVolume().getTitle() + " by " + theBook.getVolume().getAuthor());
+//        model.addAttribute("bookshelfVolume", theBook);
+//        model.addAttribute("currentTags", theBook.getTags());
+//        model.addAttribute("notCurrentTags", notCurrentTags);
+//
+//        return "user/booktags";
+//    }
+//
+//    //todo: make this method work:
+//
+//    @PostMapping("/booktags/{id}")
+//    public String processBookTagDetailForm(@PathVariable Integer id, @ModelAttribute @Valid BookshelfVolumeTagDTO bookshelfVolumeTag, Model model){
+//        Tag tag = bookshelfVolumeTag.getTag();
+//        BookshelfVolume bookshelfVolume = bookshelfVolumeTag.getBookshelfVolume();
+//        model.addAttribute("bookshelfVolumeId", id);
+//        if (!bookshelfVolume.getTags().contains(tag)) {
+//            bookshelfVolume.addTag(tag);
+//            bookshelfVolumeRepository.save(bookshelfVolume);
+//        }
+//        return "redirect:user/library";
+//    }
 
 }

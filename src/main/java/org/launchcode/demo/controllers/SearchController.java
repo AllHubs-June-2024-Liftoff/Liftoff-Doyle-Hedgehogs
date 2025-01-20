@@ -42,7 +42,7 @@ public class SearchController {
     public HashMap<Integer, String> getAllLocations(){
         Iterable<Location> allLocations = locationRepository.findAll();
         for (Location location : allLocations){
-            locationOptions.put(location.id, location.name);
+            locationOptions.put(location.getId(), location.getName());
         }
         return locationOptions;
     }
@@ -70,7 +70,6 @@ public class SearchController {
             model.addAttribute("locations", getAllLocations());
             return "search";
         } else if (searchTerm == null){
-            Iterable<BookshelfVolume> bookshelfVolumes;
             Iterable<BookshelfVolume> booksByLocation = LibraryData.filterByLocation(location, bookshelfVolumeRepository.findAll());
             return "search";
         } else {
