@@ -12,16 +12,17 @@
 <h1 th:text="${title}"></h1>
 
 <table class="table table-striped">
-
+    <thead>
     <tr>
         <th>Title</th>
         <th>Author</th>
         <th>Tags</th>
     </tr>
-
+    </thead>
+    <tbody>
     <tr th:each="bookshelfVolume : ${bookshelfVolumes}">
         <td th:text="${bookshelfVolume.volume.title}"></td>
-        <td th:text="${bookshelfVolume.volume.author}"></td>
+        <td th:text="${bookshelfVolume.volume.authors}"></td>
         <td>
             <div th:each="tag : ${bookshelfVolume.tags}">
                 <span>
@@ -29,11 +30,28 @@
                 </span>
             </div>
         </td>
-        <td>
-            <a th:href="'/book/addtags?id=' + ${bookshelfVolume.id}">Add Tags</a>
-        </td>
+        <td><a data-bs-toggle="modal" data-row="${bookshelfVolume}" th:attr="data-bs-target='#modal-warning' + ${bookshelfVolume.id}">Remove</a>
+        <span class="glyphicon glyphicon-trash"></span></td>
+        <div class="modal modal-warning fade in" th:id="modal-warning+${bookshelfVolume.id}" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Remove book</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Are you sure want to remove this book?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline pull-left" data-bs-dismiss="modal">Cancel</button>
+                        <a type="button" class="btn btn-outline" th:href="@{/bookshelf/view/} + ${bookshelfVolume.bookshelf.user.username}"><i class="fa fa-check"></i>&nbsp;Yes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </tr>
-
+    </tbody>
 </table>
 
 </body>

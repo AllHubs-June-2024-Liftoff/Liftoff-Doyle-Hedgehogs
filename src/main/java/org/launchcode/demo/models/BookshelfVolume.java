@@ -23,11 +23,11 @@ public class BookshelfVolume extends AbstractEntity{
     @ManyToMany
     private List<Tag> tags = new ArrayList<>();
 
-    public BookshelfVolume(Bookshelf bookshelf, Volume volume, Boolean has_book, String swap_history) {
+    public BookshelfVolume(Bookshelf bookshelf, Volume volume, Boolean has_book, String swapHistory) {
         this.bookshelf = bookshelf;
         this.volume = volume;
         this.has_book = has_book;
-        this.swapHistory = swap_history;
+        this.swapHistory = swapHistory;
     }
 
 
@@ -75,12 +75,12 @@ public class BookshelfVolume extends AbstractEntity{
         this.tags.add(tag);
     }
 
-    public String getSwap_history() {
+    public String getSwapHistory() {
         return swapHistory;
     }
 
-    public void setSwap_history(String swap_history) {
-        this.swapHistory = swap_history;
+    public void setSwapHistory(String swapHistory) {
+        this.swapHistory = swapHistory;
     }
 
     public void updateSwapHistory(String username){
