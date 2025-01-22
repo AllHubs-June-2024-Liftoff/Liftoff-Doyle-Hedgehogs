@@ -61,6 +61,8 @@ public class AuthenticationController {
         return status;
     }
 
+
+    //Registration Form Get/Post Mapping
     @GetMapping("/user/register")
     public String displayRegistrationForm(Model model) {
         model.addAttribute(new RegisterFormDTO());
@@ -98,6 +100,8 @@ public class AuthenticationController {
             return "user/register";
         }
 
+
+        //Creates new user and send verification code to email
         User newUser = new User(registerFormDTO.getUsername(), registerFormDTO.getEmail(), registerFormDTO.getLocation(), registerFormDTO.getPassword());
         String code = VerificationCodeGenerator.createVerificationCode();
         newUser.setVerificationCode(code);
@@ -110,12 +114,17 @@ public class AuthenticationController {
 
     }
 
+
+
+    //Email Verification Form Get/Post Mapping
     @GetMapping("user/verification")
     public String displayVerificationForm(Model model) {
         model.addAttribute(new VerificationFormDTO());
         return "user/verification";
     }
 
+
+    //Checks if user submitted code matches database unique user code
     @PostMapping("user/verification")
     public String processVerificationForm(@ModelAttribute @Valid VerificationFormDTO verificationFormDTO,
                                           Errors errors, HttpServletRequest request,
@@ -139,7 +148,7 @@ public class AuthenticationController {
     }
 
 
-
+    //Login Form Get/Post Mapping
     @GetMapping("/user/login")
     public String displayLoginForm(Model model) {
         model.addAttribute(new LoginFormDTO());
@@ -147,6 +156,7 @@ public class AuthenticationController {
         return "user/login";
     }
 
+    //user login submission and processing
     @PostMapping("/user/login")
     public String processLoginForm(@ModelAttribute @Valid LoginFormDTO loginFormDTO,
                                    Errors errors, HttpServletRequest request,
@@ -175,7 +185,7 @@ public class AuthenticationController {
 
         setUserInSession(request.getSession(), theUser);
 
-        return "/user/index";
+        return "user/index";
     }
 
     @GetMapping("/user/logout")
