@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Verify Email</title>
+</head>
+<body>
+
+<form method="post">
+    <div> Check Email for Verification Code </div>
+    <div> Username
+        <div>
+            <label>
+                <input th:field="${verificationFormDTO.username}" />
+            </label>
+        </div>
+    </div>
+    <div> Code
+        <div>
+            <label>
+                <input th:field="${verificationFormDTO.verifyCode}" />
+            </label>
+        </div>
+    </div>
+        <input type="submit" class="btn btn-primary" value="Verify" />
+</form>
+
+</body>
+</html>
