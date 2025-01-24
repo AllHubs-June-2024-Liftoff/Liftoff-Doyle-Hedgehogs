@@ -32,7 +32,7 @@ public class User extends AbstractEntity {
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public User() {}
-  
+
     public User(String username, String email, Location location, String password) {
         this();
         this.username = username;
@@ -41,7 +41,7 @@ public class User extends AbstractEntity {
         this.pwHash = encoder.encode(password);
     }
 
-  
+
     public String getUsername() {
         return username;
     }
@@ -75,4 +75,3 @@ public class User extends AbstractEntity {
 
 
 }
-

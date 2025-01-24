@@ -4,6 +4,7 @@ package org.launchcode.demo.models.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.launchcode.demo.models.Location;
 
 public class RegisterFormDTO extends LoginFormDTO {
 
