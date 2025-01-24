@@ -1,5 +1,6 @@
 package org.launchcode.demo.models.dto;
 
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,12 +9,13 @@ public class RegisterFormDTO extends LoginFormDTO {
 
     private String verifyPassword;
 
+
     @NotNull
     @NotBlank
     @Email
     private String email;
 
-    private String location;
+    private Location location;
 
     public String getEmail() {
         return email;
@@ -23,13 +25,14 @@ public class RegisterFormDTO extends LoginFormDTO {
         this.email = email;
     }
 
-    public String getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
+
 
     public String getVerifyPassword() {
         return verifyPassword;
@@ -40,3 +43,4 @@ public class RegisterFormDTO extends LoginFormDTO {
     }
 
 }
+

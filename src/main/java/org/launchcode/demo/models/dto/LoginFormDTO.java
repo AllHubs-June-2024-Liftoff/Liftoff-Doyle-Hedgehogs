@@ -4,6 +4,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.launchcode.demo.models.Location;
+
 
 public class LoginFormDTO {
 
@@ -33,6 +35,4 @@ public class LoginFormDTO {
     public void setPassword(String password) {
         this.password = password;
     }
-
-
 }

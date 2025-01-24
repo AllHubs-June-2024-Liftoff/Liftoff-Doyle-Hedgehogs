@@ -18,10 +18,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.launchcode.demo.models.email.EmailService;
 import org.launchcode.demo.models.email.EmailDetails;
-
 import java.util.List;
 import java.util.Optional;
-
 import org.launchcode.demo.models.email.VerificationCodeGenerator;
 
 @Controller
@@ -29,7 +27,9 @@ public class AuthenticationController {
 
     @Autowired
     UserRepository userRepository;
+
     @Autowired private EmailService emailService;
+
 
     private static final String userSessionKey = "user";
 
@@ -52,6 +52,7 @@ public class AuthenticationController {
         session.setAttribute(userSessionKey, user.getId());
     }
 
+
     public boolean
     sendUserMail(EmailDetails details)
     {
@@ -63,6 +64,7 @@ public class AuthenticationController {
 
 
     //Registration Form Get/Post Mapping
+
     @GetMapping("/user/register")
     public String displayRegistrationForm(Model model) {
         model.addAttribute(new RegisterFormDTO());
@@ -149,6 +151,15 @@ public class AuthenticationController {
 
 
     //Login Form Get/Post Mapping
+
+        User newUser = new User(registerFormDTO.getUsername(), registerFormDTO.getEmail(), registerFormDTO.getLocation(), registerFormDTO.getPassword());
+        userRepository.save(newUser);
+        setUserInSession(request.getSession(), newUser);
+        model.addAttribute("user", newUser.getUsername());
+        return "user/index";
+    }
+
+
     @GetMapping("/user/login")
     public String displayLoginForm(Model model) {
         model.addAttribute(new LoginFormDTO());
@@ -156,7 +167,9 @@ public class AuthenticationController {
         return "user/login";
     }
 
+
     //user login submission and processing
+
     @PostMapping("/user/login")
     public String processLoginForm(@ModelAttribute @Valid LoginFormDTO loginFormDTO,
                                    Errors errors, HttpServletRequest request,
@@ -185,7 +198,9 @@ public class AuthenticationController {
 
         setUserInSession(request.getSession(), theUser);
 
+
         return "user/index";
+
     }
 
     @GetMapping("/user/logout")
@@ -194,4 +209,8 @@ public class AuthenticationController {
         return "redirect:/user/login";
     }
 
+
 }
+
+}
+

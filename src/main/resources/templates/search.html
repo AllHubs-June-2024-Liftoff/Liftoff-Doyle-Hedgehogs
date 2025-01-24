@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+   <meta charset="UTF-8">
+   <title>Little Online Library</title>
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+   <link th:href="@{/styles.css}" rel="stylesheet">
+</head>
+<body class="container">
+<h1>Search the Library</h1>
+
+<form th:action="@{/search/results}" method="post">
+   <h2 th:text="${title}"></h2>
+    <p>
+        <span th:if="${errorMessage}" th:text="${errorMessage}" th:style="'color: red'">Error</span>
+    </p>
+    <p>
+        <span th:each="location : ${locations}">
+            <input
+                type="radio"
+                name="location"
+                th:id="${location.key}"
+                th:value="${location.value}">
+                <label th:for="${location.key}" th:text="${location.value}"></label>
+        </span>
+    </p>
+   <p>
+      <span th:each="column : ${columns}">
+                <input
+                        type="radio"
+                        name="searchType"
+                        th:id="${column.key}"
+                        th:value="${column.key}"/>
+                <label th:for="${column.key}" th:text="${column.value}"></label>
+      </span>
+   </p>
+
+   <p>
+      <label for="searchTerm">Search Term:</label>
+      <input type="text" name="searchTerm" id="searchTerm" placeholder="Search">
+   </p>
+
+   <div class="form-group">
+      <input type="submit" value="Search" class="btn btn-success">
+   </div>
+
+</form>
+<p>Or</p>
+<a th:href="@{'/tags'}">
+    <button>Search by Tags</button>
+</a>
+<hr />
+
+<table class="table table-striped">
+
+      <tr>
+         <th>Title</th>
+         <th>Author</th>
+         <th>Tags</th>
+         <th>Bookshelf</th>
+      </tr>
+
+      <tr th:each="bookshelfVolume : ${bookshelfVolumes}">
+
+         <td th:text="${bookshelfVolume.volume.title}"></td>
+         <td th:text="${bookshelfVolume.volume.author}"></td>
+         <td>
+              <div th:each="tag : ${bookshelfVolume.tags}">
+                <span>
+                    <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.displayName}"></a>
+                </span>
+              </div>
+         </td>
+         <td>
+             <a th:href="@{'/bookshelf/' + ${bookshelfVolume.bookshelf.id}}" th:text="${bookshelfVolume.bookshelf.bookshelf_name}"></a>
+         </td>
+      </tr>
+
+</table>
+
+</body>
+</html>
