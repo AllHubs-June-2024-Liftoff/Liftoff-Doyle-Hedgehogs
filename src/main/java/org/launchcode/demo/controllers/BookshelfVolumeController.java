@@ -63,6 +63,23 @@ public class BookshelfVolumeController {
         return "redirect:";
     }
 
+    @GetMapping("remove/{id}")
+    public String displayRemoveBookForm(@PathVariable Integer id, Model model){
+        Optional<BookshelfVolume> optionalBookshelfVolume = bookshelfVolumeRepository.findById(id);
+        BookshelfVolume bookshelfVolume = optionalBookshelfVolume.get();
+
+        model.addAttribute("title", "Remove " + bookshelfVolume.getVolume().getTitle()
+                + " from " + bookshelfVolume.getBookshelf().getBookshelf_name());
+        model.addAttribute("bookshelfVolume", bookshelfVolume);
+
+        return "book/remove";
+    }
+
+    //Todo: complete this function//
+    @PostMapping("remove")
+    public String processRemoveBookForm(@RequestParam Integer id){
+
+    }
 
 
         //Remove all below this line once book/add is up and running//
