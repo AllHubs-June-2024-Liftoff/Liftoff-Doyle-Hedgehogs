@@ -20,7 +20,6 @@ public class User extends AbstractEntity {
     @Email
     private String email;
 
-    @NotBlank
     @ManyToOne
     private Location location;
 
