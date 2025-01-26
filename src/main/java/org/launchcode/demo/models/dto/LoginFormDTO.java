@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.launchcode.demo.models.Location;
 
+
 public class LoginFormDTO {
 
     @NotNull
@@ -18,12 +19,6 @@ public class LoginFormDTO {
     @Size(min = 5, max = 10, message = "Password must be between 5-10 characters")
     private String password;
 
-    @NotNull
-    @NotBlank
-    @Email
-    private String email;
-
-    private Location location;
 
     public String getUsername() {
         return username;
@@ -40,21 +35,4 @@ public class LoginFormDTO {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
 }
