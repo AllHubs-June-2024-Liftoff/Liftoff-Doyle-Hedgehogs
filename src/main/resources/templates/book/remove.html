@@ -13,10 +13,8 @@
 
 <h3>What would you like to do?</h3>
 
-<form method="post" th:action="@{/book/remove/ + ${id}}">
-<!--    <p>-->
-<!--        <span th:if="${errorMessage}" th:text="${errorMessage}" th:style="'color: red'">Error</span>-->
-<!--    </p>-->
+<form th:object="${bookshelfVolume}" method="post" th:action="@{/book/remove/ + ${id}}">
+
     <div class="form-group">
         <input type="hidden" name="id" th:value="${id}"/>
     </div>

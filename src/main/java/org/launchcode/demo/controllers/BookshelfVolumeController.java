@@ -86,21 +86,32 @@ public class BookshelfVolumeController {
         return "book/remove";
     }
 
-    //Todo: complete this function and view; deletion works, removeTypes 0 and 1 do not//
+    //Todo: complete this function and accompanying view; deletion works, but removeTypes 0 and 1 only update
+    // values in IntelliJ, not in the MySQL database.//
     @PostMapping("remove/{id}")
     public String processRemoveBookForm(@RequestParam(value="id") Integer id, @RequestParam(required = false, value="removeTypes") Integer removeTypes){
         Optional<BookshelfVolume> optBookshelfVolume = bookshelfVolumeRepository.findById(id);
         BookshelfVolume bookshelfVolume = optBookshelfVolume.get();
-
         String username = bookshelfVolume.getBookshelf().getUser().getUsername();
+
+//        TODO: uncomment when destination bookshelf info is connected
+//        Optional<Bookshelf> optionalDestinationBookshelf = bookshelfRepository.findById(3);
+//        Bookshelf destinationBookshelf = optionalDestinationBookshelf.get();
         if (removeTypes == null){
+            //Simply reloads the page if submitted when no selection is made//
             return "redirect:/book/remove/" + id;
         } else if (removeTypes.equals(0)){
+            //Transfer book to another user//
             bookshelfVolume.setHas_book(false);
-            bookshelfVolume.setBookshelf(null);
+//            bookshelfVolume.setBookshelf(destinationBookshelf);
+//            bookshelfVolume.updateSwapHistory("");
+            bookshelfVolumeRepository.save(bookshelfVolume);
         } else if (removeTypes.equals(1)){
+            //Hide book from searches but keep on bookshelf//
             bookshelfVolume.setHas_book(false);
+            bookshelfVolumeRepository.save(bookshelfVolume);
         } else if (removeTypes.equals(2)){
+            //Delete book from the site altogether//
             bookshelfVolumeRepository.deleteById(id);
         }
 

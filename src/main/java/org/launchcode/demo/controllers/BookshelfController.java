@@ -56,6 +56,7 @@ public class BookshelfController {
         return "bookshelf/library";
     }
 
+    //TODO: remove this method once book/remove/ page is fully functional//
     @PostMapping("view/{username}")
     public String processRemoveBookForm(@RequestParam (required = false) Integer bookshelfVolumeId, Boolean swapHistoryUpdate){
         Optional<BookshelfVolume> bookshelfVolume = bookshelfVolumeRepository.findById(bookshelfVolumeId);
