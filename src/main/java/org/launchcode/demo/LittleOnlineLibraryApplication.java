@@ -9,12 +9,21 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 //@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
 //@EnableJpaRepositories(basePackages =  "org.launchcode.demo.data", entityManagerFactoryRef="emf")
 
-@SpringBootApplication
+
+import java.io.IOException;
+
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
 public class LittleOnlineLibraryApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(LittleOnlineLibraryApplication.class, args);
-	}
+	public static void main(String[] args) {SpringApplication.run(LittleOnlineLibraryApplication.class, args);
 
+		try{
+		String search = ApiActions.ApiSearch("Dune");
+		System.out.print(ApiActions.ParseResults(search));
+
+		} catch (IOException ignored){
+			System.out.println("OOPS");
+		}
+	}
 }
 
