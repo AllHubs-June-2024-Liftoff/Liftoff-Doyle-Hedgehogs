@@ -59,6 +59,7 @@
          <th>Author(s)</th>
          <th>Tags</th>
          <th>Bookshelf</th>
+         <th>Contact Book Owner</th>
       </tr>
 
       <tr th:each="bookshelfVolume : ${bookshelfVolumes}">
@@ -74,6 +75,9 @@
          </td>
          <td>
              <a th:href="@{'/bookshelf/' + ${bookshelfVolume.bookshelf.id}}" th:text="${bookshelfVolume.bookshelf.bookshelf_name}"></a>
+         </td>
+         <td>
+             <button type="button">+</button>
          </td>
       </tr>
 
