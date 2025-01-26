@@ -9,10 +9,10 @@ import java.util.List;
 @Entity
 public class Location extends AbstractEntity{
 
-    public String name;
+    private String name;
 
     @OneToMany(mappedBy = "location")
-    public final List<User> users = new ArrayList<>();
+    private final List<User> users = new ArrayList<>();
 
     public Location(String name) {
         this();

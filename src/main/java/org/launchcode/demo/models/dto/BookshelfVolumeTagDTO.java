@@ -4,13 +4,15 @@ import jakarta.validation.constraints.NotNull;
 import org.launchcode.demo.models.BookshelfVolume;
 import org.launchcode.demo.models.Tag;
 
+import java.util.List;
+
 public class BookshelfVolumeTagDTO {
 
     @NotNull
-    public BookshelfVolume bookshelfVolume;
+    private BookshelfVolume bookshelfVolume;
 
     @NotNull
-    public Tag tag;
+    private List<Tag> tags;
 
     public BookshelfVolumeTagDTO(){}
 
@@ -24,11 +26,12 @@ public class BookshelfVolumeTagDTO {
         this.bookshelfVolume = bookshelfVolume;
     }
 
-    public Tag getTag() {
-        return tag;
+    public List<Tag> getTags() {
+        return tags;
     }
 
-    public void setTag(Tag tag) {
-        this.tag = tag;
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
+
 }

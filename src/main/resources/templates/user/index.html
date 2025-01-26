@@ -10,8 +10,10 @@
 <body>
 <p th:text="${user}"></p>
 <p><a href="/user/profile">My Profile</a></p>
-<p><a href="../library">View My Library</a></p>
-<p><a href="../../search">Search for Books</a></p>
+
+<p><a th:href="@{'bookshelf/view/'} + {user.username}">View My Library</a></p>
+<p><a th:href="@{'/search'}">Search the Library</a></p>
+
 
 </body>
 </html>

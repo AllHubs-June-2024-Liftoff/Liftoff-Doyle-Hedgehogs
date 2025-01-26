@@ -14,22 +14,22 @@ public class BookshelfVolume extends AbstractEntity{
     private Bookshelf bookshelf;
 
     @ManyToOne
-    public Volume volume;
-    private Boolean has_book = true;
+    private Volume volume;
 
+    private Boolean has_book = true;
     private Float rating;
+    private String swapHistory = "";
 
     @ManyToMany
-    public List<Tag> tags = new ArrayList<>();
+    private List<Tag> tags = new ArrayList<>();
 
-    public BookshelfVolume(Bookshelf bookshelf, Volume volume, Boolean has_book) {
+    public BookshelfVolume(Bookshelf bookshelf, Volume volume, Boolean has_book, String swapHistory) {
         this.bookshelf = bookshelf;
         this.volume = volume;
         this.has_book = has_book;
-
+        this.swapHistory = swapHistory;
     }
 
-    //TODO add swapHistory as ArrayList? User can optionally append their username when accepting a book (popup dialog box)
 
     public BookshelfVolume(){}
 
@@ -75,4 +75,15 @@ public class BookshelfVolume extends AbstractEntity{
         this.tags.add(tag);
     }
 
+    public String getSwapHistory() {
+        return swapHistory;
+    }
+
+    public void setSwapHistory(String swapHistory) {
+        this.swapHistory = swapHistory;
+    }
+
+    public void updateSwapHistory(String username){
+        this.swapHistory = this.swapHistory + ", " + username;
+    }
 }

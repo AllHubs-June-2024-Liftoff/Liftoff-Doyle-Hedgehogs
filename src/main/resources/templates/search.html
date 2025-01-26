@@ -55,11 +55,10 @@
 <table class="table table-striped">
 
       <tr>
-          <th>Title</th>
-          <th>Author</th>
-          <th>Tags</th>
-          <th>Bookshelf</th>
-          <th>Contact Book Owner</th>
+         <th>Title</th>
+         <th>Author(s)</th>
+         <th>Tags</th>
+         <th>Bookshelf</th>
       </tr>
 
         <tr>
@@ -74,7 +73,7 @@
       <tr th:each="bookshelfVolume : ${bookshelfVolumes}">
 
          <td th:text="${bookshelfVolume.volume.title}"></td>
-         <td th:text="${bookshelfVolume.volume.author}"></td>
+         <td th:text="${bookshelfVolume.volume.authors}"></td>
          <td>
               <div th:each="tag : ${bookshelfVolume.tags}">
                 <span>

@@ -12,16 +12,17 @@
 <h1 th:text="${title}"></h1>
 
 <table class="table table-striped">
-
+    <thead>
     <tr>
         <th>Title</th>
         <th>Author</th>
         <th>Tags</th>
     </tr>
-
+    </thead>
+    <tbody>
     <tr th:each="bookshelfVolume : ${bookshelfVolumes}">
         <td th:text="${bookshelfVolume.volume.title}"></td>
-        <td th:text="${bookshelfVolume.volume.author}"></td>
+        <td th:text="${bookshelfVolume.volume.authors}"></td>
         <td>
             <div th:each="tag : ${bookshelfVolume.tags}">
                 <span>
@@ -30,10 +31,14 @@
             </div>
         </td>
         <td>
-            <a th:href="'/user/booktags/' + ${bookshelfVolume.id}">Edit Tags</a>
+            <div>
+                <span>
+                    <a th:href="'/book/remove/' + ${bookshelfVolume.id}" th:text="Remove"></a>
+                </span>
+            </div>
         </td>
     </tr>
-
+    </tbody>
 </table>
 
 </body>

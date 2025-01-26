@@ -2,10 +2,8 @@ package org.launchcode.demo.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.swing.*;
 
 @Entity
 public class Volume{
@@ -13,19 +11,24 @@ public class Volume{
     @Id
     private String id;
 
-    public String author;
-    public String title;
+    private String authors;
+    private String title;
     private String description;
     private String thumbnail;
 
-    //TODO: code Tag class, many to many with volumes (or should it be bookshelf volumes?)
-//    @ManyToMany
-//    private final List<Tag> tags = new ArrayList<>();
+    //Try this to construct new Volume object out of Api result object//
+//    public Volume(Action action){
+//        this.id = (String) action.getValue(Action.ID);
+//        this.title = (String) action.getValue(Action.TITLE);
+//        this.authors = (String) action.getValue(Action.AUTHORS);
+//        this.description = (String) action.getValue(Action.DESCRIPTION);
+//        this.thumbnail = (String) action.getValue(Action.THUMBNAIL);
+//    }
 
-    public Volume(String id, String author, String title, String description, String thumbnail) {
+    public Volume(String id, String authors, String title, String description, String thumbnail) {
 
         this.id = id;
-        this.author = author;
+        this.authors = authors;
         this.title = title;
         this.description = description;
         this.thumbnail = thumbnail;
@@ -41,12 +44,12 @@ public class Volume{
         this.id = id;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getAuthors() {
+        return authors;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAuthors(String author) {
+        this.authors = authors;
     }
 
     public String getTitle() {

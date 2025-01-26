@@ -13,7 +13,7 @@ public class Tag extends AbstractEntity{
 
     @Size(min = 3, max = 25)
     @NotBlank
-    public String name;
+    private String name;
 
     @ManyToMany(mappedBy = "tags")
     private final List<BookshelfVolume> bookshelfVolumes = new ArrayList<>();

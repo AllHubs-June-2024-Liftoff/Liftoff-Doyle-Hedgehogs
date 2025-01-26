@@ -22,10 +22,10 @@ public class LibraryData {
     public static String getFieldValue(BookshelfVolume bookshelfVolume, String column){
         String theValue = "";
         if (column.equals("title")){
-            theValue = bookshelfVolume.volume.getTitle();
+            theValue = bookshelfVolume.getVolume().getTitle();
         }
-        else if (column.equals("author")){
-            theValue = bookshelfVolume.volume.getAuthor();
+        else if (column.equals("authors")){
+            theValue = bookshelfVolume.getVolume().getAuthors();
         }
 
         return theValue;
@@ -34,15 +34,25 @@ public class LibraryData {
     public static ArrayList<BookshelfVolume> filterByLocation(String location, Iterable<BookshelfVolume> bookshelfVolumes){
         ArrayList<BookshelfVolume> resultsByLocation = new ArrayList<>();
         for (BookshelfVolume bookshelfVolume : bookshelfVolumes){
-            Bookshelf theBookshelf = bookshelfVolume.getBookshelf();
-            User theUser = theBookshelf.getUser();
-            Location theLocation = theUser.getLocation();
-            String theLocationName = theLocation.getName();
-            if (theLocationName.equals(location)){
+            String theLocation = bookshelfVolume.getBookshelf().getUser().getLocation().getName();
+            if (theLocation.equals(location) && bookshelfVolume.getHas_book().equals(true)){
                 resultsByLocation.add(bookshelfVolume);
             }
         }
         return resultsByLocation;
+    }
+
+    public static ArrayList<BookshelfVolume> filterByBookshelf(Bookshelf bookshelf, Iterable<BookshelfVolume> bookshelfVolumes){
+        ArrayList<BookshelfVolume> resultsByBookshelf = new ArrayList<>();
+        for (BookshelfVolume bookshelfVolume : bookshelfVolumes) {
+            Bookshelf theBookshelf = bookshelfVolume.getBookshelf();
+            if (theBookshelf.equals(bookshelf)) {
+                if (bookshelfVolume.getHas_book().equals(true)) {
+                    resultsByBookshelf.add(bookshelfVolume);
+                    }
+            }
+        }
+        return resultsByBookshelf;
     }
 
 }
