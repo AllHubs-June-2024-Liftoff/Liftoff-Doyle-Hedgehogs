@@ -7,6 +7,7 @@ import org.launchcode.demo.data.UserRepository;
 import org.launchcode.demo.models.User;
 import org.launchcode.demo.models.dto.LoginFormDTO;
 import org.launchcode.demo.models.dto.RegisterFormDTO;
+import org.launchcode.demo.models.dto.VerificationFormDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,15 +16,20 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.launchcode.demo.models.email.EmailService;
+import org.launchcode.demo.models.email.EmailDetails;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.launchcode.demo.models.email.VerificationCodeGenerator;
 
 @Controller
 public class AuthenticationController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired private EmailService emailService;
 
     private static final String userSessionKey = "user";
 
@@ -44,6 +50,15 @@ public class AuthenticationController {
 
     private static void setUserInSession(HttpSession session, User user) {
         session.setAttribute(userSessionKey, user.getId());
+    }
+
+    public boolean
+    sendUserMail(EmailDetails details)
+    {
+        boolean status
+                = emailService.sendMail(details);
+
+        return status;
     }
 
     @GetMapping("/user/register")
@@ -84,11 +99,38 @@ public class AuthenticationController {
         }
 
         User newUser = new User(registerFormDTO.getUsername(), registerFormDTO.getEmail(), registerFormDTO.getLocation(), registerFormDTO.getPassword());
+        String code = VerificationCodeGenerator.createVerificationCode();
+        newUser.setVerificationCode(code);
         userRepository.save(newUser);
         setUserInSession(request.getSession(), newUser);
         model.addAttribute("user", newUser.getUsername());
-        return "user/index";
+        EmailDetails theseDetails = new EmailDetails(registerFormDTO.getEmail(), "Your verification code is: " + code, "Email Verification Code");
+        sendUserMail(theseDetails);
+        return "redirect:/user/verification";
     }
+    @GetMapping("user/verification")
+    public String displayVerificationForm(Model model) {
+        model.addAttribute(new VerificationFormDTO());
+        return "user/verification";
+    }
+    @PostMapping("user/verification")
+    public String processVerificationForm(@ModelAttribute @Valid VerificationFormDTO verificationFormDTO,
+                                          Errors errors, HttpServletRequest request,
+                                          Model model) {
+        String username = verificationFormDTO.getUsername();
+        User user = userRepository.findByUsername(username);
+        String submittedCode = verificationFormDTO.getVerifyCode();
+        String sentCode = user.getVerificationCode();
+        if (!submittedCode.equals(sentCode)) {
+            errors.rejectValue("verification code", "incorrect code", "Codes do not match");
+            model.addAttribute("title", "Register");
+            return "user/register";
+        }
+        return "user/index";
+
+    }
+
+
 
     @GetMapping("/user/login")
     public String displayLoginForm(Model model) {
@@ -135,3 +177,5 @@ public class AuthenticationController {
     }
 
 }
+
+

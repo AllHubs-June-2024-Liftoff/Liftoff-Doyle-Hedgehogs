@@ -18,7 +18,6 @@ public class User extends AbstractEntity {
     @Email
     private String email;
 
-    @NotBlank
     @ManyToOne
     private Location location;
 
@@ -39,6 +38,7 @@ public class User extends AbstractEntity {
         this.pwHash = encoder.encode(password);
     }
 
+
     public String getUsername() {
         return username;
     }
@@ -57,6 +57,7 @@ public class User extends AbstractEntity {
 
     public void setLocation(Location location) {this.location = location;}
 
+
     public String getVerificationCode() {
         return verificationCode;
     }
@@ -68,5 +69,6 @@ public class User extends AbstractEntity {
     public boolean isMatchingPassword(String password) {
         return encoder.matches(password, pwHash);
     }
+
 
 }
