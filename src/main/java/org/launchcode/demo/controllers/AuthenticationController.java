@@ -165,6 +165,8 @@ public class AuthenticationController {
             return "user/login";
         }
 
+        model.addAttribute("username", theUser.getUsername());
+
         setUserInSession(request.getSession(), theUser);
 
         return "/user/index";
