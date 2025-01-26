@@ -44,10 +44,12 @@ public class LibraryData {
 
     public static ArrayList<BookshelfVolume> filterByBookshelf(Bookshelf bookshelf, Iterable<BookshelfVolume> bookshelfVolumes){
         ArrayList<BookshelfVolume> resultsByBookshelf = new ArrayList<>();
-        for (BookshelfVolume bookshelfVolume : bookshelfVolumes){
+        for (BookshelfVolume bookshelfVolume : bookshelfVolumes) {
             Bookshelf theBookshelf = bookshelfVolume.getBookshelf();
-            if (theBookshelf.equals(bookshelf) && bookshelfVolume.getHas_book().equals(true)){
-                resultsByBookshelf.add(bookshelfVolume);
+            if (theBookshelf.equals(bookshelf)) {
+                if (bookshelfVolume.getHas_book().equals(true)) {
+                    resultsByBookshelf.add(bookshelfVolume);
+                    }
             }
         }
         return resultsByBookshelf;

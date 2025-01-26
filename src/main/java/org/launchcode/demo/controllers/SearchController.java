@@ -57,7 +57,9 @@ public class SearchController {
     }
 
     @PostMapping("results")
-    public String displaySearchResults(Model model, @RequestParam (required = false) String location, @RequestParam (required = false) String searchType, @RequestParam String searchTerm){
+    public String displaySearchResults(Model model, @RequestParam (required = false) String location,
+                                       @RequestParam (required = false) String searchType, @RequestParam
+                                           String searchTerm){
         if (location == null){
             model.addAttribute("errorMessage", "Please select a location");
             model.addAttribute("columns", columnOptions);

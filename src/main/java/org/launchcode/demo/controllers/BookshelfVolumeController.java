@@ -1,6 +1,7 @@
 package org.launchcode.demo.controllers;
 
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import org.launchcode.demo.data.BookshelfRepository;
 import org.launchcode.demo.data.BookshelfVolumeRepository;
 import org.launchcode.demo.data.TagRepository;
@@ -12,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,18 +70,41 @@ public class BookshelfVolumeController {
     public String displayRemoveBookForm(@PathVariable Integer id, Model model){
         Optional<BookshelfVolume> optionalBookshelfVolume = bookshelfVolumeRepository.findById(id);
         BookshelfVolume bookshelfVolume = optionalBookshelfVolume.get();
+        ArrayList<Integer> removeTypes = new ArrayList<>();
+//                List.of("transfer", "hide", "delete"));
+        removeTypes.add(0);
+        removeTypes.add(1);
+        removeTypes.add(2);
+
 
         model.addAttribute("title", "Remove " + bookshelfVolume.getVolume().getTitle()
                 + " from " + bookshelfVolume.getBookshelf().getBookshelf_name());
         model.addAttribute("bookshelfVolume", bookshelfVolume);
+        model.addAttribute("id", id);
+        model.addAttribute("removeTypes", removeTypes);
 
         return "book/remove";
     }
 
-    //Todo: complete this function//
-    @PostMapping("remove")
-    public String processRemoveBookForm(@RequestParam Integer id){
+    //Todo: complete this function and view; deletion works, removeTypes 0 and 1 do not//
+    @PostMapping("remove/{id}")
+    public String processRemoveBookForm(@RequestParam(value="id") Integer id, @RequestParam(required = false, value="removeTypes") Integer removeTypes){
+        Optional<BookshelfVolume> optBookshelfVolume = bookshelfVolumeRepository.findById(id);
+        BookshelfVolume bookshelfVolume = optBookshelfVolume.get();
 
+        String username = bookshelfVolume.getBookshelf().getUser().getUsername();
+        if (removeTypes == null){
+            return "redirect:/book/remove/" + id;
+        } else if (removeTypes.equals(0)){
+            bookshelfVolume.setHas_book(false);
+            bookshelfVolume.setBookshelf(null);
+        } else if (removeTypes.equals(1)){
+            bookshelfVolume.setHas_book(false);
+        } else if (removeTypes.equals(2)){
+            bookshelfVolumeRepository.deleteById(id);
+        }
+
+        return "redirect:/bookshelf/view/" + username;
     }
 
 
