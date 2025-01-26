@@ -55,12 +55,22 @@
 <table class="table table-striped">
 
       <tr>
-         <th>Title</th>
-         <th>Author</th>
-         <th>Tags</th>
-         <th>Bookshelf</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Tags</th>
+          <th>Bookshelf</th>
+          <th>Contact Book Owner</th>
       </tr>
 
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <button type="button">+</button>
+            </td>
+        </tr>
       <tr th:each="bookshelfVolume : ${bookshelfVolumes}">
 
          <td th:text="${bookshelfVolume.volume.title}"></td>
@@ -75,6 +85,9 @@
          <td>
              <a th:href="@{'/bookshelf/' + ${bookshelfVolume.bookshelf.id}}" th:text="${bookshelfVolume.bookshelf.bookshelf_name}"></a>
          </td>
+          <td>
+              <button type="button">+</button>
+          </td>
       </tr>
 
 </table>
