@@ -28,9 +28,14 @@ dependencies {
 	implementation ("org.springframework.security:spring-security-crypto:5.5.1")
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'mysql:mysql-connector-java:8.0.32'
+	//implementation 'mysql:mysql-connector-java:8.0.32'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+	implementation 'mysql:mysql-connector-java:8.0.28'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation ("org.springframework.security:spring-security-crypto:5.5.1")
 
 }
 

@@ -18,7 +18,7 @@ public class Volume{
 //    public Volume(Action action){
 //        this.id = (String) action.getValue(Action.ID);
 //        this.title = (String) action.getValue(Action.TITLE);
-//        this.authors = (String) action.getValue(Action.AUTHORS);
+//        this.author = (String) action.getValue(Action.AUTHORS);
 //        this.description = (String) action.getValue(Action.DESCRIPTION);
 //        this.thumbnail = (String) action.getValue(Action.THUMBNAIL);
 //    }

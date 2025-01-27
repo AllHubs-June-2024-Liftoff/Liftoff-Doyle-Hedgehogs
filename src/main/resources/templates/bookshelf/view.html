@@ -20,7 +20,7 @@
 
     <tr th:each="bookshelfVolume : ${bookshelfVolumes}">
         <td th:text="${bookshelfVolume.volume.title}"></td>
-        <td th:text="${bookshelfVolume.volume.authors}"></td>
+        <td th:text="${bookshelfVolume.volume.author}"></td>
         <td>
             <div th:each="tag : ${bookshelfVolume.tags}">
                 <span>

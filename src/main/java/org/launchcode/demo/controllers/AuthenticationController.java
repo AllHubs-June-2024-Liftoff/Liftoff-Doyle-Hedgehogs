@@ -126,6 +126,9 @@ public class AuthenticationController {
             model.addAttribute("title", "Register");
             return "user/register";
         }
+
+        model.addAttribute("username", user.getUsername());
+
         return "user/index";
 
     }
