@@ -3,15 +3,13 @@ package org.launchcode.demo.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
-import javax.swing.*;
-
 @Entity
 public class Volume{
 
     @Id
     private String id;
 
-    private String authors;
+    private String author;
     private String title;
     private String description;
     private String thumbnail;
@@ -25,10 +23,10 @@ public class Volume{
 //        this.thumbnail = (String) action.getValue(Action.THUMBNAIL);
 //    }
 
-    public Volume(String id, String authors, String title, String description, String thumbnail) {
+    public Volume(String id, String author, String title, String description, String thumbnail) {
 
         this.id = id;
-        this.authors = authors;
+        this.author = author;
         this.title = title;
         this.description = description;
         this.thumbnail = thumbnail;
@@ -36,6 +34,17 @@ public class Volume{
 
     public Volume(){}
 
+
+    @Override
+    public String toString() {
+        return "Volume{" +
+                "Google ID='" + id + '\'' +
+                ", Title='" + author + '\'' +
+                ", Author(s)='" + title + '\'' +
+                ", Description='" + description + '\'' +
+                ", Thumbnail='" + thumbnail;
+
+    }
     public String getId() {
         return id;
     }
@@ -44,12 +53,12 @@ public class Volume{
         this.id = id;
     }
 
-    public String getAuthors() {
-        return authors;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setAuthors(String author) {
-        this.authors = authors;
+    public void setAuthor(String author) {
+        this.author = this.author;
     }
 
     public String getTitle() {

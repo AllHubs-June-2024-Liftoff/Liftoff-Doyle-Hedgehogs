@@ -1,4 +1,4 @@
-package org.launchcode.demo;
+package org.launchcode.demo.models;
 
 
 import java.io.BufferedReader;
@@ -19,7 +19,7 @@ public class ApiActions {
     // Initialize fields
     private static final String APPLICATION_NAME = "LittleOnlineLibrary/0.5";
 
-    private static String apiKey = ApiPlaceholder;
+    private static String apiKey = "AIzaSyC2jQ3l0bzLQnq5Ow4mHerwHXTpNULIumc";
     private static final String apiUrl = "https://www.googleapis.com/books/v1/volumes?q=";
 
     // Constructor
