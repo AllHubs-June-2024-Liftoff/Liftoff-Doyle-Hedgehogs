@@ -1,4 +1,4 @@
-package org.launchcode.demo;
+package org.launchcode.demo.models;
 
 
 import java.io.BufferedReader;
@@ -13,13 +13,14 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.launchcode.demo.models.Volume;
 
 public class ApiActions {
 
     // Initialize fields
     private static final String APPLICATION_NAME = "LittleOnlineLibrary/0.5";
 
-    private static String apiKey = ApiPlaceholder;
+    private static String apiKey = "AIzaSyC2jQ3l0bzLQnq5Ow4mHerwHXTpNULIumc";
     private static final String apiUrl = "https://www.googleapis.com/books/v1/volumes?q=";
 
     // Constructor

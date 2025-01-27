@@ -1,7 +1,6 @@
 package org.launchcode.demo.controllers;
 
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import org.launchcode.demo.data.BookshelfRepository;
 import org.launchcode.demo.data.BookshelfVolumeRepository;
 import org.launchcode.demo.data.TagRepository;
@@ -14,7 +13,6 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -135,7 +133,7 @@ public class BookshelfVolumeController {
 
         model.addAttribute("username", bookshelfVolume.getBookshelf().getUser().getUsername());
         model.addAttribute("bookshelfVolumeTag", bookshelfVolumeTag);
-        model.addAttribute("title", "Tags for " + bookshelfVolume.getVolume().getTitle() + " by " + bookshelfVolume.getVolume().getAuthors());
+        model.addAttribute("title", "Tags for " + bookshelfVolume.getVolume().getTitle() + " by " + bookshelfVolume.getVolume().getAuthor());
         model.addAttribute("bookshelfVolume", bookshelfVolume);
         model.addAttribute("allTags", allTags);
         model.addAttribute("bookshelfVolumeId", id);
