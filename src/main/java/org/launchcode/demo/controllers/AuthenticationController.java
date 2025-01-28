@@ -175,6 +175,18 @@ public class AuthenticationController {
         return "/user/index";
     }
 
+    @GetMapping("/user/email")
+    public String displayUserEmailForm(){
+        return "/user/email";
+    }
+
+    @PostMapping("user/email")
+    public String processUserEmailForm(){
+        EmailDetails theseDetails = new EmailDetails("EMAIL", "Hello! A user is interested in your book. To contact, please email NAME", "Someone Is Interested in Your Book!");
+        sendUserMail(theseDetails);
+        return "user/email";
+    }
+
     @GetMapping("/user/logout")
     public String logout(HttpServletRequest request){
         request.getSession().invalidate();
