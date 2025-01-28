@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.launchcode.demo.models.email.VerificationCodeGenerator;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AuthenticationController {
@@ -183,15 +184,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/user/email")
-    public String processUserEmailForm(@ModelAttribute @Valid UserEmailDTO userEmailDTO,
+    public String processUserEmailForm(@ModelAttribute @Valid UserEmailDTO userEmailDTO, @RequestParam(value="book") String book, @RequestParam(value="recipient") String recipient,
                                           Errors errors, HttpServletRequest request,
                                           Model model) {
 
-       // String sendto = email of book owner
         String email = userEmailDTO.getEmail();
-        String book = userEmailDTO.getBook();
 
-        EmailDetails theseDetails = new EmailDetails("andrew@alsmith.net", "Hello! A user is interested in " + book + ". To confirm swap details, please email " + email, "Someone Is Interested in Your Book!");
+        EmailDetails theseDetails = new EmailDetails(recipient, "Hello! A user is interested in " + book + ". To confirm swap details, please email " + email, "Someone Is Interested in Your Book!");
         sendUserMail(theseDetails);
 
         model.addAttribute("success", "Email sent!");
