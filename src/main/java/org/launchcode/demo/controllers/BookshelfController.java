@@ -36,7 +36,7 @@ public class BookshelfController {
 
         Optional<Bookshelf> result = bookshelfRepository.findById(id);
         Bookshelf bookshelf = result.get();
-        List<BookshelfVolume> bookshelfVolumes = LibraryData.filterByBookshelf(bookshelf, bookshelfVolumeRepository.findAll());
+        List<BookshelfVolume> bookshelfVolumes = LibraryData.filterByHasBook(LibraryData.filterByBookshelf(bookshelf, bookshelfVolumeRepository.findAll()));
         model.addAttribute("title", "Bookshelf: " + bookshelf.getBookshelf_name());
         model.addAttribute("bookshelfVolumes", bookshelfVolumes);
 

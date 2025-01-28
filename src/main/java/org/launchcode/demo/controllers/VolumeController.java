@@ -18,13 +18,17 @@ public class VolumeController{
     @Autowired
     public VolumeRepository volumeRepository;
 
-    @GetMapping
-    public String displayAllVolumes(Model model){
-        model.addAttribute("title", "All Books");
-        model.addAttribute("volumes", volumeRepository.findAll());
-        return "volumes/index";
-    }
+//    @GetMapping
+//    public String displayAllVolumes(Model model){
+//        model.addAttribute("title", "All Books");
+//        model.addAttribute("volumes", volumeRepository.findAll());
+//        return "volumes/index";
+//    }
 
+//    TODO: add method to check Volume table and create new Volume object from selected API search result
+    public String addNewVolume(Model model){
+        return "";
+    }
 
 
 }

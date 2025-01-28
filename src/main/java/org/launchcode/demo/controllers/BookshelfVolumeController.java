@@ -13,6 +13,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,30 +65,40 @@ public class BookshelfVolumeController {
         return "redirect:";
     }
 
-    @GetMapping("remove/{id}")
-    public String displayRemoveBookForm(@PathVariable Integer id, Model model){
-        Optional<BookshelfVolume> optionalBookshelfVolume = bookshelfVolumeRepository.findById(id);
-        BookshelfVolume bookshelfVolume = optionalBookshelfVolume.get();
-        ArrayList<Integer> removeTypes = new ArrayList<>();
-//                List.of("transfer", "hide", "delete"));
-        removeTypes.add(0);
-        removeTypes.add(1);
-        removeTypes.add(2);
-
-
-        model.addAttribute("title", "Remove " + bookshelfVolume.getVolume().getTitle()
-                + " from " + bookshelfVolume.getBookshelf().getBookshelf_name());
-        model.addAttribute("bookshelfVolume", bookshelfVolume);
-        model.addAttribute("id", id);
-        model.addAttribute("removeTypes", removeTypes);
-
-        return "book/remove";
+    static HashMap<Integer, String> updateOptions = new HashMap<>();
+    public BookshelfVolumeController(){
+        updateOptions.put(0, "Transfer to another user");
+        updateOptions.put(1, "Change visibility (search status)");
+        updateOptions.put(2, "Remove from Little Online Library entirely");
     }
 
-    //Todo: complete this function and accompanying view; deletion works, but removeTypes 0 and 1 only update
-    // values in IntelliJ, not in the MySQL database.//
-    @PostMapping("remove/{id}")
-    public String processRemoveBookForm(@RequestParam(value="id") Integer id, @RequestParam(required = false, value="removeTypes") Integer removeTypes){
+    @GetMapping("update-or-remove/{id}")
+    public String displayUpdateOrRemoveBookForm(@PathVariable Integer id, Model model){
+        Optional<BookshelfVolume> optionalBookshelfVolume = bookshelfVolumeRepository.findById(id);
+        BookshelfVolume bookshelfVolume = optionalBookshelfVolume.get();
+        String currentHasBookStatus;
+        String hasBookUpdateOption;
+        if (bookshelfVolume.getHas_book()){
+            currentHasBookStatus = "Visible to other users";
+            hasBookUpdateOption = "Hidden (keep on my bookshelf but don't show in searches)";
+        } else {
+            currentHasBookStatus = "Hidden";
+            hasBookUpdateOption = "Visible (show in searches)";
+        }
+
+        model.addAttribute("title", "Update " + bookshelfVolume.getVolume().getTitle()
+                + " or Remove from " + bookshelfVolume.getBookshelf().getBookshelf_name());
+        model.addAttribute("bookshelfVolume", bookshelfVolume);
+        model.addAttribute("id", id);
+        model.addAttribute("updateOptions", updateOptions);
+        model.addAttribute("hasBookUpdateOption", hasBookUpdateOption);
+        model.addAttribute("currentHasBookStatus", currentHasBookStatus);
+
+        return "book/update-or-remove";
+    }
+
+    @PostMapping("update-or-remove/{id}")
+    public String processRemoveBookForm(@RequestParam(value="id") Integer id, @RequestParam(required = false, value="updateOption") Integer updateOption){
         Optional<BookshelfVolume> optBookshelfVolume = bookshelfVolumeRepository.findById(id);
         BookshelfVolume bookshelfVolume = optBookshelfVolume.get();
         String username = bookshelfVolume.getBookshelf().getUser().getUsername();
@@ -95,20 +106,23 @@ public class BookshelfVolumeController {
 //        TODO: uncomment when destination bookshelf info is connected
 //        Optional<Bookshelf> optionalDestinationBookshelf = bookshelfRepository.findById(3);
 //        Bookshelf destinationBookshelf = optionalDestinationBookshelf.get();
-        if (removeTypes == null){
+        if (updateOption == null){
             //Simply reloads the page if submitted when no selection is made//
-            return "redirect:/book/remove/" + id;
-        } else if (removeTypes.equals(0)){
+            return "redirect:/book/remove-or-update/" + id;
+        } else if (updateOption.equals(0)){
             //Transfer book to another user//
             bookshelfVolume.setHas_book(false);
 //            bookshelfVolume.setBookshelf(destinationBookshelf);
 //            bookshelfVolume.updateSwapHistory("");
             bookshelfVolumeRepository.save(bookshelfVolume);
-        } else if (removeTypes.equals(1)){
-            //Hide book from searches but keep on bookshelf//
-            bookshelfVolume.setHas_book(false);
+        } else if (updateOption.equals(1)){
+            if (bookshelfVolume.getHas_book()){
+                bookshelfVolume.setHas_book(false);
+            } else {
+                bookshelfVolume.setHas_book(true);
+            }
             bookshelfVolumeRepository.save(bookshelfVolume);
-        } else if (removeTypes.equals(2)){
+        } else if (updateOption.equals(2)){
             //Delete book from the site altogether//
             bookshelfVolumeRepository.deleteById(id);
         }
