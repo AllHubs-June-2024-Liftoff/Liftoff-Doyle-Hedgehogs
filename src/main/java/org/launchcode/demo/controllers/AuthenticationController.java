@@ -191,8 +191,10 @@ public class AuthenticationController {
         String email = userEmailDTO.getEmail();
         String book = userEmailDTO.getBook();
 
-        EmailDetails theseDetails = new EmailDetails("carolynsmith@slu.edu", "Hello! A user is interested in " + book + ". To confirm swap details, please email " + email, "Someone Is Interested in Your Book!");
+        EmailDetails theseDetails = new EmailDetails("andrew@alsmith.net", "Hello! A user is interested in " + book + ". To confirm swap details, please email " + email, "Someone Is Interested in Your Book!");
         sendUserMail(theseDetails);
+
+        model.addAttribute("success", "Email sent!");
         return "user/email";
     }
 
