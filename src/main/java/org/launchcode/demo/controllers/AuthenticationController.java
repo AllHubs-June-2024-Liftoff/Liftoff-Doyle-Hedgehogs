@@ -7,6 +7,7 @@ import org.launchcode.demo.data.UserRepository;
 import org.launchcode.demo.models.User;
 import org.launchcode.demo.models.dto.LoginFormDTO;
 import org.launchcode.demo.models.dto.RegisterFormDTO;
+import org.launchcode.demo.models.dto.UserEmailDTO;
 import org.launchcode.demo.models.dto.VerificationFormDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -176,16 +177,33 @@ public class AuthenticationController {
     }
 
     @GetMapping("/user/email")
-    public String displayUserEmailForm(){
-        return "/user/email";
+    public String displayUserEmailForm(Model model){
+        model.addAttribute(new UserEmailDTO());
+        return "user/email";
     }
 
-    @PostMapping("user/email")
-    public String processUserEmailForm(){
-        EmailDetails theseDetails = new EmailDetails("EMAIL", "Hello! A user is interested in your book. To contact, please email NAME", "Someone Is Interested in Your Book!");
+    @PostMapping("/user/email")
+    public String processUserEmailForm(@ModelAttribute @Valid UserEmailDTO userEmailDTO,
+                                          Errors errors, HttpServletRequest request,
+                                          Model model) {
+
+       // String sendto = email of book owner
+        String email = userEmailDTO.getEmail();
+        String book = userEmailDTO.getBook();
+
+        EmailDetails theseDetails = new EmailDetails("carolynsmith@slu.edu", "Hello! A user is interested in " + book + ". To confirm swap details, please email " + email, "Someone Is Interested in Your Book!");
         sendUserMail(theseDetails);
         return "user/email";
     }
+
+
+
+//    @PostMapping("user/email")
+//    public String processUserEmailForm(){
+//        EmailDetails theseDetails = new EmailDetails("", "Hello! A user is interested in your book. To contact, please email NAME", "Someone Is Interested in Your Book!");
+//        sendUserMail(theseDetails);
+//        return "user/email";
+//    }
 
     @GetMapping("/user/logout")
     public String logout(HttpServletRequest request){

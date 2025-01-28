@@ -15,12 +15,12 @@
 <form method="post">
     <div>
         <label> Book of Interest
-            <input type="text" id="book" name="book" />
+            <input th:field="${userEmailDTO.book}" type="text"/>
         </label>
     </div>
     <div>
         <label> Your Contact Email
-            <input type="email" id="email" name="email"/>
+            <input th:field="${userEmailDTO.email}" type="email"/>
         </label>
     </div>
     <p>*Little Online Library will send an automated message to book owner with your contact information.</p>
