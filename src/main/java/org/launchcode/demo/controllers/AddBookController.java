@@ -17,27 +17,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 @Controller
-@RequestMapping("addBook")
+@RequestMapping("book")
 public class AddBookController {
 
-    @Autowired
-    private BookshelfVolumeRepository bookshelfVolumeRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @RequestMapping("")
+    @GetMapping("addBook")
     public String search(Model model) {
         model.addAttribute("title", "Add a New Book to the Library");
-        return "search";
+        return "book/addBook";
     }
 
-    @PostMapping("results")
+    @PostMapping("addBook/results")
     public String searchResults(Model model, @RequestParam String searchTerm) throws IOException {
-
+        model.addAttribute("title", "Add a New Book to the Library");
         String rawResults = ApiActions.ApiSearch(searchTerm);
         ArrayList<Volume> parsedResults = (ApiActions.ParseResults(rawResults));
         model.addAttribute("searchResults", parsedResults);
-        return "results";
+        return "book/addBook";
     }
 }
