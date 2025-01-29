@@ -92,7 +92,9 @@ public class ApiActions {
             String currentAuthors = String.valueOf(volumeInfoNode.get("authors"));
             String currentDescription = String.valueOf(volumeInfoNode.get("subtitle"));
             JsonNode volumeImageNode = volumeInfoNode.get("imageLinks");
-            String currentThumbnail = String.valueOf(volumeImageNode.get("thumbnail"));
+            String currentThumbnail = volumeImageNode != null && volumeImageNode.has("thumbnail")
+                    ? volumeImageNode.get("thumbnail").asText()
+                    : "";
         //Remove double quotes and square brackets added by API
             String tidyTitle = currentTitle.replaceAll("\"", "");
             String tidyAuthors = currentAuthors.replaceAll("\"", "").replaceAll("\\[","").replaceAll("\\]","");
