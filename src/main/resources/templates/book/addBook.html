@@ -11,26 +11,24 @@
 
 <body>
 <h1 th:text="${title}"></h1>
-<form th:action="@{/book/addBook/results}" method="post">
+<form th:action="@{/book/api/results}" method="post">
   <label for="searchTerm">Search by Title, Author, or ISBN:</label>
   <input type="text" name="searchTerm" id="searchTerm" placeholder="Search">
   <button type="submit">Search</button>
 </form>
 
-<table>
-  <tr th:each="volume: ${searchResults}">
-    <td>
-    <form th:object="${volume}" method="post" th:action="@{/book/add}">
-      <a th:href="@{'/book/add'}">
-      <img th:src="@{${volume.thumbnail}}" alt="Thumbnail" class="img-thumbnail">
-      </a>
-    </form>
-    </td>
-    <td th:text="${volume.author}"></td>
-    <td th:text="${volume.title}"></td>
+<!--<table>-->
+<!--  <tr th:each="volume: ${searchResults}">-->
+<!--    <td>-->
+<!--      <a th:href="@{'/volume/add/' + ${volume.id}}">-->
+<!--      <img th:src="@{${volume.thumbnail}}" class="img-thumbnail">-->
+<!--      </a>-->
+<!--    </td>-->
+<!--    <td th:text="${volume.author}"></td>-->
+<!--    <td th:text="${volume.title}"></td>-->
 
-  </tr>
-</table>
+<!--  </tr>-->
+<!--</table>-->
 
 </body>
 
