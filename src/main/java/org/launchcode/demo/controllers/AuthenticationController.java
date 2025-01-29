@@ -155,33 +155,33 @@ public class AuthenticationController {
         return "redirect:/user/verification";
     }
 
-    @GetMapping("user/verification")
-    public String displayVerificationForm(Model model) {
-        model.addAttribute(new VerificationFormDTO());
-        return "user/verification";
-    }
-    @PostMapping("user/verification")
-    public String processVerificationForm(@ModelAttribute @Valid VerificationFormDTO verificationFormDTO,
-                                          Errors errors, HttpServletRequest request,
-                                          Model model) {
-        String username = verificationFormDTO.getUsername();
-        User user = userRepository.findByUsername(username);
-        String submittedCode = verificationFormDTO.getVerifyCode();
-        String sentCode = user.getVerificationCode();
-        if (!submittedCode.equals(sentCode)) {
-            ///errors.rejectValue("code", "incorrect code", "Codes do not match");
-            model.addAttribute("incorrect", "Incorrect Verification Code. Please Check Email");
-            return "user/verification";
-        }
-
-        user.setIsVerified(true);
-        userRepository.save(user);
-
-        model.addAttribute("username", user.getUsername());
-
-        return "user/index";
-
-    }
+//    @GetMapping("user/verification")
+//    public String displayVerificationForm(Model model) {
+//        model.addAttribute(new VerificationFormDTO());
+//        return "user/verification";
+//    }
+//    @PostMapping("user/verification")
+//    public String processVerificationForm(@ModelAttribute @Valid VerificationFormDTO verificationFormDTO,
+//                                          Errors errors, HttpServletRequest request,
+//                                          Model model) {
+//        String username = verificationFormDTO.getUsername();
+//        User user = userRepository.findByUsername(username);
+//        String submittedCode = verificationFormDTO.getVerifyCode();
+//        String sentCode = user.getVerificationCode();
+//        if (!submittedCode.equals(sentCode)) {
+//            ///errors.rejectValue("code", "incorrect code", "Codes do not match");
+//            model.addAttribute("incorrect", "Incorrect Verification Code. Please Check Email");
+//            return "user/verification";
+//        }
+//
+//        user.setIsVerified(true);
+//        userRepository.save(user);
+//
+//        model.addAttribute("username", user.getUsername());
+//
+//        return "user/index";
+//
+//    }
 
 
 
