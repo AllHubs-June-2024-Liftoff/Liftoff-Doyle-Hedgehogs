@@ -63,6 +63,50 @@ public class AuthenticationController {
         return status;
     }
 
+    @GetMapping("/user/login")
+    public String displayLoginForm(Model model) {
+        model.addAttribute(new LoginFormDTO());
+        model.addAttribute("title", "Log In");
+        return "user/login";
+    }
+
+    @PostMapping("/user/login")
+    public String processLoginForm(@ModelAttribute @Valid LoginFormDTO loginFormDTO,
+                                   Errors errors, HttpServletRequest request,
+                                   Model model) {
+
+        if (errors.hasErrors()) {
+            model.addAttribute("title", "Log In");
+            return "user/login";
+        }
+
+        User theUser = userRepository.findByUsername(loginFormDTO.getUsername());
+
+        if (theUser == null) {
+            errors.rejectValue("username", "user.invalid", "The given username does not exist");
+            model.addAttribute("title", "Log In");
+            return "user/login";
+        }
+
+        String password = loginFormDTO.getPassword();
+
+        if (!theUser.isMatchingPassword(password)) {
+            errors.rejectValue("password", "password.invalid", "Invalid password");
+            model.addAttribute("title", "Log In");
+            return "user/login";
+        }
+
+        if (!theUser.getIsVerified()) {
+            return "redirect:/user/verification";
+        }
+
+        model.addAttribute("username", theUser.getUsername());
+
+        setUserInSession(request.getSession(), theUser);
+
+        return "/user/index";
+    }
+
     @GetMapping("/user/register")
     public String displayRegistrationForm(Model model) {
         model.addAttribute(new RegisterFormDTO());
@@ -110,6 +154,7 @@ public class AuthenticationController {
         sendUserMail(theseDetails);
         return "redirect:/user/verification";
     }
+
     @GetMapping("user/verification")
     public String displayVerificationForm(Model model) {
         model.addAttribute(new VerificationFormDTO());
@@ -124,10 +169,13 @@ public class AuthenticationController {
         String submittedCode = verificationFormDTO.getVerifyCode();
         String sentCode = user.getVerificationCode();
         if (!submittedCode.equals(sentCode)) {
-            errors.rejectValue("verification code", "incorrect code", "Codes do not match");
-            model.addAttribute("title", "Register");
-            return "user/register";
+            ///errors.rejectValue("code", "incorrect code", "Codes do not match");
+            model.addAttribute("incorrect", "Incorrect Verification Code. Please Check Email");
+            return "user/verification";
         }
+
+        user.setIsVerified(true);
+        userRepository.save(user);
 
         model.addAttribute("username", user.getUsername());
 
@@ -137,45 +185,7 @@ public class AuthenticationController {
 
 
 
-    @GetMapping("/user/login")
-    public String displayLoginForm(Model model) {
-        model.addAttribute(new LoginFormDTO());
-        model.addAttribute("title", "Log In");
-        return "user/login";
-    }
 
-    @PostMapping("/user/login")
-    public String processLoginForm(@ModelAttribute @Valid LoginFormDTO loginFormDTO,
-                                   Errors errors, HttpServletRequest request,
-                                   Model model) {
-
-        if (errors.hasErrors()) {
-            model.addAttribute("title", "Log In");
-            return "user/login";
-        }
-
-        User theUser = userRepository.findByUsername(loginFormDTO.getUsername());
-
-        if (theUser == null) {
-            errors.rejectValue("username", "user.invalid", "The given username does not exist");
-            model.addAttribute("title", "Log In");
-            return "user/login";
-        }
-
-        String password = loginFormDTO.getPassword();
-
-        if (!theUser.isMatchingPassword(password)) {
-            errors.rejectValue("password", "password.invalid", "Invalid password");
-            model.addAttribute("title", "Log In");
-            return "user/login";
-        }
-
-        model.addAttribute("username", theUser.getUsername());
-
-        setUserInSession(request.getSession(), theUser);
-
-        return "/user/index";
-    }
 
     @GetMapping("/user/email")
     public String displayUserEmailForm(Model model){

@@ -26,6 +26,8 @@ public class User extends AbstractEntity {
 
     private String verificationCode;
 
+    private boolean isVerified;
+
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public User() {}
@@ -64,6 +66,14 @@ public class User extends AbstractEntity {
 
     public void setVerificationCode(String verificationCode) {
         this.verificationCode = verificationCode;
+    }
+
+    public boolean getIsVerified() {
+        return isVerified;
+    }
+
+    public void setIsVerified(boolean isVerified) {
+        this.isVerified = isVerified;
     }
 
     public boolean isMatchingPassword(String password) {
