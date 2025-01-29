@@ -18,6 +18,8 @@ public class RegisterFormDTO extends LoginFormDTO {
 
     private Location location;
 
+    private String role;
+
     public String getEmail() {
         return email;
     }
@@ -43,5 +45,12 @@ public class RegisterFormDTO extends LoginFormDTO {
         this.verifyPassword = verifyPassword;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }
 

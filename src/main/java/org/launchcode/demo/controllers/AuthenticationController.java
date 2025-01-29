@@ -98,7 +98,7 @@ public class AuthenticationController {
             return "user/register";
         }
 
-        User newUser = new User(registerFormDTO.getUsername(), registerFormDTO.getEmail(), registerFormDTO.getLocation(), registerFormDTO.getPassword());
+        User newUser = new User(registerFormDTO.getUsername(), registerFormDTO.getEmail(), registerFormDTO.getLocation(), registerFormDTO.getPassword(), registerFormDTO.getRole());
         String code = VerificationCodeGenerator.createVerificationCode();
         newUser.setVerificationCode(code);
         userRepository.save(newUser);

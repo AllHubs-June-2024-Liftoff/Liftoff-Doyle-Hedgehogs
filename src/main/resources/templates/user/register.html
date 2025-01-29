@@ -45,6 +45,9 @@
             <input th:field="${registerFormDTO.verifyPassword}" type="password" />
         </label>
     </div>
+    <div>
+        <input type="hidden" th:field="${registerFormDTO.role}" th:value="ROLE_USER">
+    </div>
 
     <input type="submit" class="btn btn-primary" value="Register" />
 </form>
