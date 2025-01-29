@@ -32,7 +32,7 @@ public class BookshelfVolumeController {
 
     //should be routed TO by user selecting a row from API results to add to their library//
     @GetMapping("add")
-    public String displayNewBookshelfVolumeForm(Volume volume, Bookshelf bookshelf, Model model) {
+    public String displayNewBookshelfVolumeForm(@RequestParam(required = false) Volume volume, Bookshelf bookshelf, Model model) {
         BookshelfVolume bookshelfVolume = new BookshelfVolume();
         bookshelfVolume.setBookshelf(bookshelf);
         bookshelfVolume.setVolume(volume);

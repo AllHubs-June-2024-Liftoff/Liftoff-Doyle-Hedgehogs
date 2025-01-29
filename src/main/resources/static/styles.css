@@ -1,9 +1,9 @@
 body {
-    background-color: lightblue; 
-    font-size: 18px;
+    background-color: #0b5e87;
     color: black;
+    font: 11px/18px helvetica,verdana,arial,sans-serif;
 }
-}
+
 
 div {
     margin: auto;
