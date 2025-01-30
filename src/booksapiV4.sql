@@ -7,7 +7,7 @@ USE booksapi;
 
 CREATE TABLE location (
 						id INT AUTO_INCREMENT PRIMARY KEY,
-                        name VARCHAR(255) UNIQUE NOT NULL
+                        name VARCHAR(255) NOT NULL
 );
 
 INSERT into location VALUES (1, 'Kansas City');
@@ -50,6 +50,19 @@ CREATE TABLE bookshelf_volume (
                                   FOREIGN KEY (bookshelf_id) REFERENCES bookshelf(id), -- referencing has to be the primary key
                                   FOREIGN KEY (volume_id) REFERENCES volume(id) -- referencing has to be the primary key
 );
+CREATE TABLE tags (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255)
+);
+
+CREATE TABLE bookshelf_volume_tags (
+    bookshelf_volumes_id INT,
+    tags_id INT,
+    PRIMARY KEY (bookshelf_volumes_id, tags_id),
+    FOREIGN KEY (bookshelf_volumes_id) REFERENCES bookshelf_volume(id),
+    FOREIGN KEY (tags_id) REFERENCES tags(id)
+);
+
 
 
 /* Adding three books (two are kind of the same book)
@@ -124,6 +137,7 @@ INSERT INTO bookshelf_volume (bookshelf_id, volume_id, has_book) VALUES
     (5, 'wrOQLV6xB-wC', TRUE);
     
 -- tag some books for functional testing
+INSERT INTO tags (id, name) VALUES (1, 'Tag 1'), (2, 'Tag 2'), (3, 'Tag 3');
 INSERT into bookshelf_volume_tags VALUES 
 (1, 1), (1, 3), (3, 2), (3, 3), (4, 3), (5, 2), (5, 3);
 

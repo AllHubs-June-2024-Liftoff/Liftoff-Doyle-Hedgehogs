@@ -55,17 +55,20 @@
 <table class="table table-striped">
 
       <tr>
+         <th>Avg.Rating</th>
          <th>Title</th>
          <th>Author(s)</th>
          <th>Tags</th>
          <th>Bookshelf</th>
-          <th>Contact Owner</th>
+         <th>Contact Owner</th>
       </tr>
 
       <tr th:each="bookshelfVolume : ${bookshelfVolumes}">
 
+         <td th:text="${bookshelfVolume.volume.rating_avg}"></td>
          <td th:text="${bookshelfVolume.volume.title}"></td>
          <td th:text="${bookshelfVolume.volume.author}"></td>
+
          <td>
               <div th:each="tag : ${bookshelfVolume.tags}">
                 <span>
