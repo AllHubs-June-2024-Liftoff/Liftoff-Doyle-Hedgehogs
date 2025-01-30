@@ -32,7 +32,7 @@ public class ApiActions {
 
     public static String ApiSearch(String query) throws IOException {
         String betterQuery = query.replaceAll("\\s+", "_");
-        String urlString = apiUrl + betterQuery +"&key="+apiKey;
+        String urlString = apiUrl + betterQuery +"&maxResults=40&key="+apiKey;
         URL url = new URL(urlString);
 
         //Initialize connection

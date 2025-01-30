@@ -4,25 +4,36 @@ body {
     font: 11px/18px helvetica,verdana,arial,sans-serif;
 }
 
+.bookGrid {
+    display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      background-color: #f6eee3;
+}
 
-div {
-    margin: auto;
-    width: 50%;
+.gridObject {
+    left: 50%
+    overflow: scroll;
+    text-align: auto;
+    color: black;
+    font: 11px/18px helvetica,verdana,arial,sans-serif;
+}
+
+
+p {
+    width: 75%;
     padding: 20px;
     text-align: center;
-    background-color: white;
+    background-color: #f6eee3;
 }
 
 h1 {
     margin: auto;
-        width: 50%;
-        padding: 10px;
-        text-align: center;
-        background-color: white;
+    width: 50%;
+    padding: 10px;
+    text-align: center;
+    background-color: #f6eee3;
 }
-
-   
-
 
 
 .error {
