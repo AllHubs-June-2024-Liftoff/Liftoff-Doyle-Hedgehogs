@@ -1,5 +1,6 @@
 package org.launchcode.demo.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import org.launchcode.demo.data.BookshelfRepository;
 import org.launchcode.demo.data.BookshelfVolumeRepository;
 import org.launchcode.demo.data.UserRepository;
@@ -45,13 +46,15 @@ public class BookshelfController {
 
     // User view of their own bookshelf
     @GetMapping("/view/{username}")
-    public String displayUserLibrary(@PathVariable String username, Model model){
+    public String displayUserLibrary(@PathVariable String username, Model model, HttpSession session){
+
         Optional<User> optionalUser = Optional.ofNullable(userRepository.findByUsername(username));
         User theUser = optionalUser.get();
         Bookshelf theBookshelf = bookshelfRepository.findByUser(theUser);
         List<BookshelfVolume> bookshelfVolumes = LibraryData.filterByBookshelf(theBookshelf, bookshelfVolumeRepository.findAll());
         model.addAttribute("title", theUser.getUsername() + "'s Library");
         model.addAttribute("bookshelfVolumes", bookshelfVolumes);
+        model.addAttribute("bookshelf", theBookshelf);
 
         return "bookshelf/library";
     }

@@ -11,13 +11,21 @@
 <h1 th:text="${title}"></h1>
 <form method="post" >
    <table>
-<!--      <tr>-->
-<!--         <td>Title</td>-->
-<!--         <td th:text="${volume.title}"></td>-->
-<!--      </tr>-->
+      <tr>
+         <td>Cover Image</td>
+         <td><img th:src="@{${thumbnail}}" class="img-thumbnail"></td>
+      </tr>
+      <tr>
+         <td>Title</td>
+         <td th:text="${bookTitle}"></td>
+      </tr>
       <tr>
          <td>Author(s)</td>
-         <td th:text="${volume.author}"></td>
+         <td th:text="${author}"></td>
+      </tr>
+      <tr>
+         <td>Decscription</td>
+         <td th:text="${description}"></td>
       </tr>
       <tr>
          <td>Add tags</td>

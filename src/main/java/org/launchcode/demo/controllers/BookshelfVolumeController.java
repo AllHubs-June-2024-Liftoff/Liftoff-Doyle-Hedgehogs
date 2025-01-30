@@ -1,9 +1,11 @@
 package org.launchcode.demo.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.launchcode.demo.data.BookshelfRepository;
 import org.launchcode.demo.data.BookshelfVolumeRepository;
 import org.launchcode.demo.data.TagRepository;
+import org.launchcode.demo.data.VolumeRepository;
 import org.launchcode.demo.models.*;
 import org.launchcode.demo.models.dto.BookshelfVolumeTagDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class BookshelfVolumeController {
     public BookshelfRepository bookshelfRepository;
 
     @Autowired
+    public VolumeRepository volumeRepository;
+
+    @Autowired
     public TagRepository tagRepository;
 
     //should be routed TO by user selecting a row from API results to add to their library//
@@ -48,6 +53,36 @@ public class BookshelfVolumeController {
         model.addAttribute("allTags", allTags);
 
         return "book/add";
+    }
+
+    @GetMapping("addToBookshelf")
+    public String displayNewBookshelfVolumeForm(HttpSession session, Model model) {
+        Object bookId = session.getAttribute("bookId");
+        Object bookTitle = session.getAttribute("bookTitle");
+        Object author = session.getAttribute("author");
+        Object description = session.getAttribute("description");
+        Object thumbnail = session.getAttribute("thumbnail");
+        if (volumeRepository.findById(bookId.toString()).isEmpty()){
+            Volume newVolume = new Volume(bookId.toString(), bookTitle.toString(), author.toString(),
+                    description.toString(), thumbnail.toString());
+            volumeRepository.save(newVolume);
+        }
+        Iterable<Tag> allTags = tagRepository.findAllByOrderByNameAsc();
+        BookshelfVolume bookshelfVolume = new BookshelfVolume();
+        BookshelfVolumeTagDTO bookshelfVolumeTag = new BookshelfVolumeTagDTO();
+        bookshelfVolumeTag.setBookshelfVolume(bookshelfVolume);
+
+        model.addAttribute("title", "Add to My Bookshelf");
+        model.addAttribute("bookId", bookId);
+        model.addAttribute("bookTitle", bookTitle);
+        model.addAttribute("author", author);
+        model.addAttribute("description", description);
+        model.addAttribute("thumbnail", thumbnail);
+        model.addAttribute("allTags", allTags);
+        model.addAttribute("bookshelfVolume", bookshelfVolume);
+        model.addAttribute("bookshelfVolumeTag", bookshelfVolumeTag);
+
+        return "book/addToBookshelf";
     }
 
     @PostMapping("add")

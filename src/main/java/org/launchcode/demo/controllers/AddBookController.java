@@ -45,10 +45,17 @@ public class AddBookController {
     }
 
     @PostMapping("/api/results/selected")
-    public ModelAndView passVolumeDataFromSearchResult(@RequestParam(value="author") String author, HttpSession session) throws IOException {
+    public ModelAndView passVolumeDataFromSearchResult(@RequestParam(value="author") String author,
+                                                       @RequestParam(value="bookId") String bookId, String bookTitle, String description,
+                                                       String thumbnail, HttpSession session) throws IOException {
+        session.setAttribute("bookId", bookId);
+        session.setAttribute("bookTitle", bookTitle);
         session.setAttribute("author", author);
+        session.setAttribute("description", description);
+        session.setAttribute("thumbnail", thumbnail);
 
-        return new ModelAndView("redirect:/volume/add");
+//        return new ModelAndView("redirect:/volume/add");
+        return new ModelAndView("redirect:/book/addToBookshelf");
     }
 
 }

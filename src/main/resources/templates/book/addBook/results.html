@@ -21,7 +21,11 @@
     <tr th:each="volume: ${searchResults}">
         <td>
             <form th:action="@{/book/api/results/selected}" method="post">
+                <input type="hidden" name="bookId" id="bookId" th:value="${volume.id}">
+                <input type="hidden" name="bookTitle" id="bookTitle" th:value="${volume.title}">
                 <input type="hidden" name="author" id="author" th:value="${volume.author}">
+                <input type="hidden" name="description" id="description" th:value="${volume.description}">
+                <input type="hidden" name="thumbnail" id="thumbnail" th:value="${volume.thumbnail}">
                 <button type="submit">
                     <img th:src="@{${volume.thumbnail}}" class="img-thumbnail">
                 </button>
