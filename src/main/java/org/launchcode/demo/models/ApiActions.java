@@ -32,7 +32,7 @@ public class ApiActions {
 
     public static String ApiSearch(String query) throws IOException {
         String betterQuery = query.replaceAll("\\s+", "_");
-        String urlString = apiUrl + betterQuery +"&key="+apiKey;
+        String urlString = apiUrl + betterQuery +"&maxResults=40&key="+apiKey;
         URL url = new URL(urlString);
 
         //Initialize connection
@@ -89,16 +89,21 @@ public class ApiActions {
             String currentId = String.valueOf(itemNode.get("id")).replaceAll("\"", "");
             JsonNode volumeInfoNode = itemNode.get("volumeInfo");
             String currentTitle =  String.valueOf(volumeInfoNode.get("title"));
+
             String currentAuthors = String.valueOf(volumeInfoNode.get("authors"));
             String currentDescription = String.valueOf(volumeInfoNode.get("subtitle"));
             JsonNode volumeImageNode = volumeInfoNode.get("imageLinks");
-            String currentThumbnail = String.valueOf(volumeImageNode.get("thumbnail"));
+            String currentThumbnail = volumeImageNode != null && volumeImageNode.has("thumbnail")
+                    ? volumeImageNode.get("thumbnail").asText()
+                    : "";
+
         //Remove double quotes and square brackets added by API
             String tidyTitle = currentTitle.replaceAll("\"", "");
             String tidyAuthors = currentAuthors.replaceAll("\"", "").replaceAll("\\[","").replaceAll("\\]","");
             String tidyDescription = currentDescription.replaceAll("\"", "");
             String tidyThumbnail = currentThumbnail.replaceAll("\"", "");
         //Constructor
+
             Volume currentVolume = new Volume(currentId, tidyAuthors, tidyTitle, tidyDescription, tidyThumbnail);
             volumeInfo.add(currentVolume);
         }

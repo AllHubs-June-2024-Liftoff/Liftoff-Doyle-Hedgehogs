@@ -18,19 +18,15 @@
   <button type="submit">Search</button>
 </form>
 
-<!--<table>-->
-<!--  <tr th:each="volume: ${searchResults}">-->
-<!--    <td>-->
-<!--      <a th:href="@{'/volume/add/' + ${volume.id}}">-->
-<!--      <img th:src="@{${volume.thumbnail}}" class="img-thumbnail">-->
-<!--      </a>-->
-<!--    </td>-->
-<!--    <td th:text="${volume.author}"></td>-->
-<!--    <td th:text="${volume.title}"></td>-->
-
-<!--  </tr>-->
-<!--</table>-->
-
+<div class= "bookGrid">
+    <div class= "gridObject" th:each="volume: ${searchResults}">
+        <a th:href="@{'/book/add'}">
+            <img th:src="@{${volume.thumbnail}}" alt="Thumbnail" class="img-thumbnail">
+        </a>
+        <div class="title" th:text="${volume.title}" ></div>
+        <div class="author" th:text="${volume.author}"></div>
+    </div>
+</div>
 </body>
 
 
