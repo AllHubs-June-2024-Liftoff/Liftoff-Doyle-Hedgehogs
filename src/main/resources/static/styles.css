@@ -16,9 +16,19 @@ body {
     overflow: scroll;
     text-align: auto;
     color: black;
-    font: 11px/18px helvetica,verdana,arial,sans-serif;
+    font: helvetica,verdana,arial,sans-serif;
+
 }
 
+.title{
+    font-size: 14px;
+    overflow: auto
+}
+
+.author{
+    font-size: 10px;
+    overflow: auto
+}
 
 p {
     width: 75%;

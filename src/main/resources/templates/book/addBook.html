@@ -22,8 +22,8 @@
         <a th:href="@{'/book/add'}">
             <img th:src="@{${volume.thumbnail}}" alt="Thumbnail" class="img-thumbnail">
         </a>
-        <div th:text="${volume.author}"></div>
-        <div th:text="${volume.title}" ></div>
+        <div class="title" th:text="${volume.title}" ></div>
+        <div class="author" th:text="${volume.author}"></div>
     </div>
 </div>
 </body>
