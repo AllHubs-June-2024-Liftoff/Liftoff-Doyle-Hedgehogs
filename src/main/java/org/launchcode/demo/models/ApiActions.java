@@ -31,7 +31,8 @@ public class ApiActions {
 //Methods
 
     public static String ApiSearch(String query) throws IOException {
-        String urlString = apiUrl + query +"&key="+apiKey;
+        String betterQuery = query.replaceAll("\\s+", "_");
+        String urlString = apiUrl + betterQuery +"&key="+apiKey;
         URL url = new URL(urlString);
 
         //Initialize connection
@@ -73,19 +74,32 @@ public class ApiActions {
 }
 
     public static ArrayList<Volume> ParseResults(String searchResult) throws JsonProcessingException, MalformedURLException {
+
+        ArrayList<Volume> volumeInfo = new ArrayList<>();
+
+        //Create a readable JSON from API spaghetti
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(searchResult);
-        ArrayList<Volume> volumeInfo = new ArrayList<>();
+
+        //Strip away top layer of JSON to reach important innards
         JsonNode itemsNode = jsonNode.get("items");
+
+        //Iterate through itemNode to strip out the needed info
         for (JsonNode itemNode : itemsNode) {
-            String currentId = String.valueOf(itemNode.get("id"));
+            String currentId = String.valueOf(itemNode.get("id")).replaceAll("\"", "");
             JsonNode volumeInfoNode = itemNode.get("volumeInfo");
             String currentTitle =  String.valueOf(volumeInfoNode.get("title"));
             String currentAuthors = String.valueOf(volumeInfoNode.get("authors"));
             String currentDescription = String.valueOf(volumeInfoNode.get("subtitle"));
             JsonNode volumeImageNode = volumeInfoNode.get("imageLinks");
             String currentThumbnail = String.valueOf(volumeImageNode.get("thumbnail"));
-            Volume currentVolume = new Volume(currentId, currentTitle, currentAuthors, currentDescription, currentThumbnail);
+        //Remove double quotes and square brackets added by API
+            String tidyTitle = currentTitle.replaceAll("\"", "");
+            String tidyAuthors = currentAuthors.replaceAll("\"", "").replaceAll("\\[","").replaceAll("\\]","");
+            String tidyDescription = currentDescription.replaceAll("\"", "");
+            String tidyThumbnail = currentThumbnail.replaceAll("\"", "");
+        //Constructor
+            Volume currentVolume = new Volume(currentId, tidyAuthors, tidyTitle, tidyDescription, tidyThumbnail);
             volumeInfo.add(currentVolume);
         }
         return volumeInfo;
@@ -94,7 +108,7 @@ public class ApiActions {
 
 }
 
-
+//TO DO Clean up thumbnail, author, and title by removing the API's double quotes
 
 
 

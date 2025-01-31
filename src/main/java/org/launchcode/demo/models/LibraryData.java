@@ -24,7 +24,7 @@ public class LibraryData {
         if (column.equals("title")){
             theValue = bookshelfVolume.getVolume().getTitle();
         }
-        else if (column.equals("authors")){
+        else if (column.equals("author")){
             theValue = bookshelfVolume.getVolume().getAuthor();
         }
 
@@ -47,12 +47,20 @@ public class LibraryData {
         for (BookshelfVolume bookshelfVolume : bookshelfVolumes) {
             Bookshelf theBookshelf = bookshelfVolume.getBookshelf();
             if (theBookshelf.equals(bookshelf)) {
-                if (bookshelfVolume.getHas_book().equals(true)) {
-                    resultsByBookshelf.add(bookshelfVolume);
-                    }
+                resultsByBookshelf.add(bookshelfVolume);
             }
         }
         return resultsByBookshelf;
+    }
+
+    public static ArrayList<BookshelfVolume> filterByHasBook(Iterable<BookshelfVolume> bookshelfVolumes){
+        ArrayList<BookshelfVolume> resultsByHasBook = new ArrayList<>();
+        for (BookshelfVolume bookshelfVolume : bookshelfVolumes){
+            if (bookshelfVolume.getHas_book()){
+                resultsByHasBook.add(bookshelfVolume);
+            }
+        }
+        return resultsByHasBook;
     }
 
 }
