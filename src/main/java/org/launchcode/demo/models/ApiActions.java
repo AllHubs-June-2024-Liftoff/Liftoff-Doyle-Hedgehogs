@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -73,7 +74,7 @@ public class ApiActions {
     }
 }
 
-    public static ArrayList<Volume> ParseResults(String searchResult) throws JsonProcessingException, MalformedURLException {
+    public static ArrayList<Volume> ParseResults(String searchResult) throws JsonProcessingException {
 
         ArrayList<Volume> volumeInfo = new ArrayList<>();
 
@@ -97,11 +98,17 @@ public class ApiActions {
                     ? volumeImageNode.get("thumbnail").asText()
                     : "";
 
+        //Null check
+            if(Objects.equals(currentTitle, "")) {currentTitle = "Title Unavailable";}
+            if(Objects.equals(currentThumbnail, "")) {currentThumbnail = "https://png.pngtree.com/png-vector/20221125/ourmid/pngtree-no-image-available-icon-flatvector-illustration-thumbnail-graphic-illustration-vector-png-image_40966590.jpg";}
+            if(Objects.equals(currentAuthors, null)) {currentAuthors = "Author Unknown";}
+
         //Remove double quotes and square brackets added by API
             String tidyTitle = currentTitle.replaceAll("\"", "");
             String tidyAuthors = currentAuthors.replaceAll("\"", "").replaceAll("\\[","").replaceAll("\\]","");
             String tidyDescription = currentDescription.replaceAll("\"", "");
             String tidyThumbnail = currentThumbnail.replaceAll("\"", "");
+
         //Constructor
             Volume currentVolume = new Volume(currentId,  tidyAuthors, tidyTitle, tidyDescription, tidyThumbnail);
             volumeInfo.add(currentVolume);

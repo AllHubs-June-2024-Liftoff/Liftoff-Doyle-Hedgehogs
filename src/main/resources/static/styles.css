@@ -2,6 +2,7 @@ body {
     background-color: #0b5e87;
     color: black;
     font: 11px/18px helvetica,verdana,arial,sans-serif;
+    margin: auto;
 }
 
 .bookGrid {
@@ -12,7 +13,7 @@ body {
 }
 
 .gridObject {
-    left: 50%
+    margin: auto;
     overflow: scroll;
     text-align: auto;
     color: black;
@@ -28,6 +29,10 @@ body {
 .author{
     font-size: 10px;
     overflow: auto
+}
+
+.img-thumbnail{
+    object-fit: contain;
 }
 
 p {
