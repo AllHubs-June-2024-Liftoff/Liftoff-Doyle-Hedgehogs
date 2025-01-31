@@ -11,9 +11,10 @@
 
 <body>
 <h1 th:text="${title}"></h1>
-<form th:action="@{/book/addBook/results}" method="post">
+<form th:action="@{/book/api/results}" method="post">
   <label for="searchTerm">Search by Title, Author, or ISBN:</label>
   <input type="text" name="searchTerm" id="searchTerm" placeholder="Search">
+  <input type="hidden" th:id="bookshelfId" th:value="${bookshelfId}">
   <button type="submit">Search</button>
 </form>
 

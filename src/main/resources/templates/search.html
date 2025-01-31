@@ -77,7 +77,13 @@
              <a th:href="@{'/bookshelf/' + ${bookshelfVolume.bookshelf.id}}" th:text="${bookshelfVolume.bookshelf.bookshelf_name}"></a>
          </td>
           <td>
-              <button type="button">+</button>
+              <form method="get" th:action="@{/user/email}">
+                  <div class="form-group">
+                      <input type="hidden" name="recipient" th:value="${bookshelfVolume.bookshelf.user.email}"/>
+                      <input type="hidden" name="book" th:value="${bookshelfVolume.volume.title}"/>
+                  </div>
+                  <input type="submit" class="btn btn-primary" value="Request Book" />
+              </form>
           </td>
       </tr>
 

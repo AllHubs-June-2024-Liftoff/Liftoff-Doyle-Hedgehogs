@@ -18,8 +18,10 @@
     <div> Code
         <div>
             <label>
-                <input th:field="${verificationFormDTO.verifyCode}" />
+                <input th:field="${verificationFormDTO.verifyCode}" name ="code"/>
             </label>
+            <p th:errors="${verificationFormDTO.verifyCode}"></p>
+            <p th:text="${incorrect}"></p>
         </div>
     </div>
         <input type="submit" class="btn btn-primary" value="Verify" />

@@ -10,7 +10,10 @@
 <body>
 
 <h1 th:text="${title}"></h1>
-
+<form th:action="@{/book/addBook}" method="post">
+    <input type="hidden" th:id="bookshelfId" th:value="${bookshelfId}">
+    <a type="button" class="btn btn-success" th:href="@{'/book/addBook'}">Add a Book</a>
+</form>
 <table class="table table-striped">
     <thead>
     <tr>
@@ -33,7 +36,7 @@
         <td>
             <div>
                 <span>
-                    <a th:href="'/book/remove/' + ${bookshelfVolume.id}" th:text="Remove"></a>
+                    <a th:href="'/book/update-or-remove/' + ${bookshelfVolume.id}" th:text="Remove"></a>
                 </span>
             </div>
         </td>

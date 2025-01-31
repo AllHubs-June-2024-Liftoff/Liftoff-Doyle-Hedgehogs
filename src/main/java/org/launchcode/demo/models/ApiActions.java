@@ -87,7 +87,7 @@ public class ApiActions {
 
         //Iterate through itemNode to strip out the needed info
         for (JsonNode itemNode : itemsNode) {
-            String currentId = String.valueOf(itemNode.get("id"));
+            String currentId = String.valueOf(itemNode.get("id")).replaceAll("\"", "");
             JsonNode volumeInfoNode = itemNode.get("volumeInfo");
             String currentTitle =  String.valueOf(volumeInfoNode.get("title"));
 
@@ -110,7 +110,8 @@ public class ApiActions {
             String tidyThumbnail = currentThumbnail.replaceAll("\"", "");
 
         //Constructor
-            Volume currentVolume = new Volume(currentId,  tidyAuthors, tidyTitle, tidyDescription, tidyThumbnail);
+
+            Volume currentVolume = new Volume(currentId, tidyAuthors, tidyTitle, tidyDescription, tidyThumbnail);
             volumeInfo.add(currentVolume);
         }
         return volumeInfo;
