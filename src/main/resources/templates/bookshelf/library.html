@@ -10,8 +10,9 @@
 <body>
 
 <h1 th:text="${title}"></h1>
-<form th:action="">
-<a type="button" class="btn btn-success" th:href="@{'/book/addBook'}">Add a Book</a>
+<form th:action="@{/book/addBook}" method="post">
+    <input type="hidden" th:id="bookshelfId" th:value="${bookshelfId}">
+    <a type="button" class="btn btn-success" th:href="@{'/book/addBook'}">Add a Book</a>
 </form>
 <table class="table table-striped">
     <thead>

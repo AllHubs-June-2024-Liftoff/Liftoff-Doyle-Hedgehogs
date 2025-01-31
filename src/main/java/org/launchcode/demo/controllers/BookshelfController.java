@@ -47,27 +47,15 @@ public class BookshelfController {
     // User view of their own bookshelf
     @GetMapping("/view/{username}")
     public String displayUserLibrary(@PathVariable String username, Model model, HttpSession session){
-
         Optional<User> optionalUser = Optional.ofNullable(userRepository.findByUsername(username));
         User theUser = optionalUser.get();
         Bookshelf theBookshelf = bookshelfRepository.findByUser(theUser);
+        session.setAttribute("bookshelfId", theBookshelf.getId());
         List<BookshelfVolume> bookshelfVolumes = LibraryData.filterByBookshelf(theBookshelf, bookshelfVolumeRepository.findAll());
         model.addAttribute("title", theUser.getUsername() + "'s Library");
         model.addAttribute("bookshelfVolumes", bookshelfVolumes);
-        model.addAttribute("bookshelf", theBookshelf);
+        model.addAttribute("bookshelfId", theBookshelf.getId());
 
-        return "bookshelf/library";
-    }
-
-    //TODO: remove this method once book/remove/ page is fully functional//
-    @PostMapping("view/{username}")
-    public String processRemoveBookForm(@RequestParam (required = false) Integer bookshelfVolumeId, Boolean swapHistoryUpdate){
-        Optional<BookshelfVolume> bookshelfVolume = bookshelfVolumeRepository.findById(bookshelfVolumeId);
-        BookshelfVolume theBook = bookshelfVolume.get();
-        if (swapHistoryUpdate){
-            theBook.updateSwapHistory(theBook.getBookshelf().getUser().getUsername());
-        }
-        theBook.setHas_book(false);
         return "bookshelf/library";
     }
 

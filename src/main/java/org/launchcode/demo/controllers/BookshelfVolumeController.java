@@ -13,7 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.swing.text.html.Option;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,24 +39,24 @@ public class BookshelfVolumeController {
     public TagRepository tagRepository;
 
     //should be routed TO by user selecting a row from API results to add to their library//
-    @GetMapping("add")
-    public String displayNewBookshelfVolumeForm(@RequestParam(required = false) Volume volume, Bookshelf bookshelf, Model model) {
-        BookshelfVolume bookshelfVolume = new BookshelfVolume();
-        bookshelfVolume.setBookshelf(bookshelf);
-        bookshelfVolume.setVolume(volume);
-        Iterable<Tag> allTags = tagRepository.findAllByOrderByNameAsc();
-
-        BookshelfVolumeTagDTO bookshelfVolumeTag = new BookshelfVolumeTagDTO();
-        bookshelfVolumeTag.setBookshelfVolume(bookshelfVolume);
-
-        model.addAttribute("title", "Add a Book");
-        model.addAttribute("bookshelfVolume", bookshelfVolume);
-        model.addAttribute("volume", volume);
-        model.addAttribute("bookshelfVolumeTag", bookshelfVolumeTag);
-        model.addAttribute("allTags", allTags);
-
-        return "book/add";
-    }
+//    @GetMapping("add")
+//    public String displayNewBookshelfVolumeForm(@RequestParam Bookshelf theBookshelf, Model model) {
+//        BookshelfVolume bookshelfVolume = new BookshelfVolume();
+//        bookshelfVolume.setBookshelf(theBookshelf);
+//        bookshelfVolume.setVolume(volume);
+//        Iterable<Tag> allTags = tagRepository.findAllByOrderByNameAsc();
+//
+//        BookshelfVolumeTagDTO bookshelfVolumeTag = new BookshelfVolumeTagDTO();
+//        bookshelfVolumeTag.setBookshelfVolume(bookshelfVolume);
+//
+//        model.addAttribute("title", "Add a Book");
+//        model.addAttribute("bookshelfVolume", bookshelfVolume);
+//        model.addAttribute("volume", volume);
+//        model.addAttribute("bookshelfVolumeTag", bookshelfVolumeTag);
+//        model.addAttribute("allTags", allTags);
+//
+//        return "book/add";
+//    }
 
     @GetMapping("addToBookshelf")
     public String displayNewBookshelfVolumeForm(HttpSession session, Model model) {
@@ -62,16 +65,20 @@ public class BookshelfVolumeController {
         Object author = session.getAttribute("author");
         Object description = session.getAttribute("description");
         Object thumbnail = session.getAttribute("thumbnail");
+        Boolean has_Book = (Boolean) session.getAttribute("has_Book");
+        Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
         if (volumeRepository.findById(bookId.toString()).isEmpty()){
             Volume newVolume = new Volume(bookId.toString(), bookTitle.toString(), author.toString(),
                     description.toString(), thumbnail.toString());
             volumeRepository.save(newVolume);
+            model.addAttribute("volume", newVolume);
+        } else {
+            model.addAttribute("volume", volumeRepository.findById(bookId.toString()));
         }
         Iterable<Tag> allTags = tagRepository.findAllByOrderByNameAsc();
-        BookshelfVolume bookshelfVolume = new BookshelfVolume();
         BookshelfVolumeTagDTO bookshelfVolumeTag = new BookshelfVolumeTagDTO();
-        bookshelfVolumeTag.setBookshelfVolume(bookshelfVolume);
 
+        model.addAttribute("bookshelfId", bookshelfId);
         model.addAttribute("title", "Add to My Bookshelf");
         model.addAttribute("bookId", bookId);
         model.addAttribute("bookTitle", bookTitle);
@@ -79,10 +86,33 @@ public class BookshelfVolumeController {
         model.addAttribute("description", description);
         model.addAttribute("thumbnail", thumbnail);
         model.addAttribute("allTags", allTags);
-        model.addAttribute("bookshelfVolume", bookshelfVolume);
         model.addAttribute("bookshelfVolumeTag", bookshelfVolumeTag);
+        model.addAttribute("has_Book", has_Book);
 
         return "book/addToBookshelf";
+    }
+
+    @PostMapping("addToBookshelf")
+    public ModelAndView processNewBookshelfVolumeForm(Model model, HttpSession session,
+                                                BookshelfVolumeTagDTO bookshelfVolumeTag) throws IOException {
+//        Object title = session.getAttribute("title");
+        String bookId = (String) session.getAttribute("bookId");
+        Boolean has_Book = (Boolean) session.getAttribute("has_Book");
+        BookshelfVolume bookshelfVolume = new BookshelfVolume();
+        bookshelfVolumeTag.setBookshelfVolume(bookshelfVolume);
+        Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
+        Optional<Bookshelf> bookshelf = bookshelfRepository.findById(bookshelfId);
+        Bookshelf theBookshelf = bookshelf.get();
+        bookshelfVolume.setBookshelf(theBookshelf);
+        Optional<Volume> optionalVolume = volumeRepository.findById(bookId);
+        bookshelfVolume.setVolume(optionalVolume.get());
+        bookshelfVolume.setHas_book(has_Book);
+        bookshelfVolume.setTags(bookshelfVolumeTag.getTags());
+        bookshelfVolume.setSwapHistory("");
+        bookshelfVolumeRepository.save(bookshelfVolume);
+        String username = theBookshelf.getUser().getUsername();
+
+        return new ModelAndView("redirect:/bookshelf/view/" + username);
     }
 
     @PostMapping("add")
@@ -203,10 +233,5 @@ public class BookshelfVolumeController {
         return "redirect:addtags";
     }
 
-//    @GetMapping("remove")
-//    public String removeFromBookshelf(Model model){
-//
-//        return "book/remove";
-//    }
 
 }
