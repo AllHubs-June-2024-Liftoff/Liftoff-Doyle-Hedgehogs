@@ -63,6 +63,8 @@ public class AuthenticationController {
         return status;
     }
 
+
+    //User Login
     @GetMapping("/user/login")
     public String displayLoginForm(Model model) {
         model.addAttribute(new LoginFormDTO());
@@ -107,10 +109,11 @@ public class AuthenticationController {
         return "/user/index";
     }
 
+
+    //User Registration
     @GetMapping("/user/register")
     public String displayRegistrationForm(Model model) {
         model.addAttribute(new RegisterFormDTO());
-        model.addAttribute("title", "Register");
         return "user/register";
     }
 
@@ -120,7 +123,7 @@ public class AuthenticationController {
                                           Model model) {
 
         if (errors.hasErrors()) {
-            model.addAttribute("title", "Register");
+//            model.addAttribute("title", "Register");
             List<ObjectError> theseErrors = errors.getAllErrors();
             for (ObjectError error : theseErrors) {
                 System.out.println(error.toString());
@@ -132,7 +135,6 @@ public class AuthenticationController {
 
         if (existingUser != null) {
             errors.rejectValue("username", "username.alreadyexists", "A user with that username already exists");
-            model.addAttribute("title", "Register");
             return "user/register";
         }
 
@@ -140,7 +142,6 @@ public class AuthenticationController {
         String verifyPassword = registerFormDTO.getVerifyPassword();
         if (!password.equals(verifyPassword)) {
             errors.rejectValue("password", "passwords.mismatch", "Passwords do not match");
-            model.addAttribute("title", "Register");
             return "user/register";
         }
 
@@ -155,67 +156,40 @@ public class AuthenticationController {
         return "redirect:/user/verification";
     }
 
-//    @GetMapping("user/verification")
-//    public String displayVerificationForm(Model model) {
-//        model.addAttribute(new VerificationFormDTO());
-//        return "user/verification";
-//    }
-//    @PostMapping("user/verification")
-//    public String processVerificationForm(@ModelAttribute @Valid VerificationFormDTO verificationFormDTO,
-//                                          Errors errors, HttpServletRequest request,
-//                                          Model model) {
-//        String username = verificationFormDTO.getUsername();
-//        User user = userRepository.findByUsername(username);
-//        String submittedCode = verificationFormDTO.getVerifyCode();
-//        String sentCode = user.getVerificationCode();
-//        if (!submittedCode.equals(sentCode)) {
-//            ///errors.rejectValue("code", "incorrect code", "Codes do not match");
-//            model.addAttribute("incorrect", "Incorrect Verification Code. Please Check Email");
-//            return "user/verification";
-//        }
-//
-//        user.setIsVerified(true);
-//        userRepository.save(user);
-//
-//        model.addAttribute("username", user.getUsername());
-//
-//        return "user/index";
-//
-//    }
 
+    //Email Authentication during Registration
 
-
-
-
-    @GetMapping("/user/email")
-    public String displayUserEmailForm(Model model){
-        model.addAttribute(new UserEmailDTO());
-        return "user/email";
+    @GetMapping("user/verification")
+    public String displayVerificationForm(Model model) {
+        model.addAttribute(new VerificationFormDTO());
+        return "user/verification";
     }
 
-    @PostMapping("/user/email")
-    public String processUserEmailForm(@ModelAttribute @Valid UserEmailDTO userEmailDTO, @RequestParam(value="book") String book, @RequestParam(value="recipient") String recipient,
+    @PostMapping("user/verification")
+    public String processVerificationForm(@ModelAttribute @Valid VerificationFormDTO verificationFormDTO,
                                           Errors errors, HttpServletRequest request,
                                           Model model) {
+        String username = verificationFormDTO.getUsername();
+        User user = userRepository.findByUsername(username);
+        String submittedCode = verificationFormDTO.getVerifyCode();
+        String sentCode = user.getVerificationCode();
+        if (!submittedCode.equals(sentCode)) {
+            ///errors.rejectValue("code", "incorrect code", "Codes do not match");
+            model.addAttribute("incorrect", "Incorrect Verification Code. Please Check Email");
+            return "user/verification";
+        }
 
-        String email = userEmailDTO.getEmail();
+        user.setIsVerified(true);
+        userRepository.save(user);
 
-        EmailDetails theseDetails = new EmailDetails(recipient, "Hello! A user is interested in " + book + ". To confirm swap details, please email " + email, "Someone Is Interested in Your Book!");
-        sendUserMail(theseDetails);
+        model.addAttribute("username", user.getUsername());
 
-        model.addAttribute("success", "Email sent!");
-        return "user/email";
+        return "user/index";
+
     }
 
 
-
-//    @PostMapping("user/email")
-//    public String processUserEmailForm(){
-//        EmailDetails theseDetails = new EmailDetails("", "Hello! A user is interested in your book. To contact, please email NAME", "Someone Is Interested in Your Book!");
-//        sendUserMail(theseDetails);
-//        return "user/email";
-//    }
-
+    //Logout
     @GetMapping("/user/logout")
     public String logout(HttpServletRequest request){
         request.getSession().invalidate();
