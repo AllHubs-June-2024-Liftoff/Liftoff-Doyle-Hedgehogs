@@ -3,7 +3,9 @@ package org.launchcode.demo.controllers;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.launchcode.demo.data.BookshelfRepository;
 import org.launchcode.demo.data.UserRepository;
+import org.launchcode.demo.models.Bookshelf;
 import org.launchcode.demo.models.User;
 import org.launchcode.demo.models.dto.LoginFormDTO;
 import org.launchcode.demo.models.dto.RegisterFormDTO;
@@ -31,6 +33,8 @@ public class AuthenticationController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    BookshelfRepository bookshelfRepository;
     @Autowired private EmailService emailService;
 
     private static final String userSessionKey = "user";
@@ -181,6 +185,9 @@ public class AuthenticationController {
 
         user.setIsVerified(true);
         userRepository.save(user);
+
+        Bookshelf bookshelf = new Bookshelf(user.getUsername() + "'s Bookshelf", user);
+        bookshelfRepository.save(bookshelf);
 
         model.addAttribute("username", user.getUsername());
 
