@@ -38,7 +38,6 @@ public class AddBookController {
 
     @PostMapping("api/results")
     public String handleAPISearchPostRequest(@RequestParam String searchTerm,
-//                                             @RequestParam Integer bookshelfId,
                                              HttpSession session) throws IOException {
         String rawResults = ApiActions.ApiSearch(searchTerm);
         Object parsedResults = new ArrayList<Volume>(ApiActions.ParseResults(rawResults));
@@ -66,7 +65,7 @@ public class AddBookController {
                                                        String bookTitle, String description, String thumbnail,
                                                        HttpSession session) throws IOException {
         if (description.isEmpty()){
-            description = "";
+            description = " ";
         }
         Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
         session.setAttribute("bookId", bookId);

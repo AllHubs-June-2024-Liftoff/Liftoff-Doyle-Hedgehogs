@@ -65,10 +65,11 @@ public class BookshelfVolumeController {
         Object author = session.getAttribute("author");
         Object description = session.getAttribute("description");
         Object thumbnail = session.getAttribute("thumbnail");
-        Boolean has_Book = (Boolean) session.getAttribute("has_Book");
+        Boolean has_book = (Boolean) session.getAttribute("has_book");
+//        session.setAttribute("has_Book", has_Book);
         Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
         if (volumeRepository.findById(bookId.toString()).isEmpty()){
-            Volume newVolume = new Volume(bookId.toString(), bookTitle.toString(), author.toString(),
+            Volume newVolume = new Volume(bookId.toString(), author.toString(), bookTitle.toString(),
                     description.toString(), thumbnail.toString());
             volumeRepository.save(newVolume);
             model.addAttribute("volume", newVolume);
@@ -87,7 +88,7 @@ public class BookshelfVolumeController {
         model.addAttribute("thumbnail", thumbnail);
         model.addAttribute("allTags", allTags);
         model.addAttribute("bookshelfVolumeTag", bookshelfVolumeTag);
-        model.addAttribute("has_Book", has_Book);
+        model.addAttribute("has_book", has_book);
 
         return "book/addToBookshelf";
     }
@@ -97,7 +98,7 @@ public class BookshelfVolumeController {
                                                 BookshelfVolumeTagDTO bookshelfVolumeTag) throws IOException {
 //        Object title = session.getAttribute("title");
         String bookId = (String) session.getAttribute("bookId");
-        Boolean has_Book = (Boolean) session.getAttribute("has_Book");
+        Boolean has_book = (Boolean) session.getAttribute("has_book");
         BookshelfVolume bookshelfVolume = new BookshelfVolume();
         bookshelfVolumeTag.setBookshelfVolume(bookshelfVolume);
         Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
@@ -106,7 +107,7 @@ public class BookshelfVolumeController {
         bookshelfVolume.setBookshelf(theBookshelf);
         Optional<Volume> optionalVolume = volumeRepository.findById(bookId);
         bookshelfVolume.setVolume(optionalVolume.get());
-        bookshelfVolume.setHas_book(has_Book);
+        bookshelfVolume.setHas_book(has_book);
         bookshelfVolume.setTags(bookshelfVolumeTag.getTags());
         bookshelfVolume.setSwapHistory("");
         bookshelfVolumeRepository.save(bookshelfVolume);
