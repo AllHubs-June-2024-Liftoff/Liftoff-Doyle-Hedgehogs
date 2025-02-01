@@ -39,8 +39,8 @@ public class Volume{
     public String toString() {
         return "Volume{" +
                 "Google ID='" + id + '\'' +
-                ", Title='" + author + '\'' +
-                ", Author(s)='" + title + '\'' +
+                ", Title='" + title + '\'' +
+                ", Author(s)='" + author + '\'' +
                 ", Description='" + description + '\'' +
                 ", Thumbnail='" + thumbnail;
 
@@ -58,7 +58,7 @@ public class Volume{
     }
 
     public void setAuthor(String author) {
-        this.author = this.author;
+        this.author = author;
     }
 
     public String getTitle() {

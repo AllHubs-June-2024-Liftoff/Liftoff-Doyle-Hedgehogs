@@ -48,6 +48,16 @@ public class BookshelfVolumeController {
         return "book/addBook";
     }
 
+    @PostMapping("/rate")
+    public String rateBook(@RequestParam int id, @RequestParam(required = false) Float rating) {
+        BookshelfVolume bookshelfVolume = bookshelfVolumeRepository.findById(id).get();
+
+        bookshelfVolume.setRating(rating);
+        bookshelfVolumeRepository.save(bookshelfVolume);
+
+        return "redirect:/bookshelf/" + bookshelfVolume.getBookshelf().getId();
+    }
+
     //Hidden redirect (no user view) transferring search results and bookshelfId to results page//
     @PostMapping("api/results")
     public String handleAPISearchPostRequest(@RequestParam String searchTerm,

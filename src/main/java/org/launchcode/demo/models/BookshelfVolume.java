@@ -28,6 +28,7 @@ public class BookshelfVolume extends AbstractEntity{
         this.volume = volume;
         this.has_book = has_book;
         this.swapHistory = swapHistory;
+        this.rating = null;
     }
 
 
