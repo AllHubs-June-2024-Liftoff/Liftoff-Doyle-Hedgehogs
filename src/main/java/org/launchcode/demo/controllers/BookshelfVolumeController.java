@@ -38,39 +38,76 @@ public class BookshelfVolumeController {
     @Autowired
     public TagRepository tagRepository;
 
-    //should be routed TO by user selecting a row from API results to add to their library//
-//    @GetMapping("add")
-//    public String displayNewBookshelfVolumeForm(@RequestParam Bookshelf theBookshelf, Model model) {
-//        BookshelfVolume bookshelfVolume = new BookshelfVolume();
-//        bookshelfVolume.setBookshelf(theBookshelf);
-//        bookshelfVolume.setVolume(volume);
-//        Iterable<Tag> allTags = tagRepository.findAllByOrderByNameAsc();
-//
-//        BookshelfVolumeTagDTO bookshelfVolumeTag = new BookshelfVolumeTagDTO();
-//        bookshelfVolumeTag.setBookshelfVolume(bookshelfVolume);
-//
-//        model.addAttribute("title", "Add a Book");
-//        model.addAttribute("bookshelfVolume", bookshelfVolume);
-//        model.addAttribute("volume", volume);
-//        model.addAttribute("bookshelfVolumeTag", bookshelfVolumeTag);
-//        model.addAttribute("allTags", allTags);
-//
-//        return "book/add";
-//    }
+    //Loads view of Google Books API search when user clicks "Add a Book" from their library//
+    @GetMapping("addBook")
+    public String search(Model model, HttpSession session) {
+        Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
+        session.setAttribute("bookshelfId", bookshelfId);
+        model.addAttribute("bookshelfId", bookshelfId);
+        model.addAttribute("title", "Add a New Book to the Library");
+        return "book/addBook";
+    }
 
+    //Hidden redirect (no user view) transferring search results and bookshelfId to results page//
+    @PostMapping("api/results")
+    public String handleAPISearchPostRequest(@RequestParam String searchTerm,
+                                             HttpSession session) throws IOException {
+        if (searchTerm.isEmpty()){
+            return "redirect:../addBook";
+        }
+        String rawResults = ApiActions.ApiSearch(searchTerm);
+        Object parsedResults = new ArrayList<Volume>(ApiActions.ParseResults(rawResults));
+        Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
+        session.setAttribute("bookshelfId", bookshelfId);
+        session.setAttribute("parsedResults", parsedResults);
+
+        return "redirect:../addBook/results";
+    }
+
+    //User view of API search results//
+    @GetMapping("/addBook/results")
+    public String displaySearchResults(Model model, HttpSession session) {
+
+        model.addAttribute("title", "Add a New Book to the Library");
+        Object parsedResults = session.getAttribute("parsedResults");
+        Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
+        model.addAttribute("searchResults", parsedResults);
+        model.addAttribute("bookshelfId", bookshelfId);
+        return "book/addBook/results";
+    }
+
+    //Hidden redirect sending selected result's data to "add book" customization form//
+    @PostMapping("/api/results/selected")
+    public ModelAndView passVolumeDataFromSearchResult(String author,
+                                                       String bookId,
+                                                       String bookTitle, String description, String thumbnail,
+                                                       HttpSession session) throws IOException {
+
+        Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
+        session.setAttribute("bookId", bookId);
+        session.setAttribute("bookTitle", bookTitle);
+        session.setAttribute("author", author);
+        session.setAttribute("description", description);
+        session.setAttribute("thumbnail", thumbnail);
+        session.setAttribute("bookshelfId", bookshelfId);
+
+        return new ModelAndView("redirect:/book/addToBookshelf");
+    }
+
+    //Displays book data and checkboxes for adding tags; when submitted, creates a new Volume
+    // object if none with this Google Books API id exists in the database
     @GetMapping("addToBookshelf")
     public String displayNewBookshelfVolumeForm(HttpSession session, Model model) {
         Object bookId = session.getAttribute("bookId");
         Object bookTitle = session.getAttribute("bookTitle");
         Object author = session.getAttribute("author");
-        Object description = session.getAttribute("description");
+        String description = (String) session.getAttribute("description");
         Object thumbnail = session.getAttribute("thumbnail");
-        Boolean has_book = (Boolean) session.getAttribute("has_book");
-//        session.setAttribute("has_Book", has_Book);
         Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
+
         if (volumeRepository.findById(bookId.toString()).isEmpty()){
             Volume newVolume = new Volume(bookId.toString(), author.toString(), bookTitle.toString(),
-                    description.toString(), thumbnail.toString());
+                    description, thumbnail.toString());
             volumeRepository.save(newVolume);
             model.addAttribute("volume", newVolume);
         } else {
@@ -88,17 +125,15 @@ public class BookshelfVolumeController {
         model.addAttribute("thumbnail", thumbnail);
         model.addAttribute("allTags", allTags);
         model.addAttribute("bookshelfVolumeTag", bookshelfVolumeTag);
-        model.addAttribute("has_book", has_book);
 
         return "book/addToBookshelf";
     }
 
+    //Processes addBook form, adds book to user's bookshelf, and redirects back to bookshelf
     @PostMapping("addToBookshelf")
     public ModelAndView processNewBookshelfVolumeForm(Model model, HttpSession session,
                                                 BookshelfVolumeTagDTO bookshelfVolumeTag) throws IOException {
-//        Object title = session.getAttribute("title");
         String bookId = (String) session.getAttribute("bookId");
-        Boolean has_book = (Boolean) session.getAttribute("has_book");
         BookshelfVolume bookshelfVolume = new BookshelfVolume();
         bookshelfVolumeTag.setBookshelfVolume(bookshelfVolume);
         Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
@@ -107,7 +142,7 @@ public class BookshelfVolumeController {
         bookshelfVolume.setBookshelf(theBookshelf);
         Optional<Volume> optionalVolume = volumeRepository.findById(bookId);
         bookshelfVolume.setVolume(optionalVolume.get());
-        bookshelfVolume.setHas_book(has_book);
+        bookshelfVolume.setHas_book(true);
         bookshelfVolume.setTags(bookshelfVolumeTag.getTags());
         bookshelfVolume.setSwapHistory("");
         bookshelfVolumeRepository.save(bookshelfVolume);

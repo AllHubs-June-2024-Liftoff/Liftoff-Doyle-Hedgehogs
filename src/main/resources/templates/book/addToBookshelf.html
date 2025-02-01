@@ -24,28 +24,19 @@
       </tr>
       <tr>
          <td>Description</td>
-         <td th:text="${description}"></td>
+         <td th:text="${description}">-</td>
       </tr>
       <tr>
          <td>Add tags</td>
          <td>
                <div class="form-group">
-<!--                  <input type="hidden" th:field="${bookshelfVolumeTag.bookshelfVolume}" th:value="${bookshelfVolume}">-->
-                  <th:block th:each="tag : ${allTags}">
+                  <block th:each="tag : ${allTags}">
                      <input th:field="${bookshelfVolumeTag.tags}" type="checkbox" name="tag" th:value="${tag.id}" >
                      <label th:text="${tag.displayName}"></label>
+                     <input type="hidden" th:field="${bookshelfVolumeTag.bookshelfVolume}" th:value="${bookshelfVolume}">
                      <br>
-                  </th:block>
+                  </block>
                </div>
-         </td>
-      </tr>
-      <tr>
-         <td>List in the Library?</td>
-         <td>
-            <input type="radio" th:id="yes" default th:name="has_book" th:value="true" checked>
-            <label th:for="yes">Yes</label>
-            <input type="radio" th:id="no" th:name="has_book" th:value="false">
-            <label th:for="no">Not yet</label>
          </td>
       </tr>
    </table>
