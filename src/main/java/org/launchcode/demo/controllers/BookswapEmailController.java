@@ -48,6 +48,8 @@ public class BookswapEmailController {
             session.setAttribute(userSessionKey, user.getId());
         }
 
+
+
         public boolean
         sendUserMail(EmailDetails details)
         {

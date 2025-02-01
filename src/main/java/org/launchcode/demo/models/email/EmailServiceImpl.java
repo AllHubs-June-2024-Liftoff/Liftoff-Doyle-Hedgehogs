@@ -15,6 +15,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Autowired
     private JavaMailSender javaMailSender;
+    //inject instance of our mailsender
 
     @Value("${spring.mail.username}")
     private String sender;

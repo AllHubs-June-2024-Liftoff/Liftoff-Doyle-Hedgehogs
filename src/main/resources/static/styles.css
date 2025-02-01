@@ -1,52 +1,32 @@
 body {
-    background-color: #0b5e87;
+    background-color: lightblue;
+    font-size: 18px;
     color: black;
-    font: 11px/18px helvetica,verdana,arial,sans-serif;
+}
 }
 
-.bookGrid {
-    display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-      background-color: #f6eee3;
-}
-
-.gridObject {
-    left: 50%
-    overflow: scroll;
-    text-align: auto;
-    color: black;
-    font: helvetica,verdana,arial,sans-serif;
-
-}
-
-.title{
-    font-size: 14px;
-    overflow: auto
-}
-
-.author{
-    font-size: 10px;
-    overflow: auto
-}
-
-p {
-    width: 75%;
+div {
+    margin: auto;
+    width: 50%;
     padding: 20px;
     text-align: center;
-    background-color: #f6eee3;
+    background-color: white;
 }
 
 h1 {
     margin: auto;
-    width: 50%;
-    padding: 10px;
-    text-align: center;
-    background-color: #f6eee3;
+        width: 50%;
+        padding: 10px;
+        text-align: center;
+        background-color: white;
 }
+
+
+
 
 
 .error {
     color:red;
 }
+
 
