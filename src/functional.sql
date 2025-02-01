@@ -85,17 +85,17 @@ INSERT INTO volume (id, author, title, description, thumbnail) VALUES
 -- location is kansas_city 01
 -- */
 
-INSERT INTO user (username, location_id, email, pw_hash) VALUES
- ('mattet', 1, 'mattetracy@outlook.com', '$2a$10$7nT.LzAErkRf8nQuvDLP5OGW/R2fRS03zB6F8kMG/lCVdXsJ5lK.S'); -- I don't need to put the ID since it is autoincremented
+INSERT INTO user (username, location_id, email, pw_hash, verification_code, is_verified) VALUES
+ ('mattet', 1, 'mattetracy@outlook.com', '$2a$10$7nT.LzAErkRf8nQuvDLP5OGW/R2fRS03zB6F8kMG/lCVdXsJ5lK.S', 'asdf', 1); -- I don't need to put the ID since it is autoincremented
 INSERT INTO bookshelf (bookshelf_name, user_id) VALUES
-   ("Matt's Good Reads", 2); -- I don't need to put the ID since it is auto incremented
+   ("Matt's Good Reads", 1); -- I don't need to put the ID since it is auto incremented
 INSERT INTO bookshelf_volume (bookshelf_id, volume_id, has_book) VALUES
-  (3, 'KUMIEAAAQBAJ', TRUE);
+  (1, 'KUMIEAAAQBAJ', TRUE);
 
 -- /* Adding userdata for random person and a made-up password hash from BCrypt
 -- location is St. Louis 03
 
-INSERT INTO user (username, location_id, email, pwhash) VALUES
+-- INSERT INTO user (username, location_id, email, pwhash) VALUES
 --     ('bob2342', 3, 'bob2342@gmail.com', '$2a$10$7nT.LzAErkRf8nQuvDLP5OGW/R2fRS03zB6F8kMG/lCVdXsJ5lK.S'); -- I don't need to put the ID since it is autoincremented
 -- INSERT INTO bookshelf (bookshelf_name, user_id) VALUES
 --     ("Bob's Good Reads", 2); -- I don't need to put the ID since it is autoincremented
@@ -168,25 +168,25 @@ ORDER BY
 
 
 --
---DROP DATABASE IF EXISTS BooksAPI;
+-- DROP DATABASE IF EXISTS BooksAPI;
 --
---DROP DATABASE IF EXISTS BOOKSAPI;
---DROP DATABASE IF EXISTS booksapi;
---CREATE DATABASE booksapi;
---USE booksapi;
+-- DROP DATABASE IF EXISTS BOOKSAPI;
+-- DROP DATABASE IF EXISTS booksapi;
+-- CREATE DATABASE booksapi;
+-- USE booksapi;
 --
---CREATE TABLE location (
+-- CREATE TABLE location (
 --						id INT AUTO_INCREMENT PRIMARY KEY,
 --                        name VARCHAR(255) UNIQUE NOT NULL
---);
+-- );
 --
---INSERT into location VALUES (1, 'Kansas City');
---INSERT into location VALUES (2, 'Philadelphia');
---INSERT into location VALUES (3, 'St. Louis');
+-- INSERT into location VALUES (1, 'Kansas City');
+-- INSERT into location VALUES (2, 'Philadelphia');
+-- INSERT into location VALUES (3, 'St. Louis');
 --
 --
 --
---CREATE TABLE user (
+-- CREATE TABLE user (
 --                              id INT AUTO_INCREMENT PRIMARY KEY,
 --                              username VARCHAR(255) UNIQUE NOT NULL,
 --                              location_id INT, -- '0': Kansas City '1': Philadelphia '2': St. Louis
@@ -195,24 +195,24 @@ ORDER BY
 --                              verification_code VARCHAR (100) NOT NULL,
 --                              is_verified BOOLEAN DEFAULT 0,
 --                              FOREIGN KEY (location_id) REFERENCES location(id)
---);
+-- );
 --
---CREATE TABLE volume (
+-- CREATE TABLE volume (
 --                        id VARCHAR(255) PRIMARY KEY, -- Google booksAPI's unique string
 --                        author VARCHAR(255), -- Author associated with unique book.
 --                        title VARCHAR(255) NOT NULL, -- title associated with unique book
 --                        description TEXT, -- description from google unique string description of book
 --                        thumbnail TEXT -- link to normal res book photo thumbnail
---);
+-- );
 --
---CREATE TABLE bookshelf (  -- Each bookshelf is associated with a specific user, can each user can have more than one bookshelf
+-- CREATE TABLE bookshelf (  -- Each bookshelf is associated with a specific user, can each user can have more than one bookshelf
 --                           id INT AUTO_INCREMENT PRIMARY KEY,
 --                           bookshelf_name VARCHAR(255) NOT NULL, -- what they name their specific bookshelf, "i.e. AJ's bookshelf favorites"
 --                           user_id INT,
 --                           FOREIGN KEY (user_id) REFERENCES user(id)
---);
+-- );
 --
---CREATE TABLE bookshelf_volume (
+-- CREATE TABLE bookshelf_volume (
 --                                  id INT AUTO_INCREMENT PRIMARY KEY,
 --                                  bookshelf_id INT, -- the bookshelf ID that belongs to a specific user. This way each user could have more than one bookshelf/
 --                                  volume_id VARCHAR(255), -- this will be the abstracted book.
@@ -221,12 +221,12 @@ ORDER BY
 --                                  ratings FLOAT CHECK (ratings BETWEEN 0.0 AND 5.0),
 --                                  FOREIGN KEY (bookshelf_id) REFERENCES bookshelf(id), -- referencing has to be the primary key
 --                                  FOREIGN KEY (volume_id) REFERENCES volume(id) -- referencing has to be the primary key
---);
+-- );
 --
 --
---/* Adding three books (two are kind of the same book)
---userAccounts data, and a bookshelfVolume data */
---INSERT INTO volume (id, author, title, description, thumbnail) VALUES
+-- /* Adding three books (two are kind of the same book)
+-- userAccounts data, and a bookshelfVolume data */
+-- INSERT INTO volume (id, author, title, description, thumbnail) VALUES
 --                                                                   ('3fOWbIrdRdIC', 'Jane Austen, Seth Grahame-Smith', 'Pride and Prejudice and Zombies: The Deluxe Heirloom Edition',
 --                                                                    'The deluxe heirloom edition of the "New York Times" bestseller boasts additional scenes of zombie mayhem, 13 new full-color illustrations, and an essay Afterword by Dr. Allen Grove, Professor of English Literature.',
 --                                                                    'http://books.google.com/books/content?id=3fOWbIrdRdIC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api'),
