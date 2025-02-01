@@ -67,8 +67,7 @@ public class BookswapEmailController {
 
     @PostMapping("/user/email")
     public String processUserEmailForm(@ModelAttribute @Valid UserEmailDTO userEmailDTO, @RequestParam(value="book") String book, @RequestParam(value="recipient") String recipient,
-                                       Errors errors, HttpServletRequest request,
-                                       Model model) {
+                                       Errors errors, HttpServletRequest request, Model model) {
 
         String email = userEmailDTO.getEmail();
 

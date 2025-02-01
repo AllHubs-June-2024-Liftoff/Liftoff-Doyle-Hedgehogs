@@ -47,9 +47,13 @@ public class BookshelfController {
     // User view of their own bookshelf
     @GetMapping("/view/{username}")
     public String displayUserLibrary(@PathVariable String username, Model model, HttpSession session){
+        //pull down user from session and make sure same user so only person whose bookshelf it is can edit/modify bookshelf
         Optional<User> optionalUser = Optional.ofNullable(userRepository.findByUsername(username));
         User theUser = optionalUser.get();
+        //pullin bookshelf via user
         Bookshelf theBookshelf = bookshelfRepository.findByUser(theUser);
+        //setting bookshelf id into session so when user adds book it adds to correct bookshelf
+        //can use bookshelf id in crud operations once stored (bc can get again)
         session.setAttribute("bookshelfId", theBookshelf.getId());
         List<BookshelfVolume> bookshelfVolumes = LibraryData.filterByBookshelf(theBookshelf, bookshelfVolumeRepository.findAll());
         model.addAttribute("title", theUser.getUsername() + "'s Library");

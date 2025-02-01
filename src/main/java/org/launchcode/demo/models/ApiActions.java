@@ -20,6 +20,7 @@ public class ApiActions {
     // Initialize fields
     private static final String APPLICATION_NAME = "LittleOnlineLibrary/0.5";
 
+    //When register get unique api key so api realizes it's our application
     private static String apiKey = "AIzaSyC2jQ3l0bzLQnq5Ow4mHerwHXTpNULIumc";
     private static final String apiUrl = "https://www.googleapis.com/books/v1/volumes?q=";
 
@@ -102,7 +103,8 @@ public class ApiActions {
             String tidyAuthors = currentAuthors.replaceAll("\"", "").replaceAll("\\[","").replaceAll("\\]","");
             String tidyDescription = currentDescription.replaceAll("\"", "");
             String tidyThumbnail = currentThumbnail.replaceAll("\"", "");
-        //Constructor
+
+            //Constructor
 
             Volume currentVolume = new Volume(currentId, tidyAuthors, tidyTitle, tidyDescription, tidyThumbnail);
             volumeInfo.add(currentVolume);

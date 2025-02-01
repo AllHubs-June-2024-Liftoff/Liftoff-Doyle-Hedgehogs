@@ -72,7 +72,6 @@ public class AuthenticationController {
     @GetMapping("/user/login")
     public String displayLoginForm(Model model) {
         model.addAttribute(new LoginFormDTO());
-        model.addAttribute("title", "Log In");
         return "user/login";
     }
 
@@ -82,7 +81,6 @@ public class AuthenticationController {
                                    Model model) {
 
         if (errors.hasErrors()) {
-            model.addAttribute("title", "Log In");
             return "user/login";
         }
 
@@ -90,7 +88,6 @@ public class AuthenticationController {
 
         if (theUser == null) {
             errors.rejectValue("username", "user.invalid", "The given username does not exist");
-            model.addAttribute("title", "Log In");
             return "user/login";
         }
 
@@ -98,7 +95,6 @@ public class AuthenticationController {
 
         if (!theUser.isMatchingPassword(password)) {
             errors.rejectValue("password", "password.invalid", "Invalid password");
-            model.addAttribute("title", "Log In");
             return "user/login";
         }
 
@@ -106,11 +102,16 @@ public class AuthenticationController {
             return "redirect:/user/verification";
         }
 
-        model.addAttribute("username", theUser.getUsername());
-
         setUserInSession(request.getSession(), theUser);
 
-        return "/user/index";
+        return "redirect:/user/index";
+    }
+
+    @GetMapping("user/index")
+    public String displayProfilePage(Model model, HttpSession session) {
+        User theUser = getUserFromSession(session);
+        model.addAttribute("username", theUser.getUsername());
+        return "user/index";
     }
 
 
@@ -127,11 +128,6 @@ public class AuthenticationController {
                                           Model model) {
 
         if (errors.hasErrors()) {
-//            model.addAttribute("title", "Register");
-            List<ObjectError> theseErrors = errors.getAllErrors();
-            for (ObjectError error : theseErrors) {
-                System.out.println(error.toString());
-            }
             return "user/register";
         }
 
@@ -155,8 +151,11 @@ public class AuthenticationController {
         userRepository.save(newUser);
         setUserInSession(request.getSession(), newUser);
         model.addAttribute("user", newUser.getUsername());
+
+
         EmailDetails theseDetails = new EmailDetails(registerFormDTO.getEmail(), "Your verification code is: " + code, "Email Verification Code");
         sendUserMail(theseDetails);
+
         return "redirect:/user/verification";
     }
 
@@ -173,12 +172,14 @@ public class AuthenticationController {
     public String processVerificationForm(@ModelAttribute @Valid VerificationFormDTO verificationFormDTO,
                                           Errors errors, HttpServletRequest request,
                                           Model model) {
+
         String username = verificationFormDTO.getUsername();
         User user = userRepository.findByUsername(username);
+
         String submittedCode = verificationFormDTO.getVerifyCode();
         String sentCode = user.getVerificationCode();
+
         if (!submittedCode.equals(sentCode)) {
-            ///errors.rejectValue("code", "incorrect code", "Codes do not match");
             model.addAttribute("incorrect", "Incorrect Verification Code. Please Check Email");
             return "user/verification";
         }

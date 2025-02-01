@@ -27,6 +27,7 @@ public class AddBookController {
     @Autowired
     BookshelfRepository bookshelfRepository;
 
+    //recieving from bookshelf controller
     @GetMapping("addBook")
     public String search(Model model, HttpSession session) {
         Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
