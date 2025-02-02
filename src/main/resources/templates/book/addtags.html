@@ -15,7 +15,7 @@
    <div class="form-group">
       <input type="hidden" th:field="${bookshelfVolumeTag.bookshelfVolume}">
       <th:block th:each="tag : ${allTags}">
-         <input th:field="${bookshelfVolumeTag.tags}" type="checkbox" name="tag" th:value="${tag.id}" >
+         <input th:field="${bookshelfVolumeTag.tags}" type="checkbox" name="tag" th:value="${tag.id}">
          <label th:text="${tag.displayName}"></label>
          <br>
       </th:block>

@@ -7,7 +7,7 @@
 <body>
 <div th:fragment="navbar">
     <div class="navbar">
-        <a th:href="@{/bookshelf/view/${username})}">My Library</a>
+        <a th:href="@{/bookshelf/view/{user_name}(user_name=${user_name})}">My Library</a>
         <a th:href="@{/book/addBook}">Add a Book</a>
         <a th:href="@{/search}">Search</a>
         <a th:href="@{/user/logout}">Logout</a>

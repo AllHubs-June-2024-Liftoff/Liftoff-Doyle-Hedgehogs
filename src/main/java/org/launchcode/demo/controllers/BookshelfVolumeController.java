@@ -36,25 +36,33 @@ public class BookshelfVolumeController {
     public VolumeRepository volumeRepository;
 
     @Autowired
+    public VolumeRepository bookshelfVolume;
+
+    @Autowired
     public TagRepository tagRepository;
 
+    //private username;
+    // username = bookshelfVolume.getBookshelf().getUser().getUsername()
     //Loads view of Google Books API search when user clicks "Add a Book" from their library//
     @GetMapping("addBook")
     public String search(Model model, HttpSession session) {
         Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
         session.setAttribute("bookshelfId", bookshelfId);
-        model.addAttribute("username", username);  // need the
         model.addAttribute("bookshelfId", bookshelfId);
         model.addAttribute("title", "Add a New Book to the Library");
         return "book/addBook";
     }
+//    @GetMapping("/my_library")
+//    public String my_library(HttpSession session) {
+//        String username = (String) session.getAttribute("username");
+//        return "redirect:/bookshelf/view/" + username;
+//    }
 
     @PostMapping("/rate")
     public String rateBook(@RequestParam int id, @RequestParam(required = false) Float rating) {
         BookshelfVolume bookshelfVolume = bookshelfVolumeRepository.findById(id).get();
         bookshelfVolume.setRating(rating);
         bookshelfVolumeRepository.save(bookshelfVolume);
-
         return "redirect:/bookshelf/view/" + bookshelfVolume.getBookshelf().getUser().getUsername();
     }
 
