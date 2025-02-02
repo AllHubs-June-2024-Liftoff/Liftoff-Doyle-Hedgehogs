@@ -8,10 +8,10 @@
    <link th:href="@{/styles.css}" rel="stylesheet">
 </head>
 <body class="container">
-<h1>Search the Library</h1>
+<h1 th:text="${title}"></h1>
 
-<form th:action="@{/search/results}" method="post">
-   <h2 th:text="${title}"></h2>
+<form th:action="@{/search/redirectToResults}" method="post">
+<!--   <h2 th:text="${title}"></h2>-->
     <p>
         <span th:if="${errorMessage}" th:text="${errorMessage}" th:style="'color: red'">Error</span>
     </p>
@@ -51,43 +51,6 @@
     <button>Search by Tags</button>
 </a>
 <hr />
-
-<table class="table table-striped">
-
-      <tr>
-         <th>Title</th>
-         <th>Author(s)</th>
-         <th>Tags</th>
-         <th>Bookshelf</th>
-          <th>Contact Owner</th>
-      </tr>
-
-      <tr th:each="bookshelfVolume : ${bookshelfVolumes}">
-
-         <td th:text="${bookshelfVolume.volume.title}"></td>
-         <td th:text="${bookshelfVolume.volume.author}"></td>
-         <td>
-              <div th:each="tag : ${bookshelfVolume.tags}">
-                <span>
-                    <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.displayName}"></a>
-                </span>
-              </div>
-         </td>
-         <td>
-             <a th:href="@{'/bookshelf/' + ${bookshelfVolume.bookshelf.id}}" th:text="${bookshelfVolume.bookshelf.bookshelf_name}"></a>
-         </td>
-          <td>
-              <form method="get" th:action="@{/user/email}">
-                  <div class="form-group">
-                      <input type="hidden" name="recipient" th:value="${bookshelfVolume.bookshelf.user.email}"/>
-                      <input type="hidden" name="book" th:value="${bookshelfVolume.volume.title}"/>
-                  </div>
-                  <input type="submit" class="btn btn-primary" value="Request Book" />
-              </form>
-          </td>
-      </tr>
-
-</table>
 
 </body>
 </html>

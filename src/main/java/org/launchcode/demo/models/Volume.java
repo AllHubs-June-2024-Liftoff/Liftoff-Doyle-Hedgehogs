@@ -14,15 +14,6 @@ public class Volume{
     private String description;
     private String thumbnail;
 
-    //Try this to construct new Volume object out of Api result object//
-//    public Volume(Action action){
-//        this.id = (String) action.getValue(Action.ID);
-//        this.title = (String) action.getValue(Action.TITLE);
-//        this.author = (String) action.getValue(Action.AUTHORS);
-//        this.description = (String) action.getValue(Action.DESCRIPTION);
-//        this.thumbnail = (String) action.getValue(Action.THUMBNAIL);
-//    }
-
     public Volume(String id, String author, String title, String description, String thumbnail) {
 
         this.id = id;

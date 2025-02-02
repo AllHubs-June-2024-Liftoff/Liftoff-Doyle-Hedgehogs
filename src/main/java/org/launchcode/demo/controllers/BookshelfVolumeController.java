@@ -2,10 +2,7 @@ package org.launchcode.demo.controllers;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.launchcode.demo.data.BookshelfRepository;
-import org.launchcode.demo.data.BookshelfVolumeRepository;
-import org.launchcode.demo.data.TagRepository;
-import org.launchcode.demo.data.VolumeRepository;
+import org.launchcode.demo.data.*;
 import org.launchcode.demo.models.*;
 import org.launchcode.demo.models.dto.BookshelfVolumeTagDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,39 +35,79 @@ public class BookshelfVolumeController {
     @Autowired
     public TagRepository tagRepository;
 
-    //should be routed TO by user selecting a row from API results to add to their library//
-//    @GetMapping("add")
-//    public String displayNewBookshelfVolumeForm(@RequestParam Bookshelf theBookshelf, Model model) {
-//        BookshelfVolume bookshelfVolume = new BookshelfVolume();
-//        bookshelfVolume.setBookshelf(theBookshelf);
-//        bookshelfVolume.setVolume(volume);
-//        Iterable<Tag> allTags = tagRepository.findAllByOrderByNameAsc();
-//
-//        BookshelfVolumeTagDTO bookshelfVolumeTag = new BookshelfVolumeTagDTO();
-//        bookshelfVolumeTag.setBookshelfVolume(bookshelfVolume);
-//
-//        model.addAttribute("title", "Add a Book");
-//        model.addAttribute("bookshelfVolume", bookshelfVolume);
-//        model.addAttribute("volume", volume);
-//        model.addAttribute("bookshelfVolumeTag", bookshelfVolumeTag);
-//        model.addAttribute("allTags", allTags);
-//
-//        return "book/add";
-//    }
+    @Autowired
+    public UserRepository userRepository;
 
+    //Loads view of Google Books API search when user clicks "Add a Book" from their library//
+    @GetMapping("addBook")
+    public String search(Model model, HttpSession session) {
+        Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
+        session.setAttribute("bookshelfId", bookshelfId);
+        model.addAttribute("bookshelfId", bookshelfId);
+        model.addAttribute("title", "Add a New Book to the Library");
+        return "book/addBook";
+    }
+
+    //Hidden redirect (no user view) transferring search results and bookshelfId to results page//
+    @PostMapping("api/results")
+    public String handleAPISearchPostRequest(@RequestParam String searchTerm,
+                                             HttpSession session) throws IOException {
+        if (searchTerm.isEmpty()){
+            return "redirect:../addBook";
+        }
+        String rawResults = ApiActions.ApiSearch(searchTerm);
+        Object parsedResults = new ArrayList<Volume>(ApiActions.ParseResults(rawResults));
+        Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
+        session.setAttribute("bookshelfId", bookshelfId);
+        session.setAttribute("parsedResults", parsedResults);
+
+        return "redirect:../addBook/results";
+    }
+
+    //User view of API search results//
+    @GetMapping("/addBook/results")
+    public String displaySearchResults(Model model, HttpSession session) {
+
+        model.addAttribute("title", "Add a New Book to the Library");
+        Object parsedResults = session.getAttribute("parsedResults");
+        Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
+        model.addAttribute("searchResults", parsedResults);
+        model.addAttribute("bookshelfId", bookshelfId);
+        return "book/addBook/results";
+    }
+
+    //Hidden redirect sending selected result's data to "add book" customization form//
+    @PostMapping("/api/results/selected")
+    public ModelAndView passVolumeDataFromSearchResult(String author,
+                                                       String bookId,
+                                                       String bookTitle, String description, String thumbnail,
+                                                       HttpSession session) throws IOException {
+
+        Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
+        session.setAttribute("bookId", bookId);
+        session.setAttribute("bookTitle", bookTitle);
+        session.setAttribute("author", author);
+        session.setAttribute("description", description);
+        session.setAttribute("thumbnail", thumbnail);
+        session.setAttribute("bookshelfId", bookshelfId);
+
+        return new ModelAndView("redirect:/book/addToBookshelf");
+    }
+
+    //Displays book data and checkboxes for adding tags; when submitted, creates a new Volume
+    // object if none with this Google Books API id exists in the database
     @GetMapping("addToBookshelf")
     public String displayNewBookshelfVolumeForm(HttpSession session, Model model) {
         Object bookId = session.getAttribute("bookId");
         Object bookTitle = session.getAttribute("bookTitle");
         Object author = session.getAttribute("author");
-        Object description = session.getAttribute("description");
+        String description = (String) session.getAttribute("description");
         Object thumbnail = session.getAttribute("thumbnail");
-        Boolean has_book = (Boolean) session.getAttribute("has_book");
-//        session.setAttribute("has_Book", has_Book);
         Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
+
         if (volumeRepository.findById(bookId.toString()).isEmpty()){
             Volume newVolume = new Volume(bookId.toString(), author.toString(), bookTitle.toString(),
-                    description.toString(), thumbnail.toString());
+                    description, thumbnail.toString());
             volumeRepository.save(newVolume);
             model.addAttribute("volume", newVolume);
         } else {
@@ -88,17 +125,15 @@ public class BookshelfVolumeController {
         model.addAttribute("thumbnail", thumbnail);
         model.addAttribute("allTags", allTags);
         model.addAttribute("bookshelfVolumeTag", bookshelfVolumeTag);
-        model.addAttribute("has_book", has_book);
 
         return "book/addToBookshelf";
     }
 
+    //Processes addBook form, adds book to user's bookshelf, and redirects back to bookshelf
     @PostMapping("addToBookshelf")
     public ModelAndView processNewBookshelfVolumeForm(Model model, HttpSession session,
                                                 BookshelfVolumeTagDTO bookshelfVolumeTag) throws IOException {
-//        Object title = session.getAttribute("title");
         String bookId = (String) session.getAttribute("bookId");
-        Boolean has_book = (Boolean) session.getAttribute("has_book");
         BookshelfVolume bookshelfVolume = new BookshelfVolume();
         bookshelfVolumeTag.setBookshelfVolume(bookshelfVolume);
         Integer bookshelfId = (Integer) session.getAttribute("bookshelfId");
@@ -107,9 +142,10 @@ public class BookshelfVolumeController {
         bookshelfVolume.setBookshelf(theBookshelf);
         Optional<Volume> optionalVolume = volumeRepository.findById(bookId);
         bookshelfVolume.setVolume(optionalVolume.get());
-        bookshelfVolume.setHas_book(has_book);
+        bookshelfVolume.setHas_book(true);
         bookshelfVolume.setTags(bookshelfVolumeTag.getTags());
-        bookshelfVolume.setSwapHistory("");
+        bookshelfVolume.setSwapHistory(null);
+        bookshelfVolume.setPendingTransferTo(null);
         bookshelfVolumeRepository.save(bookshelfVolume);
         String username = theBookshelf.getUser().getUsername();
 
@@ -131,12 +167,12 @@ public class BookshelfVolumeController {
         return "redirect:";
     }
 
-    static HashMap<Integer, String> updateOptions = new HashMap<>();
-    public BookshelfVolumeController(){
-        updateOptions.put(0, "Transfer to another user");
-        updateOptions.put(1, "Change visibility (search status)");
-        updateOptions.put(2, "Remove from Little Online Library entirely");
-    }
+//    static HashMap<Integer, String> updateOptions = new HashMap<>();
+//    public BookshelfVolumeController(){
+//        updateOptions.put(0, "Transfer to another user");
+//        updateOptions.put(1, "Change visibility (search status)");
+//        updateOptions.put(2, "Remove from Little Online Library entirely");
+//    }
 
     @GetMapping("update-or-remove/{id}")
     public String displayUpdateOrRemoveBookForm(@PathVariable Integer id, Model model){
@@ -151,9 +187,15 @@ public class BookshelfVolumeController {
             currentHasBookStatus = "Hidden";
             hasBookUpdateOption = "Visible (show in searches)";
         }
+        HashMap<Integer, String> updateOptions = new HashMap<>();
+        if (bookshelfVolume.getPendingTransferTo() != null){
+            updateOptions.put(0, "Transfer to requester");
+        }
+        updateOptions.put(1, "Change visibility (search status)");
+        updateOptions.put(2, "Remove from Little Online Library entirely");
 
-        model.addAttribute("title", "Update " + bookshelfVolume.getVolume().getTitle()
-                + " or Remove from " + bookshelfVolume.getBookshelf().getBookshelf_name());
+        model.addAttribute("title", "Update '" + bookshelfVolume.getVolume().getTitle()
+                + "' or Remove from " + bookshelfVolume.getBookshelf().getBookshelf_name());
         model.addAttribute("bookshelfVolume", bookshelfVolume);
         model.addAttribute("id", id);
         model.addAttribute("updateOptions", updateOptions);
@@ -164,28 +206,34 @@ public class BookshelfVolumeController {
     }
 
     @PostMapping("update-or-remove/{id}")
-    public String processRemoveBookForm(@RequestParam(value="id") Integer id, @RequestParam(required = false, value="updateOption") Integer updateOption){
+    public String processRemoveBookForm(@RequestParam(value="id") Integer id,
+                                        @RequestParam(value="updateOption") Integer updateOption,
+                                        Model model){
         Optional<BookshelfVolume> optBookshelfVolume = bookshelfVolumeRepository.findById(id);
         BookshelfVolume bookshelfVolume = optBookshelfVolume.get();
         String username = bookshelfVolume.getBookshelf().getUser().getUsername();
+        User pendingTransferToUser = userRepository.findByUsername(bookshelfVolume.getPendingTransferTo());
+        Bookshelf destinationBookshelf = bookshelfRepository.findByUser(pendingTransferToUser);
 
-//        TODO: uncomment when destination bookshelf info is connected
-//        Optional<Bookshelf> optionalDestinationBookshelf = bookshelfRepository.findById(3);
-//        Bookshelf destinationBookshelf = optionalDestinationBookshelf.get();
         if (updateOption == null){
             //Simply reloads the page if submitted when no selection is made//
-            return "redirect:/book/remove-or-update/" + id;
+            return "redirect:../remove-or-update/" + id;
         } else if (updateOption.equals(0)){
+            if (destinationBookshelf == null){
+                model.addAttribute("errorMessage", "No one has requested this book");
+                return "book/remove-or-update/" + id;
+            }
             //Transfer book to another user//
             bookshelfVolume.setHas_book(false);
-//            bookshelfVolume.setBookshelf(destinationBookshelf);
-//            bookshelfVolume.updateSwapHistory("");
+            bookshelfVolume.setBookshelf(destinationBookshelf);
+            bookshelfVolume.updateSwapHistory("username");
             bookshelfVolumeRepository.save(bookshelfVolume);
         } else if (updateOption.equals(1)){
             if (bookshelfVolume.getHas_book()){
                 bookshelfVolume.setHas_book(false);
             } else {
                 bookshelfVolume.setHas_book(true);
+                bookshelfVolume.setPendingTransferTo(null);
             }
             bookshelfVolumeRepository.save(bookshelfVolume);
         } else if (updateOption.equals(2)){
@@ -195,44 +243,5 @@ public class BookshelfVolumeController {
 
         return "redirect:/bookshelf/view/" + username;
     }
-
-
-        //Remove all below this line once book/add is up and running//
-
-
-    //responds to requests at /book/addtags?id=[bookshelfvolumeid]
-    // Add tags on an individual BookshelfVolume; will be replaced by a portion of the book/add form //
-    @GetMapping("addtags")
-    public String displayAddTagForm(@RequestParam Integer id, Model model){
-        Optional<BookshelfVolume> optionalBookshelfVolume = bookshelfVolumeRepository.findById(id);
-        BookshelfVolume bookshelfVolume = optionalBookshelfVolume.get();
-        Iterable<Tag> allTags = tagRepository.findAllByOrderByNameAsc();
-
-        BookshelfVolumeTagDTO bookshelfVolumeTag = new BookshelfVolumeTagDTO();
-        bookshelfVolumeTag.setBookshelfVolume(bookshelfVolume);
-
-        model.addAttribute("username", bookshelfVolume.getBookshelf().getUser().getUsername());
-        model.addAttribute("bookshelfVolumeTag", bookshelfVolumeTag);
-        model.addAttribute("title", "Tags for " + bookshelfVolume.getVolume().getTitle() + " by " + bookshelfVolume.getVolume().getAuthor());
-        model.addAttribute("bookshelfVolume", bookshelfVolume);
-        model.addAttribute("allTags", allTags);
-        model.addAttribute("bookshelfVolumeId", id);
-
-        return "book/addtags";
-    }
-
-    @PostMapping("addtags")
-    public String processAddTagForm(@ModelAttribute @Valid BookshelfVolumeTagDTO bookshelfVolumeTag,
-                                           Model model, Errors errors){
-        if (!errors.hasErrors()) {
-            BookshelfVolume bookshelfVolume = bookshelfVolumeTag.getBookshelfVolume();
-            List<Tag> tags = bookshelfVolumeTag.getTags();
-            bookshelfVolume.setTags(tags);
-            bookshelfVolumeRepository.save(bookshelfVolume);
-            return "addtags?id=" + bookshelfVolume.getId();
-        }
-        return "redirect:addtags";
-    }
-
 
 }

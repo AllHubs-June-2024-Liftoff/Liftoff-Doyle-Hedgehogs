@@ -3,7 +3,9 @@ package org.launchcode.demo.controllers;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.launchcode.demo.data.BookshelfVolumeRepository;
 import org.launchcode.demo.data.UserRepository;
+import org.launchcode.demo.models.BookshelfVolume;
 import org.launchcode.demo.models.User;
 import org.launchcode.demo.models.dto.UserEmailDTO;
 import org.launchcode.demo.models.dto.VerificationFormDTO;
@@ -23,13 +25,16 @@ import java.util.Optional;
 @Controller
 public class BookswapEmailController {
 
-        @Autowired
-        UserRepository userRepository;
-        @Autowired private EmailService emailService;
+    @Autowired
+    UserRepository userRepository;
 
-        private static final String userSessionKey = "user";
+    @Autowired
+    BookshelfVolumeRepository bookshelfVolumeRepository;
+    @Autowired private EmailService emailService;
 
-        public User getUserFromSession(HttpSession session) {
+    private static final String userSessionKey = "user";
+
+    public User getUserFromSession(HttpSession session) {
             Integer userId = (Integer) session.getAttribute(userSessionKey);
             if (userId == null) {
                 return null;
@@ -44,38 +49,55 @@ public class BookswapEmailController {
             return user.get();
         }
 
-        private static void setUserInSession(HttpSession session, User user) {
+    private static void setUserInSession(HttpSession session, User user) {
             session.setAttribute(userSessionKey, user.getId());
-        }
+    }
 
+    public boolean
+    sendUserMail(EmailDetails details) {
 
+        boolean status
+                = emailService.sendMail(details);
 
-        public boolean
-        sendUserMail(EmailDetails details)
-        {
-            boolean status
-                    = emailService.sendMail(details);
-
-            return status;
-        }
+        return status;
+    }
 
     @GetMapping("/user/email")
-    public String displayUserEmailForm(Model model){
+    public String displayUserEmailForm(Model model, HttpSession session){
         model.addAttribute(new UserEmailDTO());
+        User user = getUserFromSession(session);
+        String recipient = (String) session.getAttribute("recipient");
+        String bookTitle = (String) session.getAttribute("bookTitle");
+        Integer bookId = (Integer) session.getAttribute("bookId");
+        String requestingUsername = (String) session.getAttribute("requestingUsername");
+        model.addAttribute("recipient", recipient);
+        model.addAttribute("bookTitle", bookTitle);
+        model.addAttribute("bookId", bookId);
+        model.addAttribute("requestingUsername", requestingUsername);
+
         return "user/email";
     }
 
     @PostMapping("/user/email")
-    public String processUserEmailForm(@ModelAttribute @Valid UserEmailDTO userEmailDTO, @RequestParam(value="book") String book, @RequestParam(value="recipient") String recipient,
-                                       Errors errors, HttpServletRequest request, Model model) {
+    public String processUserEmailForm(@ModelAttribute @Valid UserEmailDTO userEmailDTO, @RequestParam(value="bookTitle") String bookTitle,
+                                       @RequestParam(value="recipient") String recipient, @RequestParam(value="bookId") Integer bookId,
+                                       Errors errors, HttpServletRequest request, HttpSession session,
+                                       Model model) {
+        BookshelfVolume bookshelfVolume = bookshelfVolumeRepository.findById(bookId).get();
+        System.out.println(bookId);
+        Integer userId = (Integer) session.getAttribute(userSessionKey);
+        User transferToUser = userRepository.findById(userId).get();
+        bookshelfVolume.setHas_book(false);
+        bookshelfVolume.setPendingTransferTo(transferToUser.getUsername());
+        bookshelfVolumeRepository.save(bookshelfVolume);
 
         String email = userEmailDTO.getEmail();
 
-        EmailDetails theseDetails = new EmailDetails(recipient, "Hello! A user is interested in " + book + ". To confirm swap details, please email " + email, "Someone Is Interested in Your Book!");
+        EmailDetails theseDetails = new EmailDetails(recipient, "Hello! A user is interested in " + bookTitle + ". To confirm swap details, please email " + email, "Someone Is Interested in Your Book!");
         sendUserMail(theseDetails);
 
         model.addAttribute("success", "Email sent!");
-        return "user/email";
+        return "user/emailsuccess";
     }
 
 }

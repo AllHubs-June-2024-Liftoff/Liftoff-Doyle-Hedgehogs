@@ -170,7 +170,7 @@ public class AuthenticationController {
 
     @PostMapping("user/verification")
     public String processVerificationForm(@ModelAttribute @Valid VerificationFormDTO verificationFormDTO,
-                                          Errors errors, HttpServletRequest request,
+                                          Errors errors, HttpServletRequest request, HttpSession session,
                                           Model model) {
 
         String username = verificationFormDTO.getUsername();
@@ -190,6 +190,10 @@ public class AuthenticationController {
         Bookshelf bookshelf = new Bookshelf(user.getUsername() + "'s Bookshelf", user);
         bookshelfRepository.save(bookshelf);
 
+        //AJ testing something//
+        setUserInSession(request.getSession(), user);
+        //AJ testing//
+
         model.addAttribute("username", user.getUsername());
 
         return "user/index";
@@ -204,6 +208,11 @@ public class AuthenticationController {
         return "redirect:/user/login";
     }
 
+    //Redirect
+    @GetMapping("")
+    public String redirectToLogin(){
+        return "redirect:/user/login";
+    }
 }
 
 
