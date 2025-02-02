@@ -41,7 +41,7 @@ The Little Online Library is a web app built using Spring Boot + Java 17. Users 
       ```
 3. **Run the App** in intelliJ
 
-### File Structure
+### Folder/File Structure
 
 ```
 src/
@@ -72,7 +72,5 @@ IA Doyle [https://github.com/dalpiad](https://github.com/dalpiad)
 - Matthew Tracy [https://github.com/metracy](https://github.com/metracy)
 
 ## License
-
-License
 
 Probably MIT license.
