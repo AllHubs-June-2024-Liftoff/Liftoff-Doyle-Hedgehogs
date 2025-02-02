@@ -35,15 +35,15 @@
             </div>
         </td>
         <td>
-            <div th:if="${bookshelfVolume.pendingTransferTo != null}">
-                Requested
-            </div>
-        </td>
-        <td>
             <div>
                 <span>
                     <a th:href="'/book/update-or-remove/' + ${bookshelfVolume.id}" th:text="${updateRemoveButtonLabel}"></a>
                 </span>
+            </div>
+        </td>
+        <td>
+            <div th:unless="${bookshelfVolume.pendingTransferTo == null}">
+                Requested
             </div>
         </td>
     </tr>
