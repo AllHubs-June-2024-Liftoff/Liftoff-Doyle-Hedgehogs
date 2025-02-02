@@ -3,7 +3,7 @@
 ## Overview
 The Little Online Library is a web app built using Spring Boot + Java 17. Users can add books, manage their personal book collections, and search for books using the Google Books API. Includes user authentication, book rating, and grouping by hashtags.
 
-## What It Can Do
+## Features
 
 - **User Accounts:** Register an account, email verification, HTTP Session Management
 - **Personal Library:** Stored in mySQL DB via spring data-jpa
