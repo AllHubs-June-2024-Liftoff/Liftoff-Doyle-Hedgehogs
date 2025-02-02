@@ -8,17 +8,16 @@
     <link th:href="@{/styles.css}" rel="stylesheet">
 </head>
 <body>
+<div>
+    <h1>Little Online Library</h1>
+</div>
 
-<h1>Little Online Library</h1>
-
+<div>
 <h2 th:text="'Welcome, ' + ${username}"></h2>
-<div></div>
-<p><a th:href="@{'../bookshelf/view/' + ${username}}">View My Library</a></p>
+
+<p><a th:href="@{'../bookshelf/view/' + ${username}}">View My Bookshelf</a></p>
 <p><a th:href="@{'/search'}">Search the Library</a></p>
-<!--<p><a href="/bookshelf/library">View My Library</a></p>-->
-<!--<p><a href="../../search">Search for Books</a></p>-->
-
 <p><a href="/user/logout">Logout</a></p>
-
+</div>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Little Online Library</title>
@@ -8,9 +8,10 @@
     <link th:href="@{/styles.css}" rel="stylesheet">
 </head>
 <body>
-
-<h1>Little Online Library</h1>
-
+<div>
+    <h1>Little Online Library</h1>
+</div>
+<div>
 <h2>Login</h2>
 <form method="post">
     <div class="form-group">
@@ -18,8 +19,7 @@
             <input class="form-control" th:field="${loginFormDTO.username}">
         </label>
         <p class="error" th:errors="${loginFormDTO.username}"></p>
-    </div>
-    <div class="form-group">
+        <br>
         <label>Password
             <input class="form-control" th:field="${loginFormDTO.password}" type="password">
         </label>
@@ -28,8 +28,8 @@
 
     <input type="submit" class="btn btn-primary" value="Log In" />
 </form>
-
-<p>Don't have an account? <a href="/user/register">Register for one.</a></p>
+</div>
+<div>Don't have an account? <a href="/user/register">Register for one.</a></div>
 
 </body>
 </html>

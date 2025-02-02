@@ -189,7 +189,7 @@ public class BookshelfVolumeController {
         }
         HashMap<Integer, String> updateOptions = new HashMap<>();
         if (bookshelfVolume.getPendingTransferTo() != null){
-            updateOptions.put(0, "Transfer to another user");
+            updateOptions.put(0, "Transfer to requester");
         }
         updateOptions.put(1, "Change visibility (search status)");
         updateOptions.put(2, "Remove from Little Online Library entirely");
