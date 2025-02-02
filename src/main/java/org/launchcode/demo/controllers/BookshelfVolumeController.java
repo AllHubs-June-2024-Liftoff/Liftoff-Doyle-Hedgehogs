@@ -2,10 +2,7 @@ package org.launchcode.demo.controllers;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.launchcode.demo.data.BookshelfRepository;
-import org.launchcode.demo.data.BookshelfVolumeRepository;
-import org.launchcode.demo.data.TagRepository;
-import org.launchcode.demo.data.VolumeRepository;
+import org.launchcode.demo.data.*;
 import org.launchcode.demo.models.*;
 import org.launchcode.demo.models.dto.BookshelfVolumeTagDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +34,9 @@ public class BookshelfVolumeController {
 
     @Autowired
     public TagRepository tagRepository;
+
+    @Autowired
+    public UserRepository userRepository;
 
     //Loads view of Google Books API search when user clicks "Add a Book" from their library//
     @GetMapping("addBook")
@@ -187,8 +187,8 @@ public class BookshelfVolumeController {
             hasBookUpdateOption = "Visible (show in searches)";
         }
 
-        model.addAttribute("title", "Update " + bookshelfVolume.getVolume().getTitle()
-                + " or Remove from " + bookshelfVolume.getBookshelf().getBookshelf_name());
+        model.addAttribute("title", "Update '" + bookshelfVolume.getVolume().getTitle()
+                + "' or Remove from " + bookshelfVolume.getBookshelf().getBookshelf_name());
         model.addAttribute("bookshelfVolume", bookshelfVolume);
         model.addAttribute("id", id);
         model.addAttribute("updateOptions", updateOptions);
@@ -203,24 +203,30 @@ public class BookshelfVolumeController {
         Optional<BookshelfVolume> optBookshelfVolume = bookshelfVolumeRepository.findById(id);
         BookshelfVolume bookshelfVolume = optBookshelfVolume.get();
         String username = bookshelfVolume.getBookshelf().getUser().getUsername();
+        User pendingTransferToUser = userRepository.findByUsername(bookshelfVolume.getPendingTransferTo());
+        Bookshelf destinationBookshelf = bookshelfRepository.findByUser(pendingTransferToUser);
 
 //        TODO: uncomment when destination bookshelf info is connected
-//        Optional<Bookshelf> optionalDestinationBookshelf = bookshelfRepository.findById(3);
+//        Optional<Bookshelf> optionalDestinationBookshelf = bookshelfRepository.findById();
 //        Bookshelf destinationBookshelf = optionalDestinationBookshelf.get();
         if (updateOption == null){
             //Simply reloads the page if submitted when no selection is made//
             return "redirect:/book/remove-or-update/" + id;
         } else if (updateOption.equals(0)){
+            if (destinationBookshelf == null){
+
+            }
             //Transfer book to another user//
             bookshelfVolume.setHas_book(false);
-//            bookshelfVolume.setBookshelf(destinationBookshelf);
-//            bookshelfVolume.updateSwapHistory("");
+            bookshelfVolume.setBookshelf(destinationBookshelf);
+            bookshelfVolume.updateSwapHistory("username");
             bookshelfVolumeRepository.save(bookshelfVolume);
         } else if (updateOption.equals(1)){
             if (bookshelfVolume.getHas_book()){
                 bookshelfVolume.setHas_book(false);
             } else {
                 bookshelfVolume.setHas_book(true);
+                bookshelfVolume.setPendingTransferTo(null);
             }
             bookshelfVolumeRepository.save(bookshelfVolume);
         } else if (updateOption.equals(2)){
@@ -230,44 +236,5 @@ public class BookshelfVolumeController {
 
         return "redirect:/bookshelf/view/" + username;
     }
-
-
-        //Remove all below this line once book/add is up and running//
-
-
-    //responds to requests at /book/addtags?id=[bookshelfvolumeid]
-    // Add tags on an individual BookshelfVolume; will be replaced by a portion of the book/add form //
-    @GetMapping("addtags")
-    public String displayAddTagForm(@RequestParam Integer id, Model model){
-        Optional<BookshelfVolume> optionalBookshelfVolume = bookshelfVolumeRepository.findById(id);
-        BookshelfVolume bookshelfVolume = optionalBookshelfVolume.get();
-        Iterable<Tag> allTags = tagRepository.findAllByOrderByNameAsc();
-
-        BookshelfVolumeTagDTO bookshelfVolumeTag = new BookshelfVolumeTagDTO();
-        bookshelfVolumeTag.setBookshelfVolume(bookshelfVolume);
-
-        model.addAttribute("username", bookshelfVolume.getBookshelf().getUser().getUsername());
-        model.addAttribute("bookshelfVolumeTag", bookshelfVolumeTag);
-        model.addAttribute("title", "Tags for " + bookshelfVolume.getVolume().getTitle() + " by " + bookshelfVolume.getVolume().getAuthor());
-        model.addAttribute("bookshelfVolume", bookshelfVolume);
-        model.addAttribute("allTags", allTags);
-        model.addAttribute("bookshelfVolumeId", id);
-
-        return "book/addtags";
-    }
-
-    @PostMapping("addtags")
-    public String processAddTagForm(@ModelAttribute @Valid BookshelfVolumeTagDTO bookshelfVolumeTag,
-                                           Model model, Errors errors){
-        if (!errors.hasErrors()) {
-            BookshelfVolume bookshelfVolume = bookshelfVolumeTag.getBookshelfVolume();
-            List<Tag> tags = bookshelfVolumeTag.getTags();
-            bookshelfVolume.setTags(tags);
-            bookshelfVolumeRepository.save(bookshelfVolume);
-            return "addtags?id=" + bookshelfVolume.getId();
-        }
-        return "redirect:addtags";
-    }
-
 
 }

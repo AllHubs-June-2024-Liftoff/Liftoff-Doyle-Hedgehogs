@@ -41,6 +41,7 @@ public class SearchController {
     public SearchController(){
         columnOptions.put("title", "Title");
         columnOptions.put("author", "Author");
+        columnOptions.put("all", "All");
     }
     private static final String userSessionKey = "user";
 
@@ -87,6 +88,7 @@ public class SearchController {
                                           @RequestParam (required = false) String searchType, @RequestParam
                                            String searchTerm, HttpSession session) throws IOException {
         if (location == null){
+            model.addAttribute("title", "Search the Little Online Library");
             model.addAttribute("errorMessage", "Please select a location");
             model.addAttribute("columns", columnOptions);
             model.addAttribute("locations", getAllLocations());
@@ -98,25 +100,28 @@ public class SearchController {
             model.addAttribute("locations", getAllLocations());
             return "search";
         } else if (searchTerm == null){
-            Iterable<BookshelfVolume> booksByLocation = LibraryData.filterByLocation(location, bookshelfVolumeRepository.findAll());
-//            session.setAttribute("");
-            return "redirect:../search/results";
+            Iterable<BookshelfVolume> bookshelfVolumes = LibraryData.filterByLocation(location, bookshelfVolumeRepository.findAll());
+            session.setAttribute("bookshelfVolumes", bookshelfVolumes);
         } else {
             Iterable<BookshelfVolume> bookshelfVolumes;
             Iterable<BookshelfVolume> booksByLocation = LibraryData.filterByLocation(location, bookshelfVolumeRepository.findAll());
             bookshelfVolumes = LibraryData.findByColumnAndValue(searchType, searchTerm, booksByLocation);
-
             session.setAttribute("bookshelfVolumes", bookshelfVolumes);
-            session.setAttribute("searchTerm", searchTerm);
-            session.setAttribute("searchType", searchType);
-            session.setAttribute("location", location);
+
         }
+
+        session.setAttribute("searchTerm", searchTerm);
+        session.setAttribute("searchType", searchType);
+        session.setAttribute("location", location);
         return "redirect:../search/results";
     }
 
     @GetMapping("results")
     public String displayLibrarySearchResults(Model model, HttpSession session){
         User user = getUserFromSession(session);
+        if (user == null){
+            return "redirect:../";
+        }
         Iterable bookshelfVolumes = (Iterable) session.getAttribute("bookshelfVolumes");
         String searchTerm = (String) session.getAttribute("searchTerm");
         String searchType = (String) session.getAttribute("searchType");
@@ -124,8 +129,12 @@ public class SearchController {
         model.addAttribute("title", "Search the Little Online Library");
         model.addAttribute("locations", getAllLocations());
         model.addAttribute("columns", columnOptions);
-        model.addAttribute("title", "Books in the " + location + " area with " +
-                columnOptions.get(searchType) + " containing: " + searchTerm);
+        if (searchTerm.isEmpty()){
+            model.addAttribute("pageTitle", "Books in the " + location + " area");
+        } else {
+            model.addAttribute("pageTitle", "Books in the " + location + " area with " +
+                    columnOptions.get(searchType) + " containing: " + searchTerm);
+        }
         model.addAttribute("bookshelfVolumes", bookshelfVolumes);
         model.addAttribute("requestingUsername", user.getUsername());
         session.setAttribute("requestingUsername", user.getUsername());
@@ -133,7 +142,7 @@ public class SearchController {
         return "search/results";
     }
 
-    //Request parameters here are then set as session attributes and retrieved in the /user/email Get.
+    //Session attributes are retrieved in the /user/email GET.
     @PostMapping("/redirectToRequestEmailForm")
     public ModelAndView redirectToRequestEmailForm(Model model, @RequestParam String recipient,
                                                    @RequestParam String bookTitle, @RequestParam Integer bookId,
