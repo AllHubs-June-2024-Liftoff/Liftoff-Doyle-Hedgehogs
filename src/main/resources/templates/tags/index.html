@@ -10,6 +10,7 @@
 <body class="container">
 
 <h1 th:text="${title}"></h1>
+<div th:replace="~{frags/navbar :: navbar}"></div>
 <a th:href="@{'/tags/create'}">
    <button>Add New Tag</button>
 </a>

@@ -10,7 +10,7 @@
 <body class="container">
 
 <h2 th:text="${title}"></h2>
-
+<div th:replace="~{frags/navbar :: navbar}"></div>
 <h4 th:text="'Current visibility: ' + ${currentHasBookStatus}"></h4>
 
 <h3>What would you like to do?</h3>

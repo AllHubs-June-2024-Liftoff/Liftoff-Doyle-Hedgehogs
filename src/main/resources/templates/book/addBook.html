@@ -11,6 +11,7 @@
 
 <body>
 <h1 th:text="${title}"></h1>
+<div th:replace="~{frags/navbar :: navbar}"></div>
 <form th:action="@{/book/api/results}" method="post">
   <label for="searchTerm">Search by Title, Author, or ISBN:</label>
   <input type="text" name="searchTerm" id="searchTerm" placeholder="Search">

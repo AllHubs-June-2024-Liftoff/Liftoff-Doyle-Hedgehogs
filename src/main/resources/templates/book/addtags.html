@@ -10,6 +10,7 @@
 <body>
 
 <h1 th:text="${title}"></h1>
+<div th:replace="~{frags/navbar :: navbar}"></div>
 <form method="post" >
    <div class="form-group">
       <input type="hidden" th:field="${bookshelfVolumeTag.bookshelfVolume}">

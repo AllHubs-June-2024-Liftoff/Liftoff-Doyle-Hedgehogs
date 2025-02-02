@@ -9,7 +9,7 @@
 </head>
 <body class="container">
 <h1>Search the Library</h1>
-
+<div th:replace="~{frags/navbar :: navbar}"></div>
 <form th:action="@{/search/results}" method="post">
    <h2 th:text="${title}"></h2>
     <p>

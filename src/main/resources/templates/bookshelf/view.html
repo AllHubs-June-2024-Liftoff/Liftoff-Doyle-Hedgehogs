@@ -10,13 +10,13 @@
 <body>
 
 <h1 th:text="${title}">Default Heading</h1>
-
+<div th:replace="~{frags/navbar :: navbar}"></div>
 <table class="table table-striped">
     <tr>
         <th>Title</th>
         <th>Author</th>
         <th>Tags</th>
-        <th>Rating</th>
+        <th>Average Rating</th>
     </tr>
 
     <tr th:each="bookshelfVolume : ${bookshelfVolumes}">
@@ -29,20 +29,8 @@
                 </span>
             </div>
         </td>
-        <td>
-            <form th:action="@{/book/rate}" method="post">
-                <input type = "hidden" name="id" th:value="${bookshelfVolume.id}" />
-                <select name = "rating" class = "form-select-sm">
-                    <option value = "" th:selected="${bookshelfVolume.rating == null}">No Rating</option>
-                    <option value = "1" th:selected="${bookshelfVolume.rating == 1}">1</option>
-                    <option value = "2" th:selected="${bookshelfVolume.rating == 2}">2</option>
-                    <option value = "3" th:selected="${bookshelfVolume.rating == 3}">3</option>
-                    <option value = "4" th:selected="${bookshelfVolume.rating == 4}">4</option>
-                    <option value = "5" th:selected="${bookshelfVolume.rating == 5}">4</option>
-        </td>
+        <td th:text="${bookshelfVolume.volume.rating_avg != null ? bookshelfVolume.volume.rating_avg : 'Not Rated'}"></td>
     </tr>
-
-
 </table>
 
 

@@ -255,17 +255,17 @@ ORDER BY
 ---- location is kansas_city 01
 ---- */
 --
---INSERT INTO user (username, location_id, email, pw_hash) VALUES
+-- INSERT INTO user (username, location_id, email, pw_hash) VALUES
 -- ('mattet', 1, 'mattetracy@outlook.com', '$2a$10$7nT.LzAErkRf8nQuvDLP5OGW/R2fRS03zB6F8kMG/lCVdXsJ5lK.S'); -- I don't need to put the ID since it is autoincremented
---INSERT INTO bookshelf (bookshelf_name, user_id) VALUES
+-- INSERT INTO bookshelf (bookshelf_name, user_id) VALUES
 --   ("Matt's Good Reads", 2); -- I don't need to put the ID since it is auto incremented
---INSERT INTO bookshelf_volume (bookshelf_id, volume_id, has_book) VALUES
+-- INSERT INTO bookshelf_volume (bookshelf_id, volume_id, has_book) VALUES
 --  (3, 'KUMIEAAAQBAJ', TRUE);
 --
 ---- /* Adding userdata for random person and a made-up password hash from BCrypt
 ---- location is St. Louis 03
 --
---INSERT INTO user (username, location_id, email, pwhash) VALUES
+-- INSERT INTO user (username, location_id, email, pwhash) VALUES
 ----     ('bob2342', 3, 'bob2342@gmail.com', '$2a$10$7nT.LzAErkRf8nQuvDLP5OGW/R2fRS03zB6F8kMG/lCVdXsJ5lK.S'); -- I don't need to put the ID since it is autoincremented
 ---- INSERT INTO bookshelf (bookshelf_name, user_id) VALUES
 ----     ("Bob's Good Reads", 2); -- I don't need to put the ID since it is autoincremented
@@ -307,7 +307,7 @@ ORDER BY
 ---- (5, 3);
 --
 ---- this query will give us the information for all user_id, and all the book data we need across all of every users bookshelves (all their bookshelfs)
---SELECT
+-- SELECT
 --    user.id,
 --    bookshelf.user_id,
 --    user.username AS username,
@@ -323,7 +323,7 @@ ORDER BY
 --    volume.description AS description,
 --    volume.thumbnail AS thumbnail
 --
---FROM
+-- FROM
 --    user
 --        JOIN
 --    bookshelf ON user.id = bookshelf.user_id -- fixed output result of SQL query, needed conditional
@@ -331,19 +331,19 @@ ORDER BY
 --    bookshelf_volume ON bookshelf.id = bookshelf_volume.bookshelf_id -- fixed output result of SQL query, needed conditional
 --        JOIN
 --    volume ON bookshelf_volume.volume_id = volume.id
---WHERE
+-- WHERE
 --    bookshelf_volume.has_book = TRUE
---ORDER BY
+-- ORDER BY
 --    user.location_id, user.username, volume.title;
 --
 --
 --
-----DROP DATABASE IF EXISTS BooksAPI;
-----
-----DROP DATABASE IF EXISTS BOOKSAPI;
-----DROP DATABASE IF EXISTS booksapi;
-----CREATE DATABASE booksapi;
-----USE booksapi;
+-- --DROP DATABASE IF EXISTS BooksAPI;
+-- --
+-- --DROP DATABASE IF EXISTS BOOKSAPI;
+-- --DROP DATABASE IF EXISTS booksapi;
+-- --CREATE DATABASE booksapi;
+-- --USE booksapi;
 ----
 ----CREATE TABLE location (
 ----						id INT AUTO_INCREMENT PRIMARY KEY,

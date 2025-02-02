@@ -9,6 +9,7 @@
 </head>
 <body class="container">
 <h1 th:text="${title}"></h1>
+<div th:replace="~{frags/navbar :: navbar}"></div>
 <form th:object="${bookshelfVolume}" th:action="@{/book/addToBookshelf}" method="post">
    <table>
       <tr>

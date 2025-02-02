@@ -13,6 +13,7 @@ public class Volume{
     private String title;
     private String description;
     private String thumbnail;
+    public Float rating_avg;
 
     //Try this to construct new Volume object out of Api result object//
 //    public Volume(Action action){
@@ -23,13 +24,14 @@ public class Volume{
 //        this.thumbnail = (String) action.getValue(Action.THUMBNAIL);
 //    }
 
-    public Volume(String id, String author, String title, String description, String thumbnail) {
+    public Volume(String id, String author, String title, String description, String thumbnail, Float rating_avg) {
 
         this.id = id;
         this.author = author;
         this.title = title;
         this.description = description;
         this.thumbnail = thumbnail;
+        this.rating_avg = rating_avg;
     }
 
     public Volume(){}
@@ -84,5 +86,10 @@ public class Volume{
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
-
+    public Float getRating_avg() {
+        return rating_avg;
+    }
+    public void setRating_avg(Float rating_avg) {
+        this.rating_avg = rating_avg;
+    }
 }

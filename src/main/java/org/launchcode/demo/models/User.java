@@ -22,7 +22,7 @@ public class User extends AbstractEntity {
     private Location location;
 
     @NotNull
-    private String pwHash;
+    private String pw_hash;
 
     private String verificationCode;
 
@@ -37,7 +37,7 @@ public class User extends AbstractEntity {
         this.username = username;
         this.email = email;
         this.location = location;
-        this.pwHash = encoder.encode(password);
+        this.pw_hash = encoder.encode(password);
     }
 
 
@@ -77,7 +77,7 @@ public class User extends AbstractEntity {
     }
 
     public boolean isMatchingPassword(String password) {
-        return encoder.matches(password, pwHash);
+        return encoder.matches(password, pw_hash);
     }
 
 
