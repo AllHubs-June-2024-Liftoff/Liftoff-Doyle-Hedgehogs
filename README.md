@@ -15,6 +15,7 @@ The Little Online Library is a web app built using Spring Boot + Java 17. Users 
 - **Java 17**
 - **Spring Boot**
 - **MySQL**
+- **Thymeleaf Views**
 - **Google Books API** (API key is freely available from Google https://developers.google.com/books/docs/overview)
 - **Bootstrap**
 
