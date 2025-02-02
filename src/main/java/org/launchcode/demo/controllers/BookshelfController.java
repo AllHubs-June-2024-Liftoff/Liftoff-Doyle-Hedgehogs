@@ -51,8 +51,7 @@ public class BookshelfController {
 
     // User view of another user's bookshelf //
     @GetMapping("/{id}")
-    public String displayLibraryBookshelf(@PathVariable Integer id, Model model){
-
+    public String displayLibraryBookshelf(@PathVariable Integer id, Model model, HttpSession session){
         Optional<Bookshelf> result = bookshelfRepository.findById(id);
         Bookshelf bookshelf = result.get();
         List<BookshelfVolume> bookshelfVolumes = LibraryData.filterByHasBook(LibraryData.filterByBookshelf(bookshelf, bookshelfVolumeRepository.findAll()));
@@ -69,6 +68,9 @@ public class BookshelfController {
         Optional<User> optionalUser = Optional.ofNullable(userRepository.findByUsername(username));
         User theUser = optionalUser.get();
         int id = theUser.getId();
+        if (sessionUser == null){
+            return "redirect:../" + id;
+        }
         if (!sessionUser.equals(theUser)){
             return "redirect:../" + id;
         }

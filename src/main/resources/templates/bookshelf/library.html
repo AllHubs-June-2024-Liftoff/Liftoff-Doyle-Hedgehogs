@@ -14,6 +14,7 @@
     <input type="hidden" th:id="bookshelfId" th:value="${bookshelfId}">
     <a type="button" class="btn btn-success" th:href="@{'/book/addBook'}">Add a Book</a>
 </form>
+
 <table class="table table-striped">
     <thead>
     <tr>
@@ -31,6 +32,11 @@
                 <span>
                     <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.displayName}"></a>
                 </span>
+            </div>
+        </td>
+        <td>
+            <div th:if="${bookshelfVolume.pendingTransferTo != null}">
+                Requested
             </div>
         </td>
         <td>
