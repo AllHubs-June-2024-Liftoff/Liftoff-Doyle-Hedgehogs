@@ -22,6 +22,9 @@
         <th>Title</th>
         <th>Author</th>
         <th>Tags</th>
+        <th>Average Rating</th>
+        <th>Your Rating</th>
+        <th>Rate</th>
     </tr>
     </thead>
     <tbody>
@@ -32,6 +35,22 @@
             <p th:each="tag : ${bookshelfVolume.tags}">
                     <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.displayName}"></a>
             </p>
+        </td>
+        <td th:text="${bookshelfVolume.volume.rating_avg != null ? bookshelfVolume.volume.rating_avg : 'Not Rated'}"></td>
+        <td th:text="${bookshelfVolume.rating != null ? bookshelfVolume.rating : 'Not Rated'}"></td>
+        <td>
+            <form th:action="@{/book/rate}" method="post">
+                <input type="hidden" name="id" th:value="${bookshelfVolume.id}" />
+                <select name="rating" class="form-select form-select-sm">
+                    <option value="" th:selected="${bookshelfVolume.rating == null}">No Rating</option>
+                    <option value="1" th:selected="${bookshelfVolume.rating == 1}">1</option>
+                    <option value="2" th:selected="${bookshelfVolume.rating == 2}">2</option>
+                    <option value="3" th:selected="${bookshelfVolume.rating == 3}">3</option>
+                    <option value="4" th:selected="${bookshelfVolume.rating == 4}">4</option>
+                    <option value="5" th:selected="${bookshelfVolume.rating == 5}">5</option>
+                </select>
+                <button type="submit" class="btn btn-primary btn-sm" style="padding: 2px 6px; font-size: 8px; line-height: 1;">Rate</button>
+            </form>
         </td>
         <td>
             <p>

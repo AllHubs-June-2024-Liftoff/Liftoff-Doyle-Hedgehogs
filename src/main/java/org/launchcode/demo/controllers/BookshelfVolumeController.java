@@ -48,6 +48,14 @@ public class BookshelfVolumeController {
         return "book/addBook";
     }
 
+    @PostMapping("/rate")
+    public String rateBook(@RequestParam int id, @RequestParam(required = false) Float rating) {
+        BookshelfVolume bookshelfVolume = bookshelfVolumeRepository.findById(id).get();
+        bookshelfVolume.setRating(rating);
+        bookshelfVolumeRepository.save(bookshelfVolume);
+        return "redirect:/bookshelf/view/" + bookshelfVolume.getBookshelf().getUser().getUsername();
+    }
+
     //Hidden redirect (no user view) transferring search results and bookshelfId to results page//
     @PostMapping("api/results")
     public String handleAPISearchPostRequest(@RequestParam String searchTerm,
@@ -107,7 +115,7 @@ public class BookshelfVolumeController {
 
         if (volumeRepository.findById(bookId.toString()).isEmpty()){
             Volume newVolume = new Volume(bookId.toString(), author.toString(), bookTitle.toString(),
-                    description, thumbnail.toString());
+                    description, thumbnail.toString(), null);
             volumeRepository.save(newVolume);
             model.addAttribute("volume", newVolume);
         } else {
