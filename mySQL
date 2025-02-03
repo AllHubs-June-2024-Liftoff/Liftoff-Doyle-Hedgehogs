@@ -8,7 +8,7 @@ CREATE TABLE UserAccounts (
                               id INT AUTO_INCREMENT PRIMARY KEY,
                               username VARCHAR(100) UNIQUE NOT NULL,
                               location VARCHAR(2), -- 0: Kansas City 1: Philadelphia 2: St. Louis
-                              email VARCHAR(100) UNIQUE NOT NULL,
+                              email VARCHAR(100) NOT NULL,
                               verification_code VARCHAR (100) NOT NULL,
                               pw_hash VARCHAR(255) NOT NULL
 );
