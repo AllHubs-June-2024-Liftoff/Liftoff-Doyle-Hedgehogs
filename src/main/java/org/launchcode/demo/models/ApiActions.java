@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -97,6 +98,10 @@ public class ApiActions {
             String currentThumbnail = volumeImageNode != null && volumeImageNode.has("thumbnail")
                     ? volumeImageNode.get("thumbnail").asText()
                     : "";
+            if (Objects.equals(currentTitle, "")) {currentTitle = "Title Unavailable";}
+            if (Objects.equals(currentThumbnail, "")) {currentThumbnail = "https://png.pngtree.com/png-vector/20221125/ourmid/pngtree-no-image-available-icon-flatvector-illustration-thumbnail-graphic-illustration-vector-png-image_40966590.jpg";}
+            if (Objects.equals(currentAuthors, null)) {currentAuthors = "Author Unknown";}
+            if (Objects.equals(currentDescription, null)) {currentDescription = "-";}
 
         //Remove double quotes and square brackets added by API
             String tidyTitle = currentTitle.replaceAll("\"", "");
