@@ -106,7 +106,7 @@ public class ApiActions {
 
             //Constructor
 
-            Volume currentVolume = new Volume(currentId, tidyAuthors, tidyTitle, tidyDescription, tidyThumbnail);
+            Volume currentVolume = new Volume(currentId, tidyAuthors, tidyTitle, tidyDescription, tidyThumbnail, null);
             volumeInfo.add(currentVolume);
         }
         return volumeInfo;

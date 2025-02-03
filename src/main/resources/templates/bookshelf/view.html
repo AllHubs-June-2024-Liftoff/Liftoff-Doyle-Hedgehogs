@@ -17,6 +17,7 @@
         <th>Title</th>
         <th>Author</th>
         <th>Tags</th>
+        <th>Average Rating</th>
     </tr>
 
     <tr th:each="bookshelfVolume : ${bookshelfVolumes}">
@@ -27,6 +28,7 @@
                 <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.displayName}"></a>
             </p>
         </td>
+        <td th:text="${bookshelfVolume.volume.rating_avg != null ? bookshelfVolume.volume.rating_avg : 'Not Rated'}"></td>
     </tr>
 </table>
 </div>

@@ -36,7 +36,7 @@ public class VolumeController{
         Object thumbnail = session.getAttribute("thumbnail");
         if (volumeRepository.findById(bookId.toString()).isEmpty()){
             Volume newVolume = new Volume(bookId.toString(), bookTitle.toString(), author.toString(),
-                    description.toString(), thumbnail.toString());
+                    description.toString(), thumbnail.toString(), null);
             volumeRepository.save(newVolume);
         }
         model.addAttribute("title", "Add to My Bookshelf");
