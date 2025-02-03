@@ -1,4 +1,5 @@
 HELP.md
+apiKey
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
