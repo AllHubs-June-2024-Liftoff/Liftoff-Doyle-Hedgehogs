@@ -75,7 +75,7 @@ public class ApiActions {
     }
 }
 
-    public static ArrayList<Volume> ParseResults(String searchResult) throws JsonProcessingException, MalformedURLException {
+    public static ArrayList<Volume> ParseResults(String searchResult) throws JsonProcessingException {
 
         ArrayList<Volume> volumeInfo = new ArrayList<>();
 
@@ -111,9 +111,10 @@ public class ApiActions {
             String tidyDescription = currentDescription.replaceAll("\"", "");
             String tidyThumbnail = currentThumbnail.replaceAll("\"", "");
 
-            //Constructor
+        //Constructor
 
-            Volume currentVolume = new Volume(currentId, tidyAuthors, tidyTitle, tidyDescription, tidyThumbnail, null);
+            Volume currentVolume = new Volume(currentId, tidyTitle, tidyAuthors,  tidyDescription, tidyThumbnail);
+
             volumeInfo.add(currentVolume);
         }
         return volumeInfo;

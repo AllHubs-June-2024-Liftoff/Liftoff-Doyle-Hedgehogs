@@ -10,12 +10,33 @@ body {
     gap: 10px 10px;
 }
 
-.grid-item {
-    background-color: #f6eee3;
-    text-align: auto;
-    text-color: black;
+
+.gridObject {
+    margin: auto;
+    overflow: scroll;
+    text-align: center;
+    color: black;
+
     font: helvetica,verdana,arial,sans-serif;
 }
+
+
+.title{
+    font-size: 14px;
+    overflow: ellipsis;
+}
+
+.author{
+    font-size: 10px;
+    overflow: ellipsis;
+}
+
+.img-thumbnail{
+    object-fit: contain;
+}
+
+p {
+    width: 75%;
 
 .grid-item-text {
     margin: 5px;
@@ -26,6 +47,7 @@ div {
         margin-top: 20px;
         margin-bottom: 20px;
     width: 80%;
+
     padding: 20px;
     text-align: center;
     background-color: #f6eee3;
