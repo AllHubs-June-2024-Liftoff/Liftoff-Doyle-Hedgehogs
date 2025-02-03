@@ -15,7 +15,7 @@ body {
 .gridObject {
     margin: auto;
     overflow: scroll;
-    text-align: auto;
+    text-align: center;
     color: black;
     font: helvetica,verdana,arial,sans-serif;
 
@@ -23,12 +23,12 @@ body {
 
 .title{
     font-size: 14px;
-    overflow: auto
+    overflow: ellipsis;
 }
 
 .author{
     font-size: 10px;
-    overflow: auto
+    overflow: ellipsis;
 }
 
 .img-thumbnail{

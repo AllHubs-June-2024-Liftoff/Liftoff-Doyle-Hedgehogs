@@ -102,6 +102,7 @@ public class ApiActions {
             if(Objects.equals(currentTitle, "")) {currentTitle = "Title Unavailable";}
             if(Objects.equals(currentThumbnail, "")) {currentThumbnail = "https://png.pngtree.com/png-vector/20221125/ourmid/pngtree-no-image-available-icon-flatvector-illustration-thumbnail-graphic-illustration-vector-png-image_40966590.jpg";}
             if(Objects.equals(currentAuthors, null)) {currentAuthors = "Author Unknown";}
+            if(Objects.equals(currentDescription, null)) {currentDescription = "No Description Available.";}
 
         //Remove double quotes and square brackets added by API
             String tidyTitle = currentTitle.replaceAll("\"", "");
@@ -111,7 +112,7 @@ public class ApiActions {
 
         //Constructor
 
-            Volume currentVolume = new Volume(currentId, tidyAuthors, tidyTitle, tidyDescription, tidyThumbnail);
+            Volume currentVolume = new Volume(currentId, tidyTitle, tidyAuthors,  tidyDescription, tidyThumbnail);
             volumeInfo.add(currentVolume);
         }
         return volumeInfo;
