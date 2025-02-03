@@ -53,6 +53,10 @@ h2 {
    background-color: #f6eee3;
 }
 
+input[type="radio"]{
+    margin: 0 0 0 20px;
+}
+
 .error {
     color:red;
 }

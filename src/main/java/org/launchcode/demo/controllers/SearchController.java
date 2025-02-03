@@ -41,7 +41,7 @@ public class SearchController {
     public SearchController(){
         columnOptions.put("title", "Title");
         columnOptions.put("author", "Author");
-        columnOptions.put("all", "All");
+        columnOptions.put("all", "Show all books");
     }
     private static final String userSessionKey = "user";
 
@@ -87,7 +87,7 @@ public class SearchController {
     public String redirectToSearchResults(Model model, @RequestParam (required = false) String location,
                                           @RequestParam (required = false) String searchType, @RequestParam
                                            String searchTerm, HttpSession session) throws IOException {
-        if (location == null){
+        if (location == null) {
             model.addAttribute("title", "Search the Little Online Library");
             model.addAttribute("errorMessage", "Please select a location");
             model.addAttribute("columns", columnOptions);
@@ -99,7 +99,10 @@ public class SearchController {
             model.addAttribute("columns", columnOptions);
             model.addAttribute("locations", getAllLocations());
             return "search";
-        } else if (searchTerm == null){
+        } else if (searchType.contains("All")){
+            Iterable<BookshelfVolume> bookshelfVolumes = LibraryData.filterByLocation(location, bookshelfVolumeRepository.findAll());
+            session.setAttribute("bookshelfVolumes", bookshelfVolumes);
+        }else if (searchTerm == null){
             Iterable<BookshelfVolume> bookshelfVolumes = LibraryData.filterByLocation(location, bookshelfVolumeRepository.findAll());
             session.setAttribute("bookshelfVolumes", bookshelfVolumes);
         } else {
@@ -129,7 +132,7 @@ public class SearchController {
         model.addAttribute("title", "Search the Little Online Library");
         model.addAttribute("locations", getAllLocations());
         model.addAttribute("columns", columnOptions);
-        if (searchTerm.isEmpty()){
+        if (searchTerm.isEmpty() || searchType.contains("All")){
             model.addAttribute("pageTitle", "Books in the " + location + " area");
         } else {
             model.addAttribute("pageTitle", "Books in the " + location + " area with " +

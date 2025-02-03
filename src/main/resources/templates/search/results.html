@@ -12,7 +12,6 @@
     <h1 th:text="${title}"></h1>
 </div>
 <form th:action="@{/search/redirectToResults}" method="post">
-    <h2 th:text="${pageTitle}"></h2>
     <p>
         <span th:if="${errorMessage}" th:text="${errorMessage}" th:style="'color: red'">Error</span>
     </p>
@@ -52,9 +51,9 @@
     <button>Search by Tags</button>
 </a>
 <hr />
-
+<h2 th:text="${pageTitle}"></h2>
 <table class="table table-striped">
-
+<tbody>
     <tr>
         <th>Title</th>
         <th>Author(s)</th>
@@ -89,7 +88,7 @@
             </form>
         </td>
     </tr>
-
+</tbody>
 </table>
 
 </body>

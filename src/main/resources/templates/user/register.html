@@ -8,38 +8,35 @@
     <link th:href="@{/styles.css}" rel="stylesheet">
 </head>
 <body>
-
-<h1>Little Online Library</h1>
-
-<h2>Register</h2>
+<div>
+    <h1>Little Online Library</h1>
+</div>
+<div>
+    <h2>Register</h2>
+</div>
+<div>
 <form method="post">
-    <div>
         <label>Username
             <input th:field="${registerFormDTO.username}" />
         </label>
         <p th:errors="${registerFormDTO.username}"></p>
-    </div>
-    <div>
+    <p>
         <label>Email
             <input th:field="${registerFormDTO.email}" type="email" />
         </label>
-    </div>
+    </p>
     <div>Location
-        <div>
             <input type="radio" id="kansascity" value="0" th:field="${registerFormDTO.location}">
             <label for="kansascity">Kansas City</label><br>
             <input type="radio" id="philadelphia" value="1" th:field="${registerFormDTO.location}">
             <label for="philadelphia">Philadelphia</label><br>
             <input type="radio" id="saintlouis" value="2" th:field="${registerFormDTO.location}">
             <label for="saintlouis">Saint Louis</label>
-        </div>
     </div>
-    <div>
         <label>Password
             <input th:field="${registerFormDTO.password}" type="password" />
         </label>
         <p th:errors="${registerFormDTO.password}"></p>
-    </div>
     <div>
         <label>Verify Password
             <input th:field="${registerFormDTO.verifyPassword}" type="password" />
@@ -48,7 +45,7 @@
 
     <input type="submit" class="btn btn-primary" value="Register" />
 </form>
-
+</div>
 <p><a href="/user/login">Return to Login</a></p>
 
 </body>
