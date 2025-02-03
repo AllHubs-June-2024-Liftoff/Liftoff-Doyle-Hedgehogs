@@ -8,11 +8,11 @@
     <link th:href="@{/styles.css}" rel="stylesheet">
 </head>
 <body>
-
+<div>
 <h1 th:text="${tag.displayName}">Default Heading</h1>
-
+</div>
+<div>
 <table class="table table-striped">
-
     <tr>
         <th>Title</th>
         <th>Author</th>
@@ -24,15 +24,13 @@
         <td th:text="${bookshelfVolume.volume.title}"></td>
         <td th:text="${bookshelfVolume.volume.author}"></td>
         <td>
-            <div th:each="tag : ${bookshelfVolume.tags}">
-                <span>
+            <p th:each="tag : ${bookshelfVolume.tags}">
                     <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.displayName}"></a>
-                </span>
-            </div>
+            </p>
         </td>
     </tr>
 
 </table>
-
+</div>
 </body>
 </html>

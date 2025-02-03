@@ -8,11 +8,12 @@
    <link th:href="@{/styles.css}" rel="stylesheet">
 </head>
 <body class="container">
-
+<div>
 <h2 th:text="${title}"></h2>
 
 <h4 th:text="'Current visibility: ' + ${currentHasBookStatus}"></h4>
-
+</div>
+<div>
 <h3>What would you like to do?</h3>
 
 <p>
@@ -20,11 +21,7 @@
 </p>
 
 <form th:object="${bookshelfVolume}" method="post" th:action="@{/book/update-or-remove/ + ${id}}">
-
-   <div class="form-group">
       <input type="hidden" name="id" th:value="${id}"/>
-   </div>
-   <div>
       <p th:each="updateOption : ${updateOptions}">
          <span>
             <input
@@ -35,11 +32,9 @@
             <label th:for="${updateOption.key}" th:text="${updateOption.value}"></label>
          </span>
       </p>
-   </div>
-   <div>
       <input type="submit" class="btn btn-success" th:href="@{'/book/update-or-remove/'}">
-   </div>
 </form>
+</div>
 <hr>
 <a type="button" class="btn btn-warning" th:href="@{'/bookshelf/view/' + ${bookshelfVolume.bookshelf.user.username}}">Cancel</a>
 

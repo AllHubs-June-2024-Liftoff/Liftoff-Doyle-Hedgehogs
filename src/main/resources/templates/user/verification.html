@@ -5,27 +5,28 @@
     <title>Verify Email</title>
 </head>
 <body>
-
+<div>
 <form method="post">
-    <div> Check Email for Verification Code </div>
+    <p> Check Email for Verification Code </p>
     <div> Username
-        <div>
+        <p>
             <label>
                 <input th:field="${verificationFormDTO.username}" />
             </label>
-        </div>
+        </p>
     </div>
     <div> Code
-        <div>
+        <p>
             <label>
                 <input th:field="${verificationFormDTO.verifyCode}" name ="code"/>
             </label>
             <p th:errors="${verificationFormDTO.verifyCode}"></p>
             <p th:text="${incorrect}"></p>
-        </div>
+        </p>
     </div>
         <input type="submit" class="btn btn-primary" value="Verify" />
 </form>
-
+</div>
 </body>
+
 </html>

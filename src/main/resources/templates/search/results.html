@@ -11,6 +11,7 @@
 <div>
     <h1 th:text="${title}"></h1>
 </div>
+<div>
 <form th:action="@{/search/redirectToResults}" method="post">
     <p>
         <span th:if="${errorMessage}" th:text="${errorMessage}" th:style="'color: red'">Error</span>
@@ -41,17 +42,18 @@
         <input type="text" name="searchTerm" id="searchTerm" placeholder="Search">
     </p>
 
-    <div class="form-group">
         <input type="submit" value="Search" class="btn btn-success">
-    </div>
 
 </form>
-<p>Or</p>
+
+<p style="margin-top: 5px">Or</p>
 <a th:href="@{'/tags'}">
     <button>Search by Tags</button>
 </a>
+</div>
 <hr />
-<h2 th:text="${pageTitle}"></h2>
+<div>
+<h2 th:text="${pageTitle}" style="text-align center"></h2>
 <table class="table table-striped">
 <tbody>
     <tr>
@@ -67,29 +69,25 @@
         <td th:text="${bookshelfVolume.volume.title}"></td>
         <td th:text="${bookshelfVolume.volume.author}"></td>
         <td>
-            <div th:each="tag : ${bookshelfVolume.tags}">
-                <span>
+            <p th:each="tag : ${bookshelfVolume.tags}">
                     <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.displayName}"></a>
-                </span>
-            </div>
+            </p>
         </td>
         <td>
             <a th:href="@{'/bookshelf/' + ${bookshelfVolume.bookshelf.id}}" th:text="${bookshelfVolume.bookshelf.bookshelf_name}"></a>
         </td>
         <td>
             <form method="post" th:action="@{/search/redirectToRequestEmailForm}">
-                <div class="form-group">
                     <input type="hidden" name="recipient" th:value="${bookshelfVolume.bookshelf.user.email}"/>
                     <input type="hidden" name="bookTitle" th:value="${bookshelfVolume.volume.title}"/>
                     <input type="hidden" name="bookId" th:value="${bookshelfVolume.id}">
                     <input type="hidden" name="requestingUsername" th:value="${requestingUsername}">
-                </div>
                 <input type="submit" class="btn btn-primary" value="Request Book" />
             </form>
         </td>
     </tr>
 </tbody>
 </table>
-
+</div>
 </body>
 </html>

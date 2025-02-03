@@ -16,22 +16,26 @@
 </div>
 <div>
 <form method="post">
+    <p>
         <label>Username
             <input th:field="${registerFormDTO.username}" />
         </label>
+    </p>
         <p th:errors="${registerFormDTO.username}"></p>
     <p>
         <label>Email
             <input th:field="${registerFormDTO.email}" type="email" />
         </label>
     </p>
-    <div>Location
+    <div>
+        <p>Location</p>
             <input type="radio" id="kansascity" value="0" th:field="${registerFormDTO.location}">
             <label for="kansascity">Kansas City</label><br>
             <input type="radio" id="philadelphia" value="1" th:field="${registerFormDTO.location}">
             <label for="philadelphia">Philadelphia</label><br>
             <input type="radio" id="saintlouis" value="2" th:field="${registerFormDTO.location}">
             <label for="saintlouis">Saint Louis</label>
+
     </div>
         <label>Password
             <input th:field="${registerFormDTO.password}" type="password" />

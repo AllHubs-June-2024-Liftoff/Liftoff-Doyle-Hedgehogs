@@ -167,13 +167,6 @@ public class BookshelfVolumeController {
         return "redirect:";
     }
 
-//    static HashMap<Integer, String> updateOptions = new HashMap<>();
-//    public BookshelfVolumeController(){
-//        updateOptions.put(0, "Transfer to another user");
-//        updateOptions.put(1, "Change visibility (search status)");
-//        updateOptions.put(2, "Remove from Little Online Library entirely");
-//    }
-
     @GetMapping("update-or-remove/{id}")
     public String displayUpdateOrRemoveBookForm(@PathVariable Integer id, Model model){
         Optional<BookshelfVolume> optionalBookshelfVolume = bookshelfVolumeRepository.findById(id);
@@ -219,14 +212,11 @@ public class BookshelfVolumeController {
             //Simply reloads the page if submitted when no selection is made//
             return "redirect:../remove-or-update/" + id;
         } else if (updateOption.equals(0)){
-            if (destinationBookshelf == null){
-                model.addAttribute("errorMessage", "No one has requested this book");
-                return "book/remove-or-update/" + id;
-            }
             //Transfer book to another user//
-            bookshelfVolume.setHas_book(false);
+            bookshelfVolume.setHas_book(true);
             bookshelfVolume.setBookshelf(destinationBookshelf);
-            bookshelfVolume.updateSwapHistory("username");
+            bookshelfVolume.setPendingTransferTo(null);
+            bookshelfVolume.updateSwapHistory(username);
             bookshelfVolumeRepository.save(bookshelfVolume);
         } else if (updateOption.equals(1)){
             if (bookshelfVolume.getHas_book()){
