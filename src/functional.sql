@@ -1,3 +1,4 @@
+
 DROP DATABASE IF EXISTS BooksAPI;
 
 DROP DATABASE IF EXISTS BOOKSAPI;
@@ -6,6 +7,7 @@ CREATE DATABASE booksapi;
 USE booksapi;
 
 CREATE TABLE location (
+
 						id INT PRIMARY KEY,
                         name VARCHAR(255) UNIQUE NOT NULL
 );
@@ -16,14 +18,17 @@ INSERT into location VALUES (2, 'St. Louis');
 
 
 
+
 CREATE TABLE user (
                               id INT AUTO_INCREMENT PRIMARY KEY,
                               username VARCHAR(255) UNIQUE NOT NULL,
                               location_id INT, -- '0': Kansas City '1': Philadelphia '2': St. Louis
+
                               email VARCHAR(255) NOT NULL,
                               pw_hash VARCHAR(255) NOT NULL,
                               verification_code VARCHAR (100) NOT NULL,
                               is_verified BOOLEAN DEFAULT 0,
+
                               FOREIGN KEY (location_id) REFERENCES location(id)
 );
 
@@ -32,6 +37,9 @@ CREATE TABLE volume (
                         author VARCHAR(255), -- Author associated with unique book.
                         title VARCHAR(255) NOT NULL, -- title associated with unique book
                         description TEXT, -- description from google unique string description of book
+
+                        rating_avg FLOAT DEFAULT NULL,
+
                         thumbnail TEXT -- link to normal res book photo thumbnail
 );
 
@@ -48,10 +56,63 @@ CREATE TABLE bookshelf_volume (
                                   volume_id VARCHAR(255), -- this will be the abstracted book.
                                   has_book BOOLEAN, -- TRUE means that person has the book currently, FALSE means person does not have the book on their current bookshelf.
                                   unique_book VARCHAR(255) AS (CONCAT(bookshelf_id, '_', volume_id)),
-                                  ratings FLOAT CHECK (ratings BETWEEN 0.0 AND 5.0),
+
+                                  ratings FLOAT DEFAULT NULL CHECK (ratings BETWEEN 0.0 AND 5.0),
+
                                   FOREIGN KEY (bookshelf_id) REFERENCES bookshelf(id), -- referencing has to be the primary key
                                   FOREIGN KEY (volume_id) REFERENCES volume(id) -- referencing has to be the primary key
 );
+
+DELIMITER $$
+
+CREATE TRIGGER update_rating_avg_on_delete
+AFTER DELETE ON bookshelf_volume
+FOR EACH ROW
+BEGIN
+    UPDATE volume
+    SET rating_avg = (
+        SELECT ROUND(AVG(bookshelf_volume.ratings), 1)
+        FROM bookshelf_volume
+        WHERE bookshelf_volume.volume_id = OLD.volume_id AND ratings IS NOT NULL
+    )
+    WHERE volume.id = OLD.volume_id;
+END $$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER update_rating_avg_on_update
+AFTER UPDATE ON bookshelf_volume
+FOR EACH ROW
+BEGIN
+    UPDATE volume
+    SET rating_avg = (
+        SELECT ROUND(AVG(bookshelf_volume.ratings), 1)
+        FROM bookshelf_volume
+        WHERE bookshelf_volume.volume_id = NEW.volume_id AND ratings IS NOT NULL
+    )
+    WHERE volume.id = NEW.volume_id;
+END $$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER update_rating_avg_on_insert
+AFTER INSERT ON bookshelf_volume
+FOR EACH ROW
+BEGIN
+    UPDATE volume
+    SET rating_avg = (
+        SELECT ROUND(AVG(bookshelf_volume.ratings), 1)
+        FROM bookshelf_volume
+        WHERE bookshelf_volume.volume_id = NEW.volume_id AND ratings IS NOT NULL
+    )
+    WHERE volume.id = NEW.volume_id;
+END $$
+
+DELIMITER ;
 
 
 /* Adding three books (two are kind of the same book)
@@ -81,6 +142,7 @@ INSERT INTO volume (id, author, title, description, thumbnail) VALUES
                                                                     "Harper Lee's Pulitzer Prize-winning masterwork of honor and injustice in the deep South—and the heroism of one man in the face of blind and violent hatred.",
                                                                     'http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api'
                                                                    );
+
 -- /* Adding userdata for myself and a made-up password hash from BCrypt
 -- location is kansas_city 01
 -- */
@@ -126,6 +188,7 @@ location is St. Louis 03
 -- INSERT INTO bookshelf_volume (bookshelf_id, volume_id, has_book) VALUES
 --     (5, 'wrOQLV6xB-wC', TRUE);
 
+
 -- tag some books for functional testing
 -- INSERT INTO bookshelf_volume_tags (bookshelf_volumes_id, tags_id) VALUES
 -- (1, 1),
@@ -143,11 +206,15 @@ SELECT
     user.username AS username,
     user.email AS email,
     user.location_id AS location,
+
     bookshelf.id AS bookshelf_id,
     bookshelf.bookshelf_name AS bookshelf_name,
     bookshelf_volume.volume_id AS volume_id,
     bookshelf_volume.has_book AS has_book,
     bookshelf_volume.unique_book,
+
+    bookshelf_volume.ratings,
+
     volume.author AS author,
     volume.title AS title,
     volume.description AS description,
@@ -166,6 +233,25 @@ WHERE
 ORDER BY
     user.location_id, user.username, volume.title;
 
+
+
+SELECT * FROM VOLUME;
+
+UPDATE bookshelf_volume
+SET ratings = 5
+WHERE bookshelf_id = 5 AND volume_id = '3fOWbIrdRdIC';
+
+
+UPDATE bookshelf_volume
+SET ratings = 5
+WHERE bookshelf_id = 5 AND volume_id = 'wrOQLV6xB-wC';
+
+
+UPDATE bookshelf_volume
+SET ratings = 5
+WHERE bookshelf_id = 5 AND volume_id = 'KUMIEAAAQBAJ';
+
+SELECT * FROM VOLUME;
 
 --
 --DROP DATABASE IF EXISTS BooksAPI;
@@ -502,3 +588,4 @@ ORDER BY
 ----    bookshelf_volume.has_book = TRUE
 ----ORDER BY
 --    user.location_id, user.username, volume.title;
+
