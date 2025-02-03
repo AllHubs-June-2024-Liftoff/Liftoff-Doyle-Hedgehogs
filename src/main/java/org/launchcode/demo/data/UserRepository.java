@@ -9,3 +9,4 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     User findByUsername(String username);
 }
 
+//lets us fetch data from SQL table and perform CRUD operations

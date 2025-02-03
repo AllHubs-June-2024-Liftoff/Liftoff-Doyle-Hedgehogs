@@ -12,16 +12,23 @@
 <h1>Little Online Library</h1>
 
 <h2>Request Book</h2>
-<form method="post">
+<form th:action="@{/user/email}" method="post">
     <div>
         <label> Your Contact Email
             <input th:field="${userEmailDTO.email}" type="email"/>
         </label>
     </div>
     <p>*Little Online Library will send an automated message to book owner with your contact information.</p>
+    <input type="hidden" name="recipient" th:value="${recipient}">
+    <input type="hidden" name="bookTitle" th:value="${bookTitle}"/>
+    <input type="hidden" name="bookId" th:value="${bookId}">
+    <input type="hidden" name="requestingUsername" th:value="${requestingUsername}">
+
     <input type="submit" class="btn btn-primary" value="Email Owner" />
-    <p th:text="${success}"></p>
+
     <p><a href="../search">Continue Searching for Books</a></p>
+    <p><a href="../user/index">Return to Profile Page</a></p>
+
 </form>
 
 </body>

@@ -3,7 +3,9 @@ package org.launchcode.demo.controllers;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.launchcode.demo.data.BookshelfRepository;
 import org.launchcode.demo.data.UserRepository;
+import org.launchcode.demo.models.Bookshelf;
 import org.launchcode.demo.models.User;
 import org.launchcode.demo.models.dto.LoginFormDTO;
 import org.launchcode.demo.models.dto.RegisterFormDTO;
@@ -31,6 +33,8 @@ public class AuthenticationController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    BookshelfRepository bookshelfRepository;
     @Autowired private EmailService emailService;
 
     private static final String userSessionKey = "user";
@@ -68,7 +72,6 @@ public class AuthenticationController {
     @GetMapping("/user/login")
     public String displayLoginForm(Model model) {
         model.addAttribute(new LoginFormDTO());
-        model.addAttribute("title", "Log In");
         return "user/login";
     }
 
@@ -78,7 +81,6 @@ public class AuthenticationController {
                                    Model model) {
 
         if (errors.hasErrors()) {
-            model.addAttribute("title", "Log In");
             return "user/login";
         }
 
@@ -86,7 +88,6 @@ public class AuthenticationController {
 
         if (theUser == null) {
             errors.rejectValue("username", "user.invalid", "The given username does not exist");
-            model.addAttribute("title", "Log In");
             return "user/login";
         }
 
@@ -94,7 +95,6 @@ public class AuthenticationController {
 
         if (!theUser.isMatchingPassword(password)) {
             errors.rejectValue("password", "password.invalid", "Invalid password");
-            model.addAttribute("title", "Log In");
             return "user/login";
         }
 
@@ -102,11 +102,16 @@ public class AuthenticationController {
             return "redirect:/user/verification";
         }
 
-        model.addAttribute("username", theUser.getUsername());
-
         setUserInSession(request.getSession(), theUser);
 
-        return "/user/index";
+        return "redirect:/user/index";
+    }
+
+    @GetMapping("user/index")
+    public String displayProfilePage(Model model, HttpSession session) {
+        User theUser = getUserFromSession(session);
+        model.addAttribute("username", theUser.getUsername());
+        return "user/index";
     }
 
 
@@ -123,11 +128,6 @@ public class AuthenticationController {
                                           Model model) {
 
         if (errors.hasErrors()) {
-//            model.addAttribute("title", "Register");
-            List<ObjectError> theseErrors = errors.getAllErrors();
-            for (ObjectError error : theseErrors) {
-                System.out.println(error.toString());
-            }
             return "user/register";
         }
 
@@ -149,10 +149,13 @@ public class AuthenticationController {
         String code = VerificationCodeGenerator.createVerificationCode();
         newUser.setVerificationCode(code);
         userRepository.save(newUser);
-        setUserInSession(request.getSession(), newUser);
-        model.addAttribute("user", newUser.getUsername());
+
+        //        setUserInSession(request.getSession(), newUser);
+        //        model.addAttribute("user", newUser.getUsername());
+
         EmailDetails theseDetails = new EmailDetails(registerFormDTO.getEmail(), "Your verification code is: " + code, "Email Verification Code");
         sendUserMail(theseDetails);
+
         return "redirect:/user/verification";
     }
 
@@ -167,20 +170,30 @@ public class AuthenticationController {
 
     @PostMapping("user/verification")
     public String processVerificationForm(@ModelAttribute @Valid VerificationFormDTO verificationFormDTO,
-                                          Errors errors, HttpServletRequest request,
+                                          Errors errors, HttpServletRequest request, HttpSession session,
                                           Model model) {
+
         String username = verificationFormDTO.getUsername();
         User user = userRepository.findByUsername(username);
-        String submittedCode = verificationFormDTO.getVerifyCode();
+
         String sentCode = user.getVerificationCode();
+        String submittedCode = verificationFormDTO.getVerifyCode();
+
+
         if (!submittedCode.equals(sentCode)) {
-            ///errors.rejectValue("code", "incorrect code", "Codes do not match");
             model.addAttribute("incorrect", "Incorrect Verification Code. Please Check Email");
             return "user/verification";
         }
 
         user.setIsVerified(true);
         userRepository.save(user);
+
+        Bookshelf bookshelf = new Bookshelf(user.getUsername() + "'s Bookshelf", user);
+        bookshelfRepository.save(bookshelf);
+
+        //AJ testing something//
+        setUserInSession(request.getSession(), user);
+        //AJ testing//
 
         model.addAttribute("username", user.getUsername());
 
@@ -196,6 +209,11 @@ public class AuthenticationController {
         return "redirect:/user/login";
     }
 
+    //Redirect
+    @GetMapping("")
+    public String redirectToLogin(){
+        return "redirect:/user/login";
+    }
 }
 
 

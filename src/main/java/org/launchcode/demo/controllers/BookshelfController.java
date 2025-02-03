@@ -30,11 +30,28 @@ public class BookshelfController {
 
     @Autowired
     public BookshelfVolumeRepository bookshelfVolumeRepository;
+    private static final String userSessionKey = "user";
+
+    public User getUserFromSession(HttpSession session) {
+        Integer userId = (Integer) session.getAttribute(userSessionKey);
+
+        if (userId == null) {
+            return null;
+        }
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            return null;
+        }
+        return user.get();
+    }
+
+    private static void setUserInSession(HttpSession session, User user) {
+        session.setAttribute("user", user.getId());
+    }
 
     // User view of another user's bookshelf //
     @GetMapping("/{id}")
-    public String displayLibraryBookshelf(@PathVariable Integer id, Model model){
-
+    public String displayLibraryBookshelf(@PathVariable Integer id, Model model, HttpSession session){
         Optional<Bookshelf> result = bookshelfRepository.findById(id);
         Bookshelf bookshelf = result.get();
         List<BookshelfVolume> bookshelfVolumes = LibraryData.filterByHasBook(LibraryData.filterByBookshelf(bookshelf, bookshelfVolumeRepository.findAll()));
@@ -47,14 +64,23 @@ public class BookshelfController {
     // User view of their own bookshelf
     @GetMapping("/view/{username}")
     public String displayUserLibrary(@PathVariable String username, Model model, HttpSession session){
+        User sessionUser = getUserFromSession(session);
         Optional<User> optionalUser = Optional.ofNullable(userRepository.findByUsername(username));
         User theUser = optionalUser.get();
+        int id = theUser.getId();
+        if (sessionUser == null){
+            return "redirect:../" + id;
+        }
+        if (!sessionUser.equals(theUser)){
+            return "redirect:../" + id;
+        }
         Bookshelf theBookshelf = bookshelfRepository.findByUser(theUser);
         session.setAttribute("bookshelfId", theBookshelf.getId());
         List<BookshelfVolume> bookshelfVolumes = LibraryData.filterByBookshelf(theBookshelf, bookshelfVolumeRepository.findAll());
         model.addAttribute("title", theUser.getUsername() + "'s Library");
         model.addAttribute("bookshelfVolumes", bookshelfVolumes);
         model.addAttribute("bookshelfId", theBookshelf.getId());
+        model.addAttribute("updateRemoveButtonLabel", "Update or Remove");
 
         return "bookshelf/library";
     }

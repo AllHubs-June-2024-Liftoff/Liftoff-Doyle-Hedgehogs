@@ -1,6 +1,7 @@
 package org.launchcode.demo.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
@@ -17,17 +18,21 @@ public class BookshelfVolume extends AbstractEntity{
     private Volume volume;
 
     private Boolean has_book = true;
-    private Float rating;
     private String swapHistory = "";
+    private Float rating;
+    private String pendingTransferTo = "";
 
-    @ManyToMany
+    @ManyToMany(fetch= FetchType.EAGER)
     private List<Tag> tags = new ArrayList<>();
 
-    public BookshelfVolume(Bookshelf bookshelf, Volume volume, Boolean has_book, String swapHistory) {
+    public BookshelfVolume(Bookshelf bookshelf, Volume volume, Boolean has_book, String swapHistory,
+                           Float rating, String pendingTransferTo) {
         this.bookshelf = bookshelf;
         this.volume = volume;
         this.has_book = has_book;
         this.swapHistory = swapHistory;
+        this.rating = null;
+        this.pendingTransferTo = null;
     }
 
 
@@ -86,4 +91,13 @@ public class BookshelfVolume extends AbstractEntity{
     public void updateSwapHistory(String username){
         this.swapHistory = this.swapHistory + ", " + username;
     }
+
+    public String getPendingTransferTo() {
+        return pendingTransferTo;
+    }
+
+    public void setPendingTransferTo(String pendingTransferTo) {
+        this.pendingTransferTo = pendingTransferTo;
+    }
+
 }

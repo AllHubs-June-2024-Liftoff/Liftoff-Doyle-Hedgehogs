@@ -8,18 +8,23 @@
     <link th:href="@{/styles.css}" rel="stylesheet">
 </head>
 <body>
-
-<h1 th:text="${title}"></h1>
+<div>
+    <h1 th:text="${title}"></h1>
+</div>
 <form th:action="@{/book/addBook}" method="post">
     <input type="hidden" th:id="bookshelfId" th:value="${bookshelfId}">
     <a type="button" class="btn btn-success" th:href="@{'/book/addBook'}">Add a Book</a>
 </form>
+
 <table class="table table-striped">
     <thead>
     <tr>
         <th>Title</th>
         <th>Author</th>
         <th>Tags</th>
+        <th>Average Rating</th>
+        <th>Your Rating</th>
+        <th>Rate</th>
     </tr>
     </thead>
     <tbody>
@@ -27,22 +32,43 @@
         <td th:text="${bookshelfVolume.volume.title}"></td>
         <td th:text="${bookshelfVolume.volume.author}"></td>
         <td>
-            <div th:each="tag : ${bookshelfVolume.tags}">
-                <span>
+            <p th:each="tag : ${bookshelfVolume.tags}">
                     <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.displayName}"></a>
-                </span>
-            </div>
+            </p>
+        </td>
+        <td th:text="${bookshelfVolume.volume.rating_avg != null ? bookshelfVolume.volume.rating_avg : 'Not Rated'}"></td>
+        <td th:text="${bookshelfVolume.rating != null ? bookshelfVolume.rating : 'Not Rated'}"></td>
+        <td>
+            <form th:action="@{/book/rate}" method="post">
+                <input type="hidden" name="id" th:value="${bookshelfVolume.id}" />
+                <select name="rating" class="form-select form-select-sm">
+                    <option value="" th:selected="${bookshelfVolume.rating == null}">No Rating</option>
+                    <option value="1" th:selected="${bookshelfVolume.rating == 1}">1</option>
+                    <option value="2" th:selected="${bookshelfVolume.rating == 2}">2</option>
+                    <option value="3" th:selected="${bookshelfVolume.rating == 3}">3</option>
+                    <option value="4" th:selected="${bookshelfVolume.rating == 4}">4</option>
+                    <option value="5" th:selected="${bookshelfVolume.rating == 5}">5</option>
+                </select>
+                <button type="submit" class="btn btn-primary btn-sm" style="padding: 2px 6px; font-size: 8px; line-height: 1;">Rate</button>
+            </form>
         </td>
         <td>
-            <div>
-                <span>
-                    <a th:href="'/book/update-or-remove/' + ${bookshelfVolume.id}" th:text="Remove"></a>
-                </span>
+            <p>
+
+                    <a th:href="'/book/update-or-remove/' + ${bookshelfVolume.id}" th:text="${updateRemoveButtonLabel}"></a>
+
+            </p>
+        </td>
+        <td>
+            <div th:unless="${bookshelfVolume.pendingTransferTo == null}">
+                Requested
             </div>
         </td>
     </tr>
     </tbody>
 </table>
+
+<p><a href="../../user/index">Return to Profile Page</a></p>
 
 </body>
 </html>

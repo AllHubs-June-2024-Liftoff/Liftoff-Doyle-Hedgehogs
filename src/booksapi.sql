@@ -7,6 +7,7 @@ USE booksapi;
 
 CREATE TABLE user_account (
                               id INT AUTO_INCREMENT PRIMARY KEY,
+
                               username VARCHAR(100) UNIQUE NOT NULL,
                               location VARCHAR(2), -- 00: Kansas City 01: Philadelphia 02: St. Louis
                               email VARCHAR(100) UNIQUE NOT NULL,
@@ -14,6 +15,7 @@ CREATE TABLE user_account (
 );
 
 CREATE TABLE volume (
+
                          id VARCHAR(50) PRIMARY KEY, -- Google booksAPI's unique string
                          author VARCHAR(50), -- Author associated with unique book.
                          title VARCHAR(255) NOT NULL, -- title associated with unique book
@@ -51,9 +53,11 @@ CREATE TABLE bookshelf_volume (
 -- 12/20/2024 Let me know what everyone thinks of this, this is able to work in mysql workbench
 
 
+
 /* Adding three books (two are kind of the same book)
 userAccounts data, and a bookshelfVolume data */
 INSERT INTO volume (id, author, title, description, thumbnail) VALUES
+
 ('3fOWbIrdRdIC', 'Jane Austen, Seth Grahame-Smith', 'Pride and Prejudice and Zombies: The Deluxe Heirloom Edition',
  'The deluxe heirloom edition of the "New York Times" bestseller boasts additional scenes of zombie mayhem, 13 new full-color illustrations, and an essay Afterword by Dr. Allen Grove, Professor of English Literature.',
  'http://books.google.com/books/content?id=3fOWbIrdRdIC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api'),
@@ -78,6 +82,7 @@ INSERT INTO volume (id, author, title, description, thumbnail) VALUES
     "Harper Lee's Pulitzer Prize-winning masterwork of honor and injustice in the deep South—and the heroism of one man in the face of blind and violent hatred.",
     'http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api'
 );
+
 /* Adding userdata for myself and a made-up password hash from BCrypt
 location is kansas_city 00
 */
@@ -87,6 +92,7 @@ INSERT INTO bookshelf (bookshelf_name, bookshelf_user_id) VALUES
 ("Matt's Good Reads", 1); -- I don't need to put the ID since it is autoincremented
 INSERT INTO bookshelf_volume (bookshelf_id, volume_id, has_book) VALUES
 (1, 'KUMIEAAAQBAJ', TRUE);
+
 
 /* Adding userdata for random person and a made-up password hash from BCrypt
 location is St. Louis 02
@@ -102,6 +108,7 @@ INSERT INTO bookshelf_volume (bookshelf_id, volume_id, has_book) VALUES
 location is St. Louis 02
 */
 INSERT INTO user_account (username, location, email, password_hash) VALUES
+
 ('alice4242', '02', 'alice4242@gmail.com', '$2a$10$7nT.LzAErkRf8nQuvDLP5OGW/R2fRS03zB6F8kMG/lCVdXsJ5lK.S'); -- I don't need to put the ID since it is autoincremented
 INSERT INTO bookshelf (bookshelf_name, bookshelf_user_id) VALUES
 ("Alice's Good Reads", 3); -- I don't need to put the ID since it is autoincremented
@@ -122,6 +129,7 @@ INSERT INTO bookshelf (bookshelf_name, bookshelf_user_id) VALUES
 INSERT INTO bookshelf_volume (bookshelf_id, volume_id, has_book) VALUES
 (5, 'wrOQLV6xB-wC', TRUE);
 
+
 -- this query will give us the information for all user_id, and all the book data we need across all of every users bookshelves (all their bookshelfs)
 SELECT
     user_account.id AS user_id,
@@ -140,13 +148,17 @@ SELECT
     volume.thumbnail AS thumbnail
 FROM
     user_account
+
 JOIN
     bookshelf ON user_account.id = bookshelf.bookshelf_user_id -- fixed output result of SQL query, needed conditional
 JOIN
     bookshelf_volume ON bookshelf.id = bookshelf_volume.bookshelf_id -- fixed output result of SQL query, needed conditional
 JOIN
+
     volume ON bookshelf_volume.volume_id = volume.id
 WHERE
     bookshelf_volume.has_book = TRUE
 ORDER BY
+
     user_account.location, user_account.username, volume.title;
+

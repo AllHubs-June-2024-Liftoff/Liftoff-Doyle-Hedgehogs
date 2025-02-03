@@ -8,28 +8,29 @@
     <link th:href="@{/styles.css}" rel="stylesheet">
 </head>
 <body>
-
-<h1 th:text="${title}">Default Heading</h1>
-
+<div>
+    <h1 th:text="${title}">Default Heading</h1>
+</div>
 <table class="table table-striped">
     <tr>
         <th>Title</th>
         <th>Author</th>
         <th>Tags</th>
+        <th>Average Rating</th>
     </tr>
 
     <tr th:each="bookshelfVolume : ${bookshelfVolumes}">
         <td th:text="${bookshelfVolume.volume.title}"></td>
         <td th:text="${bookshelfVolume.volume.author}"></td>
         <td>
-            <div th:each="tag : ${bookshelfVolume.tags}">
-                <span>
-                    <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.displayName}"></a>
-                </span>
-            </div>
+            <p th:each="tag : ${bookshelfVolume.tags}">
+                <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.displayName}"></a>
+            </p>
         </td>
+        <td th:text="${bookshelfVolume.volume.rating_avg != null ? bookshelfVolume.volume.rating_avg : 'Not Rated'}"></td>
     </tr>
 </table>
+
 
 
 </body>

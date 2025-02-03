@@ -11,3 +11,6 @@ public class UserEmailDTO {
         this.email = email;
     }
 }
+
+//data transfer object encapsulates data and sends from one subsystem of an application to another
+//helpful when data is being transferred from user interface via form

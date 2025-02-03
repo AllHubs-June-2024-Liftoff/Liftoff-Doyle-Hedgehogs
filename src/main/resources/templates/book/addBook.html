@@ -9,26 +9,20 @@
 </head>
 
 
-<body>
+<body class="container">
+<div>
 <h1 th:text="${title}"></h1>
+</div>
+<div>
 <form th:action="@{/book/api/results}" method="post">
   <label for="searchTerm">Search by Title, Author, or ISBN:</label>
   <input type="text" name="searchTerm" id="searchTerm" placeholder="Search">
   <input type="hidden" th:id="bookshelfId" th:value="${bookshelfId}">
   <button type="submit">Search</button>
 </form>
-
-<div class= "bookGrid">
-    <div class= "gridObject" th:each="volume: ${searchResults}">
-        <a th:href="@{'/book/add'}">
-            <img th:src="@{${volume.thumbnail}}" alt="Thumbnail" class="img-thumbnail">
-        </a>
-        <div class="title" th:text="${volume.title}" ></div>
-        <div class="author" th:text="${volume.author}"></div>
-    </div>
 </div>
+<p><a href="../user/index">Return to Profile Page</a></p>
 </body>
-
 
 </html>
 

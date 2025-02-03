@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+//tells us what java class is converted into a persistent data store in mySQL
 @Entity
 public class User extends AbstractEntity {
 

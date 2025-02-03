@@ -1,25 +1,25 @@
 body {
     background-color: #0b5e87;
+    font: helvetica,verdana,arial,sans-serif;
     color: black;
-    font: 11px/18px helvetica,verdana,arial,sans-serif;
-    margin: auto;
 }
 
-.bookGrid {
+.grid-container {
     display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-      background-color: #f6eee3;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px 10px;
 }
+
 
 .gridObject {
     margin: auto;
     overflow: scroll;
     text-align: center;
     color: black;
-    font: helvetica,verdana,arial,sans-serif;
 
+    font: helvetica,verdana,arial,sans-serif;
 }
+
 
 .title{
     font-size: 14px;
@@ -37,21 +37,48 @@ body {
 
 p {
     width: 75%;
+
+.grid-item-text {
+    margin: 5px;
+}
+
+div {
+    margin: auto;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    width: 80%;
+
     padding: 20px;
     text-align: center;
     background-color: #f6eee3;
 }
 
-h1 {
-    margin: auto;
-    width: 50%;
-    padding: 10px;
-    text-align: center;
-    background-color: #f6eee3;
+.form-group {
+    margin-top: 5px;
+
 }
 
+h1 {
+    margin: auto;
+        width: 80%;
+        padding: 10px;
+        text-align: center;
+        background-color: #f6eee3;
+}
+
+h2 {
+    padding:10px;
+}
+
+.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th{
+   background-color: #f6eee3;
+}
+
+input[type="radio"]{
+    margin: 0 0 0 20px;
+}
 
 .error {
     color:red;
 }
-

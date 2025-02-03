@@ -8,60 +8,78 @@
    <link th:href="@{/styles.css}" rel="stylesheet">
 </head>
 <body class="container">
+<div>
 <h1 th:text="${title}"></h1>
+</div>
+<div>
 <form th:object="${bookshelfVolume}" th:action="@{/book/addToBookshelf}" method="post">
-   <table>
-      <tr>
-         <td><img th:src="@{${thumbnail}}" class="img-thumbnail"></td>
-      </tr>
-      <tr>
-         <td>Title</td>
-         <td th:text="${bookTitle}"></td>
-      </tr>
-      <tr>
-         <td>Author(s)</td>
-         <td th:text="${author}"></td>
-      </tr>
-      <tr>
-         <td>Description</td>
-         <td th:text="${description}"></td>
-      </tr>
-      <tr>
-         <td>Add tags</td>
-         <td>
+
+    <img th:src="@{${thumbnail}}" class="img-thumbnail">
+   <br>
+   <p th:text="${author}"></p>
+   <p th:text="${bookTitle}"></p>
+   <p th:text="${description}">-</p>
+         <label>Add tags
                <div class="form-group">
-<!--                  <input type="hidden" th:field="${bookshelfVolumeTag.bookshelfVolume}" th:value="${bookshelfVolume}">-->
-                  <th:block th:each="tag : ${allTags}">
+                  <block th:each="tag : ${allTags}">
                      <input th:field="${bookshelfVolumeTag.tags}" type="checkbox" name="tag" th:value="${tag.id}" >
                      <label th:text="${tag.displayName}"></label>
-                     <br>
-                  </th:block>
+                     <input type="hidden" th:field="${bookshelfVolumeTag.bookshelfVolume}" th:value="${bookshelfVolume}">
+                  </block>
                </div>
-         </td>
-      </tr>
-      <tr>
-         <td>List in the Library?</td>
-         <td>
-            <input type="radio" th:id="yes" default th:name="has_book" th:value="true" checked>
-            <label th:for="yes">Yes</label>
-            <input type="radio" th:id="no" th:name="has_book" th:value="false">
-            <label th:for="no">Not yet</label>
-         </td>
-      </tr>
-   </table>
-   <div>
+         </label>
       <input type="hidden" th:id="bookId" th:value="${bookId}">
       <input type="hidden" th:id="title" th:value="${bookTitle}">
       <input type="hidden" th:id="author" th:value="${author}">
       <input type="hidden" th:id="description" th:value="${description}">
       <input type="hidden" th:id="thumbnail" th:value="${thumbnail}">
       <input type="hidden" th:id="bookshelfId" th:value="${bookshelfId}">
-   </div>
-   <div class="form-group">
+   <br>
       <input type="submit" value="Done" class="btn btn-success"/>
-   </div>
 </form>
-
-
+</div>
+<p><a href="../user/index">Return to Profile Page</a></p>
 </body>
 </html>
+<!--<form th:object="${bookshelfVolume}" th:action="@{/book/addToBookshelf}" method="post">-->
+<!--   <table>-->
+<!--      <tr>-->
+<!--         <td><img th:src="@{${thumbnail}}" class="img-thumbnail"></td>-->
+<!--      </tr>-->
+<!--      <tr>-->
+<!--         <td>Title</td>-->
+<!--         <td th:text="${bookTitle}"></td>-->
+<!--      </tr>-->
+<!--      <tr>-->
+<!--         <td>Author(s)</td>-->
+<!--         <td th:text="${author}"></td>-->
+<!--      </tr>-->
+<!--      <tr>-->
+<!--         <td>Description</td>-->
+<!--         <td th:text="${description}">-</td>-->
+<!--      </tr>-->
+<!--      <tr>-->
+<!--         <td>Add tags</td>-->
+<!--         <td>-->
+<!--            <div class="form-group">-->
+<!--               <block th:each="tag : ${allTags}">-->
+<!--                  <input th:field="${bookshelfVolumeTag.tags}" type="checkbox" name="tag" th:value="${tag.id}" >-->
+<!--                  <label th:text="${tag.displayName}"></label>-->
+<!--                  <input type="hidden" th:field="${bookshelfVolumeTag.bookshelfVolume}" th:value="${bookshelfVolume}">-->
+<!--               </block>-->
+<!--            </div>-->
+<!--         </td>-->
+<!--      </tr>-->
+<!--   </table>-->
+<!--   <div>-->
+<!--      <input type="hidden" th:id="bookId" th:value="${bookId}">-->
+<!--      <input type="hidden" th:id="title" th:value="${bookTitle}">-->
+<!--      <input type="hidden" th:id="author" th:value="${author}">-->
+<!--      <input type="hidden" th:id="description" th:value="${description}">-->
+<!--      <input type="hidden" th:id="thumbnail" th:value="${thumbnail}">-->
+<!--      <input type="hidden" th:id="bookshelfId" th:value="${bookshelfId}">-->
+<!--   </div>-->
+<!--   <div class="form-group">-->
+<!--      <input type="submit" value="Done" class="btn btn-success"/>-->
+<!--   </div>-->
+<!--</form>-->
