@@ -124,12 +124,14 @@ INSERT INTO bookshelf_volume (bookshelf_id, volume_id, has_book) VALUES
     (5, 'wrOQLV6xB-wC', TRUE);
     
 -- tag some books for functional testing
+
 INSERT into bookshelf_volume_tags VALUES 
 (1, 1), (1, 3), (3, 2), (3, 3), (4, 3), (5, 2), (5, 3);
 
 -- this query will give us the information for all user_id, and all the book data we need across all of every users bookshelves (all their bookshelfs)
 SELECT
     user.id AS user_id,
+
     bookshelf.user_id,
     user.username AS username,
     user.email AS email,
@@ -143,6 +145,7 @@ SELECT
     volume.title AS title,
     volume.description AS description,
     volume.thumbnail AS thumbnail
+
 FROM
     user
         JOIN
