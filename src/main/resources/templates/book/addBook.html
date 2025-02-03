@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+  <meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+<link th:href="@{/styles.css}" rel="stylesheet">
+<title> Little Online Library</title>
+</head>
+
+
+<body>
+<h1 th:text="${title}"></h1>
+<div th:replace="~{frags/navbar :: navbar}"></div>
+<form th:action="@{/book/api/results}" method="post">
+  <label for="searchTerm">Search by Title, Author, or ISBN:</label>
+  <input type="text" name="searchTerm" id="searchTerm" placeholder="Search">
+  <input type="hidden" th:id="bookshelfId" th:value="${bookshelfId}">
+  <button type="submit">Search</button>
+</form>
+
+<div class= "bookGrid">
+    <div class= "gridObject" th:each="volume: ${searchResults}">
+        <a th:href="@{'/book/add'}">
+            <img th:src="@{${volume.thumbnail}}" alt="Thumbnail" class="img-thumbnail">
+        </a>
+        <div class="title" th:text="${volume.title}" ></div>
+        <div class="author" th:text="${volume.author}"></div>
+    </div>
+</div>
+</body>
+
+
+</html>
+

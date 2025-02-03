@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Little Online Library</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <link th:href="@{/styles.css}" rel="stylesheet">
+</head>
+<body>
+
+<h1 th:text="${title}"></h1>
+<!--<form th:action="@{/book/addBook}" method="post">-->
+<!--    <input type="hidden" th:id="bookshelfId" th:value="${bookshelfId}">-->
+<!--    <a type="button" class="btn btn-success" th:href="@{'/book/addBook'}">Add a Book</a>-->
+<!--</form>-->
+<div th:replace="~{frags/navbar :: navbar}"></div>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Tags</th>
+        <th>Average Rating</th>
+        <th>Your Rating</th>
+        <th>Rate</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="bookshelfVolume : ${bookshelfVolumes}">
+        <td th:text="${bookshelfVolume.volume.title}"></td>
+        <td th:text="${bookshelfVolume.volume.author}"></td>
+        <td>
+            <div th:each="tag : ${bookshelfVolume.tags}">
+                <span>
+                    <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.displayName}"></a>
+                </span>
+            </div>
+        </td>
+
+        <td th:text="${bookshelfVolume.volume.rating_avg != null ? bookshelfVolume.volume.rating_avg : 'Not Rated'}"></td>
+        <td th:text="${bookshelfVolume.rating != null ? bookshelfVolume.rating : 'Not Rated'}"></td>
+        <td>
+            <form th:action="@{/book/rate}" method="post">
+                <input type="hidden" name="id" th:value="${bookshelfVolume.id}" />
+                <select name="rating" class="form-select form-select-sm">
+                    <option value="" th:selected="${bookshelfVolume.rating == null}">No Rating</option>
+                    <option value="1" th:selected="${bookshelfVolume.rating == 1}">1</option>
+                    <option value="2" th:selected="${bookshelfVolume.rating == 2}">2</option>
+                    <option value="3" th:selected="${bookshelfVolume.rating == 3}">3</option>
+                    <option value="4" th:selected="${bookshelfVolume.rating == 4}">4</option>
+                    <option value="5" th:selected="${bookshelfVolume.rating == 5}">5</option>
+                </select>
+                <button type="submit" class="btn btn-primary btn-sm" style="padding: 2px 6px; font-size: 8px; line-height: 1;">Rate</button>
+            </form>
+        </td>
+
+        <td>
+            <div>
+                <span>
+                    <a th:href="'/book/update-or-remove/' + ${bookshelfVolume.id}" th:text="${updateRemoveButtonLabel}"></a>
+                </span>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
