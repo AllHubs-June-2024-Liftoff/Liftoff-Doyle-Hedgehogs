@@ -12,9 +12,9 @@ CREATE TABLE location (
                         name VARCHAR(255) UNIQUE NOT NULL
 );
 
-INSERT into location VALUES (0, 'Kansas City');
-INSERT into location VALUES (1, 'Philadelphia');
-INSERT into location VALUES (2, 'St. Louis');
+INSERT into location VALUES (1, 'Kansas City');
+INSERT into location VALUES (2, 'Philadelphia');
+INSERT into location VALUES (3, 'St. Louis');
 
 
 

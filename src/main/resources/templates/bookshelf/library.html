@@ -33,7 +33,7 @@
         <td th:text="${bookshelfVolume.volume.author}"></td>
         <td>
             <p th:each="tag : ${bookshelfVolume.tags}">
-                    <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.displayName}"></a>
+                <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.displayName}"></a>
             </p>
         </td>
         <td th:text="${bookshelfVolume.volume.rating_avg != null ? bookshelfVolume.volume.rating_avg : 'Not Rated'}"></td>
@@ -54,9 +54,7 @@
         </td>
         <td>
             <p>
-
                     <a th:href="'/book/update-or-remove/' + ${bookshelfVolume.id}" th:text="${updateRemoveButtonLabel}"></a>
-
             </p>
         </td>
         <td>
