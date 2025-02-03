@@ -20,7 +20,7 @@ CREATE TABLE user (
                               id INT AUTO_INCREMENT PRIMARY KEY,
                               username VARCHAR(255) UNIQUE NOT NULL,
                               location_id INT, -- '0': Kansas City '1': Philadelphia '2': St. Louis
-                              email VARCHAR(255) UNIQUE NOT NULL,
+                              email VARCHAR(255) NOT NULL,
                               pwhash VARCHAR(255) NOT NULL,
                               FOREIGN KEY (location_id) REFERENCES location(id)
 );

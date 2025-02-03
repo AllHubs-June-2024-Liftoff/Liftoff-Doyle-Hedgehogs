@@ -10,7 +10,7 @@ CREATE TABLE user_account (
 
                               username VARCHAR(100) UNIQUE NOT NULL,
                               location VARCHAR(2), -- 00: Kansas City 01: Philadelphia 02: St. Louis
-                              email VARCHAR(100) UNIQUE NOT NULL,
+                              email VARCHAR(100) NOT NULL,
                               password_hash VARCHAR(255) NOT NULL
 );
 
