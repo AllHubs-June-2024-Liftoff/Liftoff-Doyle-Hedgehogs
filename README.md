@@ -13,9 +13,9 @@ This table stores user account details.
 |-------------------|----------------------------------------------------------|
 | `id`             | Auto-incremented unique identifier for each user.         |
 | `username`       | Unique username chosen by the user.                       |
-| `location`       | Location of the user account: <br>0 = Kansas City, <br>1 = Philadelphia, <br>2 = St. Louis. |
+| `location`       | Location of the user account: <br>1 = Kansas City, <br>2 = Philadelphia, <br>3 = St. Louis. |
 | `email`          | User's unique email address.                              |
-| `pwhash`         | BCrypt hashed password for storage in MySQL database. Reference values initially inserted into the DB are mock hashes                |
+| `pw_hash`         | BCrypt hashed password for storage in MySQL database. Reference values initially inserted into the DB are mock hashes                |
 | `verification_code` | User's Verification code.
 
 ---
