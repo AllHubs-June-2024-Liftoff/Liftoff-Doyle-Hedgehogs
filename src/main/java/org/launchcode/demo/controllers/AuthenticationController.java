@@ -149,9 +149,9 @@ public class AuthenticationController {
         String code = VerificationCodeGenerator.createVerificationCode();
         newUser.setVerificationCode(code);
         userRepository.save(newUser);
-        setUserInSession(request.getSession(), newUser);
-        model.addAttribute("user", newUser.getUsername());
 
+        //        setUserInSession(request.getSession(), newUser);
+        //        model.addAttribute("user", newUser.getUsername());
 
         EmailDetails theseDetails = new EmailDetails(registerFormDTO.getEmail(), "Your verification code is: " + code, "Email Verification Code");
         sendUserMail(theseDetails);
@@ -176,8 +176,9 @@ public class AuthenticationController {
         String username = verificationFormDTO.getUsername();
         User user = userRepository.findByUsername(username);
 
-        String submittedCode = verificationFormDTO.getVerifyCode();
         String sentCode = user.getVerificationCode();
+        String submittedCode = verificationFormDTO.getVerifyCode();
+
 
         if (!submittedCode.equals(sentCode)) {
             model.addAttribute("incorrect", "Incorrect Verification Code. Please Check Email");
