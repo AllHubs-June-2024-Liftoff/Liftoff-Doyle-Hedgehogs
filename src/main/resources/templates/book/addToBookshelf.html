@@ -19,9 +19,10 @@
    <p th:text="${author}"></p>
    <p th:text="${bookTitle}"></p>
    <p th:text="${description}">-</p>
-         <label>Add tags
-               <div class="form-group">
-                  <block th:each="tag : ${allTags}">
+   <br>
+         <label>Add tags (optional):
+               <div class="grid-container-tags">
+                  <block class="grid-item" th:each="tag : ${allTags}">
                      <input th:field="${bookshelfVolumeTag.tags}" type="checkbox" name="tag" th:value="${tag.id}" >
                      <label th:text="${tag.displayName}"></label>
                      <input type="hidden" th:field="${bookshelfVolumeTag.bookshelfVolume}" th:value="${bookshelfVolume}">

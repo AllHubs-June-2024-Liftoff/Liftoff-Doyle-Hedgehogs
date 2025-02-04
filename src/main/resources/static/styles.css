@@ -10,6 +10,13 @@ body {
     gap: 10px 10px;
 }
 
+.grid-container-tags {
+    display: grid;
+    grid-template-columns: 150px 150px 150px;
+    text-align: left;
+    gap: 10px 10px;
+}
+
 .grid-item {
     background-color: #f6eee3;
     text-align: auto;
